@@ -1,6 +1,8 @@
 ﻿using UnityEngine;
+using UnityEngine.Assertions;
 using System;
 using System.Collections;
+using System.Collections.Generic;
 
 /*
 
@@ -32,20 +34,58 @@ using System.Collections;
 
 */
 
-public class MainSystem : MonoBehaviour {
-    public GameObject obj1, obj2;
+enum GameMode {
+    Wait, // 入力待ち
+    Act,  // 行動中
+}
 
-    private ActEnemyWalk _act;
+public class MainSystem : MonoBehaviour {
+    private GameMode _mode;
+    private List<Enemy> _enemies = new List<Enemy>();
+
+    private List<ActEnemyWalk> _walkActs = new List<ActEnemyWalk>();
 
     void Start() {
-        var e = EnemyFactory.CreateEnemy();
-        Debug.Log("e = " + e);
+        _mode = GameMode.Wait;
+        // var e = EnemyFactory.CreateEnemy();
+        // Debug.Log("e = " + e);
+        // var act = new ActEnemyWalk(e);
 
-        var act = new ActEnemyWalk(e);
-        _act = act;
+        var e = EnemyFactory.CreateEnemy();
+        _enemies.Add(e);
+
     }
 
     void Update() {
+        if (_mode == GameMode.Act) {
+            GameUpdate();
+            return;
+        }
+
+        Assert.IsTrue(_mode == GameMode.Wait);
+
+        if (Input.GetKeyDown(KeyCode.J)) { // 南
+        }
+        else if (Input.GetKeyDown(KeyCode.K)) { // 北
+        }
+        else if (Input.GetKeyDown(KeyCode.L)) { // 東
+        }
+        else if (Input.GetKeyDown(KeyCode.H)) { // 西
+        }
+        else if (Input.GetKeyDown(KeyCode.B)) { // 南西
+        }
+        else if (Input.GetKeyDown(KeyCode.N)) { // 南東
+        }
+        else if (Input.GetKeyDown(KeyCode.Y)) { // 北西
+        }
+        else if (Input.GetKeyDown(KeyCode.U)) { // 北東
+        }
+        else if (Input.GetKeyDown(KeyCode.Period)) { // 何もせずターン終了
+            Debug.Log("SKIP PLAYER TURN");
+            SkipPlayer();
+            DetectEnemyAct();
+            ChangeMode(GameMode.Act);
+        }
     }
 
     void OnGUI() {
@@ -54,25 +94,61 @@ public class MainSystem : MonoBehaviour {
         };
 
         if (button("Test 1")) {
-            StartCoroutine(Move(obj1, 3, 0));
-            StartCoroutine(Move(obj2, 2, -1));
+
+
         }
         else if (button("Test 2")) {
-            StartCoroutine(_act.Exec());
+
+        }
+        else if (button("Skip")) {
+
         }
     }
 
-    IEnumerator Move(GameObject obj, int dx, int dy) {
-        var src = obj.transform.position;
+    private void ChangeMode(GameMode mode) {
+        switch (mode) {
+        case GameMode.Act:
+            Debug.Log("### ACT");
+            break;
 
-        float duration = 1.0f;
-        float elapsed = 0;
-        while (elapsed <= duration) {
-            float x = Mathf.Lerp(src.x, src.x + dx, elapsed / duration);
-            float y = Mathf.Lerp(src.y, src.y + dy, elapsed / duration);
-            obj.transform.position = new Vector3(x, y, 0);
-            elapsed += Time.deltaTime;
-            yield return null;
+        case GameMode.Wait:
+            Debug.Log("### WAIT");
+            break;
+        }
+
+        _mode = mode;
+    }
+
+    private void GameUpdate() {
+        foreach (var act in _walkActs) {
+            act.Exec(this);
+        }
+
+        bool allFinished = true;
+        foreach (var act in _walkActs) {
+            allFinished = allFinished && act.Finished;
+        }
+
+        if (allFinished) {
+            Debug.Log("All Finished");
+            _walkActs.Clear();
+            ChangeMode(GameMode.Wait);
+        }
+    }
+
+    private void MovePlayer(int drow, int dcol) {
+
+    }
+
+    private void SkipPlayer() {
+
+    }
+
+    private void DetectEnemyAct() {
+        Assert.IsTrue(_walkActs.Count == 0);
+
+        foreach (var enemy in _enemies) {
+            _walkActs.Add(new ActEnemyWalk(enemy));
         }
     }
 }
