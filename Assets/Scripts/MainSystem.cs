@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.Assertions;
 using System;
-using System.Collections;
+// using System.Collections;
 using System.Collections.Generic;
 
 /*
@@ -34,37 +34,40 @@ using System.Collections.Generic;
 
 */
 
-enum GameMode {
+enum GameState {
     Wait, // 入力待ち
     Act,  // 行動中
+
+    TurnFinished, // ターン終了
 }
 
 public class MainSystem : MonoBehaviour {
-    private GameMode _mode;
+    private GameState _gameState;
     private List<Enemy> _enemies = new List<Enemy>();
 
-    private List<ActEnemyWalk> _walkActs = new List<ActEnemyWalk>();
+    private List<Act> _actQueue = new List<Act>();
 
     void Start() {
-        _mode = GameMode.Wait;
-        // var e = EnemyFactory.CreateEnemy();
-        // Debug.Log("e = " + e);
-        // var act = new ActEnemyWalk(e);
+        _gameState = GameState.Wait;
 
-        var e = EnemyFactory.CreateEnemy();
+        var e = EnemyFactory.CreateEnemy(0, 0);
         _enemies.Add(e);
+        _enemies.Add(EnemyFactory.CreateEnemy(1, 0));
 
     }
 
     void Update() {
-        if (_mode == GameMode.Act) {
-            GameUpdate();
+        if (_gameState == GameState.Act) {
+            UpdateAct();
             return;
         }
 
-        Assert.IsTrue(_mode == GameMode.Wait);
+        Assert.IsTrue(_gameState == GameState.Wait);
 
-        if (Input.GetKeyDown(KeyCode.J)) { // 南
+        if (Input.GetKeyDown(KeyCode.Space)) {
+            Debug.Log("player attack");
+        }
+        else if (Input.GetKeyDown(KeyCode.J)) { // 南
         }
         else if (Input.GetKeyDown(KeyCode.K)) { // 北
         }
@@ -82,9 +85,7 @@ public class MainSystem : MonoBehaviour {
         }
         else if (Input.GetKeyDown(KeyCode.Period)) { // 何もせずターン終了
             Debug.Log("SKIP PLAYER TURN");
-            SkipPlayer();
-            DetectEnemyAct();
-            ChangeMode(GameMode.Act);
+            ExecutePlayerSkip();
         }
     }
 
@@ -95,60 +96,107 @@ public class MainSystem : MonoBehaviour {
 
         if (button("Test 1")) {
 
-
         }
         else if (button("Test 2")) {
 
         }
-        else if (button("Skip")) {
+        else if (button("Test 3")) {
 
         }
     }
 
-    private void ChangeMode(GameMode mode) {
-        switch (mode) {
-        case GameMode.Act:
+    private void ChangeGameState(GameState nextGameState) {
+        _gameState = nextGameState;
+
+        switch (nextGameState) {
+        case GameState.Act:
             Debug.Log("### ACT");
             break;
 
-        case GameMode.Wait:
+        case GameState.Wait:
             Debug.Log("### WAIT");
             break;
-        }
 
-        _mode = mode;
-    }
+        case GameState.TurnFinished:
+            Debug.Log("### TURN FINISHED");
+            SysFinishTurn();
+            ChangeGameState(GameState.Wait);
+            break;
 
-    private void GameUpdate() {
-        foreach (var act in _walkActs) {
-            act.Exec(this);
-        }
-
-        bool allFinished = true;
-        foreach (var act in _walkActs) {
-            allFinished = allFinished && act.Finished;
-        }
-
-        if (allFinished) {
-            Debug.Log("All Finished");
-            _walkActs.Clear();
-            ChangeMode(GameMode.Wait);
+        default:
+            Assert.IsTrue(false);
+            break;
         }
     }
 
-    private void MovePlayer(int drow, int dcol) {
+    private void UpdateAct() {
+        bool finished = true;
+        foreach (var act in _actQueue) {
+            act.UpdateAct(this);
+            finished = finished && act.Finished;
+        }
+
+        if (finished) { // 全てのタスクが終了した
+            Debug.Log("all finished");
+            _actQueue.Clear();
+
+            // 行動していないキャラがいあるなら、行動を決定する
+            bool existsActor = DetectEnemyAct();
+            Debug.Log("existsActor = " + existsActor);
+            if (!existsActor) { // 行動するキャラは存在しない
+                // 全てのキャラの行動が終了した
+                ChangeGameState(GameState.TurnFinished);
+            }
+        }
+    }
+
+    // システム関連
+
+    private void SysFinishTurn() {
+
+        // 行動回数の復帰
+        foreach (var e in _enemies) {
+            e.ActCount = 1;
+        }
+    }
+
+    // プレイヤーの行動
+
+    private void ExecutePlayerMove(int drow, int dcol) {
+    }
+
+    private void ExecutePlayerSkip() {
+        DetectEnemyAct();
+        ChangeGameState(GameState.Act);
+    }
+
+    private void ExecutePlayerAttack() {
 
     }
 
-    private void SkipPlayer() {
+    private bool DetectEnemyAct() {
+        Assert.IsTrue(_actQueue.Count == 0);
 
-    }
-
-    private void DetectEnemyAct() {
-        Assert.IsTrue(_walkActs.Count == 0);
-
+        var q = new List<Act>();
         foreach (var enemy in _enemies) {
-            _walkActs.Add(new ActEnemyWalk(enemy));
+            if (enemy.ActCount > 0) {
+                q.Add(new ActEnemyWalk(enemy));
+            }
         }
+
+        // 優先順位のもっとも高いもののみキューに残してそれ以外は破棄
+        // (移動と、攻撃の処理順番の制御)
+        int priority = -1;
+        foreach (var act in q) {
+            if (priority < act.Priority) {
+                priority = act.Priority;
+                _actQueue.Clear();
+            }
+
+            if (priority == act.Priority) {
+                _actQueue.Add(act);
+            }
+        }
+        return _actQueue.Count > 0;
     }
 }

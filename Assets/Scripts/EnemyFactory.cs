@@ -1,12 +1,11 @@
 ﻿using UnityEngine;
-using System.Collections;
 
 public static class EnemyFactory {
-    public static Enemy CreateEnemy() {
+    public static Enemy CreateEnemy(int row, int col) {
         var obj = Resources.Load("Prefabs/piece5");
         Debug.Log("gobj = " + obj);
 
         var gobj = (GameObject)GameObject.Instantiate(obj, new Vector3(0, 1, 0), Quaternion.identity);
-        return new Enemy(0, 0, gobj);
+        return new Enemy(row, col, gobj);
     }
 }

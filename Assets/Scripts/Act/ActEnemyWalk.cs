@@ -1,39 +1,33 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class ActEnemyWalk {
-    public bool Finished { get; private set; }
-    private Enemy _enemy;
-    private bool _started;
-
-    public ActEnemyWalk(Enemy enemy) {
-        _enemy = enemy;
+public class ActEnemyWalk : Act { // rename walk -> move
+    public ActEnemyWalk(Enemy enemy) : base(enemy) {
     }
 
-    public IEnumerator Move() {
-        var src = _enemy.Position;
+    private IEnumerator MoveAnimation() {
+        var src = Actor.Position;
 
-        float duration = 1.0f;
+        float duration = 0.4f;
         float elapsed = 0;
         while (elapsed <= duration) {
-            float x = Mathf.Lerp(src.x, src.x + 3.0f, elapsed / duration);
+            float x = Mathf.Lerp(src.x, src.x + 1.0f, elapsed / duration);
             float y = Mathf.Lerp(src.y, src.y, elapsed / duration);
-            _enemy.Position = new Vector3(x, y, 0);
+            Actor.Position = new Vector3(x, y, 0);
             elapsed += Time.deltaTime;
             yield return null;
         }
-        Finished = true;
+        AnimationFinished = true;
     }
 
-    // TODO: 抽象メソッド。サブクラスでオーバーライド
-    public void Run(MainSystem sys) {
-        sys.StartCoroutine(Move());
+    protected override int GetPriority() {
+        return ActPriority.Move;
     }
 
-    public void Exec(MainSystem sys) {
-        if (_started) return;
+    public override void RunAnimation(MainSystem sys) {
+        sys.StartCoroutine(MoveAnimation());
+    }
 
-        _started = true;
-        Run(sys);
+    public override void RunEffect(MainSystem sys) {
     }
 }
