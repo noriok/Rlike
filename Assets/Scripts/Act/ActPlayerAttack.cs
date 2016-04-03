@@ -1,15 +1,15 @@
 ﻿using UnityEngine;
 // using System.Collections;
 
-public class ActEnemyAttack : Act {
+public class ActPlayerAttack : Act {
     private CharacterBase _target;
 
-    public ActEnemyAttack(Enemy enemy, CharacterBase target) : base(enemy) {
+    public ActPlayerAttack(Player player, CharacterBase target) : base(player) {
         _target = target;
     }
 
     protected override int GetPriority() {
-        return ActPriority.EnemyAttack;
+        return ActPriority.PlayerAttack;
     }
 
     public override void RunAnimation(MainSystem sys) {
@@ -17,8 +17,6 @@ public class ActEnemyAttack : Act {
     }
 
     public override void RunEffect(MainSystem sys) {
-        // Actor が _target に攻撃
-
-        Debug.Log(string.Format("enemy attack Self:{0} Target:{1}", Actor, _target));
+        Debug.LogFormat("@@@ player attack target:{0}", _target);
     }
 }

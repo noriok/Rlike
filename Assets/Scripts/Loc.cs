@@ -6,4 +6,13 @@
         Row = row;
         Col = col;
     }
+
+    public override string ToString() {
+        return string.Format("({0}, {1})", Row, Col);
+    }
+
+    public static Loc operator+(Loc a, Loc b) {
+        return new Loc(a.Row + b.Row, a.Col + b.Col);
+    }
+
 }

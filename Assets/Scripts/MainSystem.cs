@@ -35,7 +35,7 @@ using System.Collections.Generic;
 */
 
 enum GameState {
-    Wait, // 入力待ち
+    InputWait, // 入力待ち
     Act,  // 行動中
 
     TurnFinished, // ターン終了
@@ -43,17 +43,19 @@ enum GameState {
 
 public class MainSystem : MonoBehaviour {
     private GameState _gameState;
+    private Player _player;
     private List<Enemy> _enemies = new List<Enemy>();
 
     private List<Act> _actQueue = new List<Act>();
 
     void Start() {
-        _gameState = GameState.Wait;
+        _gameState = GameState.InputWait;
 
-        var e = EnemyFactory.CreateEnemy(0, 0);
+        _player = CreatePlayer(0, 0);
+
+        var e = EnemyFactory.CreateEnemy(0, 1);
         _enemies.Add(e);
-        _enemies.Add(EnemyFactory.CreateEnemy(1, 0));
-
+        _enemies.Add(EnemyFactory.CreateEnemy(2, 2));
     }
 
     void Update() {
@@ -62,10 +64,10 @@ public class MainSystem : MonoBehaviour {
             return;
         }
 
-        Assert.IsTrue(_gameState == GameState.Wait);
+        Assert.IsTrue(_gameState == GameState.InputWait);
 
         if (Input.GetKeyDown(KeyCode.Space)) {
-            Debug.Log("player attack");
+            ExecutePlayerAttack();
         }
         else if (Input.GetKeyDown(KeyCode.J)) { // 南
         }
@@ -85,7 +87,7 @@ public class MainSystem : MonoBehaviour {
         }
         else if (Input.GetKeyDown(KeyCode.Period)) { // 何もせずターン終了
             Debug.Log("SKIP PLAYER TURN");
-            ExecutePlayerSkip();
+            ExecutePlayerWait();
         }
     }
 
@@ -95,14 +97,17 @@ public class MainSystem : MonoBehaviour {
         };
 
         if (button("Test 1")) {
-
         }
         else if (button("Test 2")) {
-
         }
         else if (button("Test 3")) {
-
         }
+    }
+
+    private Player CreatePlayer(int row, int col) {
+        var obj = Resources.Load("Prefabs/piece1");
+        var gobj = (GameObject)GameObject.Instantiate(obj, Vector3.zero, Quaternion.identity);
+        return new Player(row, col, gobj);
     }
 
     private void ChangeGameState(GameState nextGameState) {
@@ -113,14 +118,14 @@ public class MainSystem : MonoBehaviour {
             Debug.Log("### ACT");
             break;
 
-        case GameState.Wait:
-            Debug.Log("### WAIT");
+        case GameState.InputWait:
+            Debug.Log("### INPUT WAIT");
             break;
 
         case GameState.TurnFinished:
             Debug.Log("### TURN FINISHED");
             SysFinishTurn();
-            ChangeGameState(GameState.Wait);
+            ChangeGameState(GameState.InputWait);
             break;
 
         default:
@@ -137,12 +142,14 @@ public class MainSystem : MonoBehaviour {
         }
 
         if (finished) { // 全てのタスクが終了した
-            Debug.Log("all finished");
+            Debug.Log("--- finished ---");
             _actQueue.Clear();
 
             // 行動していないキャラがいあるなら、行動を決定する
             bool existsActor = DetectEnemyAct();
-            Debug.Log("existsActor = " + existsActor);
+            if (existsActor) {
+                Debug.Log("(next actor exists)");
+            }
             if (!existsActor) { // 行動するキャラは存在しない
                 // 全てのキャラの行動が終了した
                 ChangeGameState(GameState.TurnFinished);
@@ -163,24 +170,29 @@ public class MainSystem : MonoBehaviour {
     // プレイヤーの行動
 
     private void ExecutePlayerMove(int drow, int dcol) {
+        Assert.IsTrue(_actQueue.Count == 0);
+
     }
 
-    private void ExecutePlayerSkip() {
-        DetectEnemyAct();
+    private void ExecutePlayerWait() {
+        Assert.IsTrue(_actQueue.Count == 0);
+
+        _actQueue.Add(new ActPlayerWait(_player));
         ChangeGameState(GameState.Act);
     }
 
     private void ExecutePlayerAttack() {
+        Assert.IsTrue(_actQueue.Count == 0);
 
+        _actQueue.Add(new ActPlayerAttack(_player, null));
+        ChangeGameState(GameState.Act);
     }
 
     private bool DetectEnemyAct() {
-        Assert.IsTrue(_actQueue.Count == 0);
-
         var q = new List<Act>();
         foreach (var enemy in _enemies) {
             if (enemy.ActCount > 0) {
-                q.Add(new ActEnemyWalk(enemy));
+                q.Add(EnemyStrategy.Simple(enemy, _player));
             }
         }
 

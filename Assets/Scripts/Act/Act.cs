@@ -7,9 +7,12 @@
 
     private bool _started;
 
-    public abstract void RunAnimation(MainSystem sys);
     public abstract void RunEffect(MainSystem sys);
     protected abstract int GetPriority();
+
+    public virtual void RunAnimation(MainSystem sys) {
+        AnimationFinished = true;
+    }
 
     public Act(CharacterBase actor) {
         Actor = actor;
