@@ -26,7 +26,7 @@ public class ActEnemyMove : Act {
     }
 
     protected override int GetPriority() {
-        return ActPriority.Move;
+        return ActPriority.EnemyMove;
     }
 
     public override void RunAnimation(MainSystem sys) {

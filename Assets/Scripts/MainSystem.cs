@@ -18,9 +18,6 @@ using System.Collections.Generic;
  . : 何もせずにターン終了
  ; : 階段を下りる
  シフトキー + 方向キー : その方向へ矢を放つ(矢が必要)
- a : HP 表示メータのオン/オフ (デフォルトでオン)
-
-※「方向キー」とは、上の 8 つのキー(j,k,l,h,b,n,y,u)のことです。
 
 ** アイテムウィンドウを開いて「いる」とき:
 
@@ -36,7 +33,7 @@ using System.Collections.Generic;
 
 enum GameState {
     InputWait, // 入力待ち
-    Act,  // 行動中
+    Act,       // 行動中
 
     TurnFinished, // ターン終了
 }
@@ -51,6 +48,8 @@ public class MainSystem : MonoBehaviour {
     void Start() {
         _gameState = GameState.InputWait;
 
+        // (50, 50) にする。カメラを移動させる
+        // マップチップを表示させる
         _player = CreatePlayer(0, 0);
 
         var e = EnemyFactory.CreateEnemy(0, 1);
@@ -70,20 +69,28 @@ public class MainSystem : MonoBehaviour {
             ExecutePlayerAttack();
         }
         else if (Input.GetKeyDown(KeyCode.J)) { // 南
+            ExecutePlayerMove(1, 0);
         }
         else if (Input.GetKeyDown(KeyCode.K)) { // 北
+            ExecutePlayerMove(-1, 0);
         }
         else if (Input.GetKeyDown(KeyCode.L)) { // 東
+            ExecutePlayerMove(0, 1);
         }
         else if (Input.GetKeyDown(KeyCode.H)) { // 西
+            ExecutePlayerMove(0, -1);
         }
         else if (Input.GetKeyDown(KeyCode.B)) { // 南西
+            ExecutePlayerMove(1, -1);
         }
         else if (Input.GetKeyDown(KeyCode.N)) { // 南東
+            ExecutePlayerMove(1, 1);
         }
         else if (Input.GetKeyDown(KeyCode.Y)) { // 北西
+            ExecutePlayerMove(-1, -1);
         }
         else if (Input.GetKeyDown(KeyCode.U)) { // 北東
+            ExecutePlayerMove(-1, 1);
         }
         else if (Input.GetKeyDown(KeyCode.Period)) { // 何もせずターン終了
             Debug.Log("SKIP PLAYER TURN");
@@ -146,7 +153,7 @@ public class MainSystem : MonoBehaviour {
             _actQueue.Clear();
 
             // 行動していないキャラがいあるなら、行動を決定する
-            bool existsActor = DetectEnemyAct();
+            bool existsActor = DetectEnemyAct(_player.Loc);
             if (existsActor) {
                 Debug.Log("(next actor exists)");
             }
@@ -172,6 +179,12 @@ public class MainSystem : MonoBehaviour {
     private void ExecutePlayerMove(int drow, int dcol) {
         Assert.IsTrue(_actQueue.Count == 0);
 
+        Debug.LogFormat("player move delta:{0}", new Loc(drow, dcol));
+        _actQueue.Add(new ActPlayerMove(_player, drow, dcol));
+
+        var playerNextLoc = _player.Loc + new Loc(drow, dcol);
+        DetectEnemyAct(playerNextLoc);
+        ChangeGameState(GameState.Act);
     }
 
     private void ExecutePlayerWait() {
@@ -188,27 +201,32 @@ public class MainSystem : MonoBehaviour {
         ChangeGameState(GameState.Act);
     }
 
-    private bool DetectEnemyAct() {
-        var q = new List<Act>();
-        foreach (var enemy in _enemies) {
-            if (enemy.ActCount > 0) {
-                q.Add(EnemyStrategy.Simple(enemy, _player));
-            }
-        }
+    private bool DetectEnemyAct(Loc playerNextLoc) {
+        // 捨てられる act をログに出力する
+
+        // foreach (var enemy in _enemies) {
+        //     if (enemy.ActCount > 0) {
+        //         _actQueue.Add(EnemyStrategy.Simple(enemy, _player, playerNextLoc));
+        //     }
+        // }
+        _actQueue.AddRange(EnemyStrategy.Detect(_enemies, _player, playerNextLoc));
 
         // 優先順位のもっとも高いもののみキューに残してそれ以外は破棄
         // (移動と、攻撃の処理順番の制御)
+        var q = new List<Act>();
         int priority = -1;
-        foreach (var act in q) {
+        foreach (var act in _actQueue) {
             if (priority < act.Priority) {
                 priority = act.Priority;
-                _actQueue.Clear();
+                q.Clear();
             }
 
             if (priority == act.Priority) {
-                _actQueue.Add(act);
+                q.Add(act);
             }
         }
+
+        _actQueue = q;
         return _actQueue.Count > 0;
     }
 }

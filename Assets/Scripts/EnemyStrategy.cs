@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 public static class EnemyStrategy {
@@ -21,16 +22,49 @@ public static class EnemyStrategy {
         return new Loc(drow, dcol);
     }
 
-    public static Act Simple(Enemy enemy, Player player) {
-        if (IsNeighbor(enemy.Loc, player.Loc)) {
+    public static Act Simple(Enemy enemy, Player player, Loc playerNextLoc) {
+        if (IsNeighbor(enemy.Loc, playerNextLoc)) {
             return new ActEnemyAttack(enemy, player);
         }
 
-        Loc delta = Toward(enemy.Loc, player.Loc);
+        Loc delta = Toward(enemy.Loc, playerNextLoc);
         Debug.Log(string.Format("delta {0}", delta));
         return new ActEnemyMove(enemy, delta.Row, delta.Col);
 
+        // 移動できないなら待機
 //        // 待機
 //        return new ActEnemyWait(enemy);
+    }
+
+    public static List<Act> Detect(List<Enemy> enemies, Player player, Loc playerNextLoc) {
+        var q = new List<Act>();
+
+        var used = new bool[enemies.Count];
+        for (int i = 0; i < enemies.Count; i++) {
+            if (enemies[i].ActCount <= 0) {
+                used[i] = true; // 行動済み
+            }
+        }
+
+        // 敵の移動は、行動出来るものから順番に決めていく
+        bool updated = true;
+        while (updated) {
+            updated = false;
+
+            for (int i = 0; i < enemies.Count; i++) {
+                if (used[i]) continue;
+
+                if (IsNeighbor(enemies[i].Loc, playerNextLoc)) {
+                    q.Add(new ActEnemyAttack(enemies[i], player));
+                    used[i] = true;
+                    updated = true;
+                }
+            }
+
+
+
+        }
+
+        return q;
     }
 }
