@@ -4,6 +4,7 @@ using UnityEngine;
 
 public static class EnemyStrategy {
 
+    // 隣接しているか
     private static bool IsNeighbor(Loc a, Loc b) {
         if (Math.Abs(a.Row - b.Row) <= 1 &&
             Math.Abs(a.Col - b.Col) <= 1)
@@ -54,15 +55,16 @@ public static class EnemyStrategy {
             for (int i = 0; i < enemies.Count; i++) {
                 if (used[i]) continue;
 
+                // プレイヤーと隣接しているなら攻撃する
                 if (IsNeighbor(enemies[i].Loc, playerNextLoc)) {
                     q.Add(new ActEnemyAttack(enemies[i], player));
                     used[i] = true;
                     updated = true;
                 }
+
+                // プレイヤーに近づく
+
             }
-
-
-
         }
 
         return q;
