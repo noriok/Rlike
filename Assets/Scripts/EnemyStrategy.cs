@@ -37,6 +37,9 @@ public static class EnemyStrategy {
 //        return new ActEnemyWait(enemy);
     }
 
+
+    // TODO: 移動するキャラがいるなら、そのキャラを全て返す
+    //       移動するキャラがいないなら、移動以外の行動を行うキャラを 1 体返す
     public static List<Act> Detect(List<Enemy> enemies, Player player, Loc playerNextLoc) {
         var q = new List<Act>();
 
