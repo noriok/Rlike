@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Assertions;
 
 public static class EnemyStrategy {
 
@@ -43,14 +44,20 @@ public static class EnemyStrategy {
     public static List<Act> Detect(List<Enemy> enemies, Player player, Loc playerNextLoc) {
         var q = new List<Act>();
 
+        var locs = new bool[200, 200];
         var used = new bool[enemies.Count];
         for (int i = 0; i < enemies.Count; i++) {
             if (enemies[i].ActCount <= 0) {
                 used[i] = true; // 行動済み
             }
+
+            Loc loc = enemies[i].Loc;
+            locs[loc.Row, loc.Col] = true;
         }
 
         // 敵の移動は、行動出来るものから順番に決めていく
+
+        // 移動するキャラ
         bool updated = true;
         while (updated) {
             updated = false;
@@ -58,15 +65,37 @@ public static class EnemyStrategy {
             for (int i = 0; i < enemies.Count; i++) {
                 if (used[i]) continue;
 
-                // プレイヤーと隣接しているなら攻撃する
-                if (IsNeighbor(enemies[i].Loc, playerNextLoc)) {
-                    q.Add(new ActEnemyAttack(enemies[i], player));
-                    used[i] = true;
-                    updated = true;
-                }
+                var enemy = enemies[i];
+                Assert.IsTrue(locs[enemy.Loc.Row, enemy.Loc.Col]);
+
+                if (IsNeighbor(enemy.Loc, playerNextLoc)) continue;
 
                 // プレイヤーに近づく
+                Loc delta = Toward(enemy.Loc, playerNextLoc);
+                Loc to = enemy.Loc + delta;
+                // Debug.LogFormat("to: {0} enemy: {1} playerNextLoc: {2}", to, enemy.Loc, playerNextLoc);
+                if (!locs[to.Row, to.Col]) { // 空いているなら、移動する
+                    q.Add(new ActEnemyMove(enemy, delta.Row, delta.Col));
+                    Debug.LogFormat("enemy {0} -> {1}", enemy.Loc, to);
 
+                    locs[to.Row, to.Col] = true;
+                    locs[enemy.Row, enemy.Col] = false;
+                    updated = true;
+                    used[i] = true;
+                    break;
+                }
+            }
+        }
+
+        if (q.Count > 0) return q;
+
+        // 攻撃(移動以外)するキャラ
+        for (int i = 0; i < enemies.Count; i++) {
+            if (used[i]) continue;
+
+            if (IsNeighbor(enemies[i].Loc, playerNextLoc)) {
+                q.Add(new ActEnemyAttack(enemies[i], player));
+                used[i] = true;
             }
         }
 
