@@ -7,10 +7,6 @@ public class ActEnemyWait : Act {
 
     }
 
-    protected override int GetPriority() {
-        return ActPriority.EnemyWait;
-    }
-
     public override void RunEffect(MainSystem sys) {
         Debug.Log("@@@ enemy wait");
     }

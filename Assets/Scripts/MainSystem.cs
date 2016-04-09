@@ -211,22 +211,6 @@ public class MainSystem : MonoBehaviour {
         // }
         _actQueue.AddRange(EnemyStrategy.Detect(_enemies, _player, playerNextLoc));
 
-        // 優先順位のもっとも高いもののみキューに残してそれ以外は破棄
-        // (移動と、攻撃の処理順番の制御)
-        var q = new List<Act>();
-        int priority = -1;
-        foreach (var act in _actQueue) {
-            if (priority < act.Priority) {
-                priority = act.Priority;
-                q.Clear();
-            }
-
-            if (priority == act.Priority) {
-                q.Add(act);
-            }
-        }
-
-        _actQueue = q;
         return _actQueue.Count > 0;
     }
 }

@@ -8,10 +8,6 @@ public class ActEnemyAttack : Act {
         _target = target;
     }
 
-    protected override int GetPriority() {
-        return ActPriority.EnemyAttack;
-    }
-
     public override void RunAnimation(MainSystem sys) {
         AnimationFinished = true;
     }

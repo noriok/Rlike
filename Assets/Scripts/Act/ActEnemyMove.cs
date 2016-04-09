@@ -25,10 +25,6 @@ public class ActEnemyMove : Act {
         AnimationFinished = true;
     }
 
-    protected override int GetPriority() {
-        return ActPriority.EnemyMove;
-    }
-
     public override void RunAnimation(MainSystem sys) {
         sys.StartCoroutine(MoveAnimation());
     }

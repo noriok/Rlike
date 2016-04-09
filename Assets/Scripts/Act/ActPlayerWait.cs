@@ -7,10 +7,6 @@ public class ActPlayerWait : Act {
 
     }
 
-    protected override int GetPriority() {
-        return ActPriority.PlayerWait;
-    }
-
     public override void RunEffect(MainSystem sys) {
         Debug.Log("@@@ player wait");
     }
