@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.Assertions;
+using UnityEngine.UI;
 using System;
 // using System.Collections;
 using System.Collections.Generic;
@@ -99,15 +100,18 @@ public class MainSystem : MonoBehaviour {
     }
 
     void OnGUI() {
-        Func<string, bool> button = (caption) => {
-            return GUILayout.Button(caption, GUILayout.Width(110), GUILayout.Height(50));
-        };
+        // Func<string, bool> button = (caption) => {
+        //     return GUILayout.Button(caption, GUILayout.Width(110), GUILayout.Height(50));
+        // };
 
-        if (button("Test 1")) {
-        }
-        else if (button("Test 2")) {
-        }
-        else if (button("Test 3")) {
+        // if (button("Test 1")) {
+        // }
+
+        if (GUI.Button(new Rect(600, 0, 100, 40), "test")) {
+            // Debug.Log("click");
+            // var text = GameObject.Find("Text");
+            // var t = text.GetComponent<Text>();
+            // t.text = "test message";
         }
     }
 
