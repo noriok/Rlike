@@ -15,6 +15,6 @@ public class ActEnemyAttack : Act {
     public override void RunEffect(MainSystem sys) {
         // Actor が _target に攻撃
 
-        Debug.Log(string.Format("enemy attack Self:{0} Target:{1}", Actor, _target));
+        Debug.Log(string.Format("enemy attack Self:{0}(Loc:{1}) Target:{2}(Loc:{3})", Actor, Actor.Loc, _target, _target.Loc));
     }
 }

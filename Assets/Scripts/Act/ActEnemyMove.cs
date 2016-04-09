@@ -1,13 +1,17 @@
 ﻿using UnityEngine;
+using UnityEngine.Assertions;
 using System.Collections;
 
 public class ActEnemyMove : Act {
     private int _drow;
     private int _dcol;
 
-    public ActEnemyMove(Enemy enemy, int drow, int dcol) : base(enemy) {
-        _drow = drow;
-        _dcol = dcol;
+    // nextLoc = 移動後の位置
+    public ActEnemyMove(Enemy enemy, Loc nextLoc) : base(enemy) {
+        Assert.IsTrue(enemy.Loc.IsNeighbor(nextLoc));
+
+        _drow = nextLoc.Row - enemy.Row;
+        _dcol = nextLoc.Col - enemy.Col;
     }
 
     private IEnumerator MoveAnimation() {
