@@ -77,6 +77,13 @@ public struct Loc {
         return new Loc(Row + drow, Col + dcol);
     }
 
+    // loc との距離の 2 乗を返す
+    public int DistanceSq(Loc loc) {
+        int drow = Row - loc.Row;
+        int dcol = Col - loc.Col;
+        return drow * drow + dcol * dcol;
+    }
+
     public override string ToString() {
         return string.Format("({0}, {1})", Row, Col);
     }
