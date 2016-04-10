@@ -33,31 +33,34 @@ public struct Loc {
         if (drow != 0) drow /= Math.Abs(drow);
         if (dcol != 0) dcol /= Math.Abs(dcol);
 
-        Assert.IsFalse(drow == 0 && dcol == 0);
-        if (drow == -1) {
-            switch (dcol) {
-            case -1: return Dir.NW;
-            case  0: return Dir.N;
-            case  1: return Dir.NE;
-            }
-        }
-        else if (drow == 0) {
-            switch (dcol) {
-            case -1: return Dir.W;
-            case  0: Assert.IsTrue(false); break;
-            case  1: return Dir.E;
-            }
-        }
-        else if (drow == 1) {
-            switch (dcol) {
-                case -1: return Dir.SW;
-                case  0: return Dir.S;
-                case  1: return Dir.SE;
-            }
-        }
+        return Utils.ToDir(drow, dcol);
+        // // TODO:ToDir() と同じ処理。(まとめる)
+        // Assert.IsFalse(drow == 0 && dcol == 0);
 
-        Assert.IsTrue(false);
-        return Dir.N; // ここには到達しない
+        // if (drow == -1) {
+        //     switch (dcol) {
+        //     case -1: return Dir.NW;
+        //     case  0: return Dir.N;
+        //     case  1: return Dir.NE;
+        //     }
+        // }
+        // else if (drow == 0) {
+        //     switch (dcol) {
+        //     case -1: return Dir.W;
+        //     case  0: Assert.IsTrue(false); break;
+        //     case  1: return Dir.E;
+        //     }
+        // }
+        // else if (drow == 1) {
+        //     switch (dcol) {
+        //         case -1: return Dir.SW;
+        //         case  0: return Dir.S;
+        //         case  1: return Dir.SE;
+        //     }
+        // }
+
+        // Assert.IsTrue(false);
+        // return Dir.N; // ここには到達しない
     }
 
     // dir 方向へ 1 歩進んだ位置

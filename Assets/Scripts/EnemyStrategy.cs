@@ -1,22 +1,13 @@
-﻿using System;
+﻿// using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Assertions;
 
 public static class EnemyStrategy {
 
-    // a と b が隣接しているとき、a から b へ攻撃可能か
-    private static bool CanAttack(Loc a, Loc b) {
-        if (a.IsNeighbor(b)) {
-            // TODO:斜めに隣接しているとき、壁が隣接しているなら攻撃不可
-            return true;
-        }
-        return false;
-    }
-
     // TODO: 移動するキャラがいるなら、そのキャラを全て返す
     //       移動するキャラがいないなら、移動以外の行動を行うキャラを 1 体返す
-    public static List<Act> Detect(List<Enemy> enemies, Player player, Loc playerNextLoc) {
+    public static List<Act> Detect(List<Enemy> enemies, Player player, Loc playerNextLoc, Map map) {
         var q = new List<Act>();
 
         var locs = new bool[200, 200]; // モンスターの位置
@@ -51,13 +42,17 @@ public static class EnemyStrategy {
 
                 Dir dir = enemy.Loc.Toward(playerNextLoc); // プレイヤーの方向
                 Loc to = enemy.Loc.Forward(dir);
-                if (locs[to.Row, to.Col]) { // 進めない
+                if (locs[to.Row, to.Col]) { // 他のキャラがいる
                     // 斜め方向に進めるか試す
 
-                    Loc loc1 = enemy.Loc.Forward(dir.Clockwise());
-                    Loc loc2 = enemy.Loc.Forward(dir.Anticlockwise());
+                    Dir dir1 = dir.Clockwise();
+                    Loc loc1 = enemy.Loc.Forward(dir1);
+                    Dir dir2 = dir.Anticlockwise();
+                    Loc loc2 = enemy.Loc.Forward(dir2);
                     // 斜め方向いずれも進行できるなら、プレイヤーにもっとも近い方を選択する
-                    if (!locs[loc1.Row, loc1.Col] && !locs[loc2.Row, loc2.Col]) {
+                    if (!locs[loc1.Row, loc1.Col] && map.CanAdvance(enemy.Loc, dir1) &&
+                        !locs[loc2.Row, loc2.Col] && map.CanAdvance(enemy.Loc, dir2))
+                    {
                         if (loc1.DistanceSq(playerNextLoc) < loc2.DistanceSq(playerNextLoc)) {
                             nextLoc = loc1;
                         }
@@ -65,16 +60,18 @@ public static class EnemyStrategy {
                             nextLoc = loc2;
                         }
                     }
-                    else if (!locs[loc1.Row, loc1.Col]) {
+                    else if (!locs[loc1.Row, loc1.Col] && map.CanAdvance(enemy.Loc, dir1)) {
                         nextLoc = loc1;
                     }
-                    else if (!locs[loc2.Row, loc2.Col]) {
+                    else if (!locs[loc2.Row, loc2.Col] && map.CanAdvance(enemy.Loc, dir2)) {
                         nextLoc = loc2;
 
                     }
                 }
-                else { // to に進める
-                    nextLoc = to;
+                else { // to にキャラがいない
+                    if (map.CanAdvance(enemy.Loc, dir)) {
+                        nextLoc = to;
+                    }
                 }
 
                 if (nextLoc.Row != -1 && nextLoc.Col != -1) {
@@ -93,10 +90,13 @@ public static class EnemyStrategy {
         for (int i = 0; i < enemies.Count; i++) {
             if (used[i]) continue;
 
-            if (CanAttack(enemies[i].Loc, playerNextLoc)) {
-                Debug.LogFormat("隣接しているので攻撃 {0} {1}", enemies[i].Loc, playerNextLoc);
-                q.Add(new ActEnemyAttack(enemies[i], player));
-                used[i] = true;
+            if (enemies[i].Loc.IsNeighbor(playerNextLoc)) {
+                Loc delta = playerNextLoc - enemies[i].Loc;
+                Dir dir = Utils.ToDir(delta.Row, delta.Col);
+                if (map.CanAttack(enemies[i].Loc, dir)) {
+                    q.Add(new ActEnemyAttack(enemies[i], player));
+                    used[i] = true;
+                }
             }
         }
 

@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.Assertions;
 using UnityEngine.UI;
-using System;
+// using System;
 // using System.Collections;
 using System.Collections.Generic;
 
@@ -36,7 +36,8 @@ enum GameState {
     InputWait, // 入力待ち
     Act,       // 行動中
 
-    TurnFinished, // ターン終了
+    TurnStart,  // ターン開始
+    TurnFinish, // ターン終了
 }
 
 public class MainSystem : MonoBehaviour {
@@ -47,10 +48,9 @@ public class MainSystem : MonoBehaviour {
     private List<Act> _actQueue = new List<Act>();
 
     private Map _map;
+    private int _turnCount = 0;
 
     void Start() {
-        _gameState = GameState.InputWait;
-
         _player = CreatePlayer(1, 1);
 
         var e = EnemyFactory.CreateEnemy(1, 4);
@@ -62,6 +62,8 @@ public class MainSystem : MonoBehaviour {
         camera.GetComponent<Camera>().orthographicSize = 1.5f;
 
         _map = new Map();
+
+        ChangeGameState(GameState.TurnStart);
     }
 
     void Update() {
@@ -141,17 +143,25 @@ public class MainSystem : MonoBehaviour {
 
         switch (nextGameState) {
         case GameState.Act:
-            Debug.Log("### ACT");
+            Debug.Log("### Act");
             break;
 
         case GameState.InputWait:
-            Debug.Log("### INPUT WAIT");
+            Debug.Log("### Input Wait");
             break;
 
-        case GameState.TurnFinished:
-            Debug.Log("### TURN FINISHED");
-            SysFinishTurn();
+        case GameState.TurnStart:
+            Debug.Log("### Turn Start");
+            SysTurnStart();
+
             ChangeGameState(GameState.InputWait);
+            break;
+
+        case GameState.TurnFinish:
+            Debug.Log("### Turn Finish");
+            SysTurnFinish();
+
+            ChangeGameState(GameState.TurnStart);
             break;
 
         default:
@@ -178,14 +188,20 @@ public class MainSystem : MonoBehaviour {
             }
             if (!existsActor) { // 行動するキャラは存在しない
                 // 全てのキャラの行動が終了した
-                ChangeGameState(GameState.TurnFinished);
+                ChangeGameState(GameState.TurnFinish);
             }
         }
     }
 
     // システム関連
 
-    private void SysFinishTurn() {
+    private void SysTurnStart() {
+        _turnCount++;
+        DLog.D("ターン: {0}", _turnCount);
+
+    }
+
+    private void SysTurnFinish() {
         var text = GameObject.Find("Text").GetComponent<Text>();
         text.text = DLog.ToText();
         DLog.Clear();
@@ -201,12 +217,18 @@ public class MainSystem : MonoBehaviour {
     private void ExecutePlayerMove(int drow, int dcol) {
         Assert.IsTrue(_actQueue.Count == 0);
 
-        Debug.LogFormat("player move delta:{0}", new Loc(drow, dcol));
-        _actQueue.Add(new ActPlayerMove(_player, drow, dcol));
+        Dir dir = Utils.ToDir(drow, dcol);
+        if (_map.CanAdvance(_player.Loc, dir)) {
+            Debug.LogFormat("player move delta:{0}", new Loc(drow, dcol));
+            _actQueue.Add(new ActPlayerMove(_player, drow, dcol));
 
-        var playerNextLoc = _player.Loc + new Loc(drow, dcol);
-        DetectEnemyAct(playerNextLoc);
-        ChangeGameState(GameState.Act);
+            var playerNextLoc = _player.Loc + new Loc(drow, dcol);
+            DetectEnemyAct(playerNextLoc);
+            ChangeGameState(GameState.Act);
+        }
+        else {
+            Debug.Log("進めません");
+        }
     }
 
     private void ExecutePlayerWait() {
@@ -231,7 +253,7 @@ public class MainSystem : MonoBehaviour {
         //         _actQueue.Add(EnemyStrategy.Simple(enemy, _player, playerNextLoc));
         //     }
         // }
-        _actQueue.AddRange(EnemyStrategy.Detect(_enemies, _player, playerNextLoc));
+        _actQueue.AddRange(EnemyStrategy.Detect(_enemies, _player, playerNextLoc, _map));
 
         return _actQueue.Count > 0;
     }

@@ -1,5 +1,5 @@
 ﻿using UnityEngine;
-using System.Collections;
+// using System.Collections;
 using System.Linq;
 
 public class Map {
@@ -33,14 +33,12 @@ public class Map {
         _map = new char[rows, cols];
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < cols; j++) {
-                _map[i, j] = '.';
+                _map[i, j] = MapChar.Floor;
             }
             for (int j = 0; j < lines[i].Length; j++) {
                 _map[i, j] = lines[i][j];
             }
         }
-
-        Debug.Log(_map);
 
         var flat = Resources.Load("Prefabs/MapChip/pipo-map001_0");
         var mountain = Resources.Load("Prefabs/MapChip/pipo-map001_at-yama2_0");
@@ -58,9 +56,54 @@ public class Map {
                 }
             }
         }
+    }
 
+    public bool OutOfMap(Loc loc) {
+        return OutOfMap(loc.Row, loc.Col);
+    }
 
+    public bool OutOfMap(int row, int col) {
+        return row < 0 || row >= Rows || col < 0 || col >= Cols;
+    }
 
+    public bool IsWall(Loc loc) {
+        return IsWall(loc.Row, loc.Col);
+    }
 
+    public bool IsWall(int row, int col) {
+        if (OutOfMap(row, col)) return true; // マップ外は壁扱い
+        return _map[row, col] == MapChar.Wall;
+    }
+
+    public bool IsFloor(Loc loc) {
+        return IsFloor(loc.Row, loc.Col);
+    }
+
+    public bool IsFloor(int row, int col) {
+        if (OutOfMap(row, col)) return false;
+        return _map[row, col] == MapChar.Floor;
+    }
+
+    // fm から dir に向かって前進できるか
+    public bool CanAdvance(Loc fm, Dir dir) {
+        Loc to = fm.Forward(dir);
+        if (!(IsFloor(fm) && IsFloor(to))) return false;
+
+        if (fm.Row != to.Row && fm.Col != to.Col) {
+            // 斜め方向の移動
+
+            if (IsFloor(fm.Row, to.Col) && IsFloor(to.Row, fm.Col)) {
+                return true;
+            }
+            return false;
+        }
+
+        return true;
+    }
+
+    // fm から dir に向かって前進する位置にいるキャラに対して攻撃可能か
+    public bool CanAttack(Loc src, Dir dir) {
+        // 移動できるなら、攻撃可能
+        return CanAdvance(src, dir);
     }
 }
