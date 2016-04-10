@@ -71,7 +71,10 @@ public class MainSystem : MonoBehaviour {
                 Instantiate(g2, new Vector3(x, y, 0), Quaternion.identity);
             }
         }
-        Debug.Log(g);
+
+        // カメラズーム
+        var camera = GameObject.Find("Main Camera");
+        camera.GetComponent<Camera>().orthographicSize = 1.5f;
     }
 
     void Update() {
@@ -128,6 +131,14 @@ public class MainSystem : MonoBehaviour {
             var text = GameObject.Find("Text");
             var t = text.GetComponent<Text>();
             t.text = DLog.ToText();
+        }
+        else if (GUI.Button(new Rect(600, 40*1, 100, 40), "zoom in")) {
+            var camera = GameObject.Find("Main Camera");
+            camera.GetComponent<Camera>().orthographicSize -= 0.1f;
+        }
+        else if (GUI.Button(new Rect(600, 40*2, 100, 40), "zoom out")) {
+            var camera = GameObject.Find("Main Camera");
+            camera.GetComponent<Camera>().orthographicSize += 0.1f;
         }
     }
 
