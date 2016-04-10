@@ -13,6 +13,9 @@ public class ActPlayerMove : Act {
     private IEnumerator MoveAnimation() {
         var src = Actor.Position;
 
+        var camera = GameObject.Find("Main Camera").GetComponent<Camera>();
+        float cameraZ = camera.transform.position.z;
+
         float duration = 0.4f;
         float elapsed = 0;
         float dx = _dcol * Config.ChipSize;
@@ -22,6 +25,9 @@ public class ActPlayerMove : Act {
             float y = Mathf.Lerp(src.y, src.y - dy, elapsed / duration);
             Actor.Position = new Vector3(x, y, 0);
             elapsed += Time.deltaTime;
+
+            // カメラの位置も合わせる
+            camera.transform.position = new Vector3(x, y, cameraZ);
             yield return null;
         }
         AnimationFinished = true;
