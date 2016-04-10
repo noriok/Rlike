@@ -46,35 +46,22 @@ public class MainSystem : MonoBehaviour {
 
     private List<Act> _actQueue = new List<Act>();
 
+    private Map _map;
+
     void Start() {
         _gameState = GameState.InputWait;
 
-        // (50, 50) にする。カメラを移動させる
-        // マップチップを表示させる
-        _player = CreatePlayer(0, 0);
+        _player = CreatePlayer(1, 1);
 
-        var e = EnemyFactory.CreateEnemy(0, 1);
+        var e = EnemyFactory.CreateEnemy(1, 4);
         _enemies.Add(e);
         _enemies.Add(EnemyFactory.CreateEnemy(2, 2));
-
-        // マップチップ、テスト
-        var g  = Resources.Load("Prefabs/MapChip/pipo-map001_0");
-        var g2 = Resources.Load("Prefabs/MapChip/pipo-map001_at-yama2_0");
-        var a = Instantiate(g, new Vector3(0.0f, 0, 0), Quaternion.identity);
-        var b = Instantiate(g, new Vector3(0.3f, 0, 0), Quaternion.identity);
-
-        for (int i = 0; i < 10; i++) {
-            for (int j = 0; j < 10; j++) {
-                float x = j * Config.ChipSize;
-                float y = -i * Config.ChipSize;
-                var o = Instantiate(g, new Vector3(x, y, 0), Quaternion.identity);
-                Instantiate(g2, new Vector3(x, y, 0), Quaternion.identity);
-            }
-        }
 
         // カメラズーム
         var camera = GameObject.Find("Main Camera");
         camera.GetComponent<Camera>().orthographicSize = 1.5f;
+
+        _map = new Map();
     }
 
     void Update() {

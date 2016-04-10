@@ -30,6 +30,13 @@ public class ActPlayerMove : Act {
             camera.transform.position = new Vector3(x, y, cameraZ);
             yield return null;
         }
+
+        // 位置ずれしないように最終位置にセット
+        float x2 = src.x + dx;
+        float y2 = src.y - dy;
+        Actor.Position = new Vector3(x2, y2, 0);
+        camera.transform.position = new Vector3(x2, y2, cameraZ);
+
         AnimationFinished = true;
     }
 
