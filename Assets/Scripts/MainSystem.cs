@@ -3,7 +3,9 @@ using UnityEngine.Assertions;
 using UnityEngine.UI;
 // using System;
 // using System.Collections;
+
 using System.Collections.Generic;
+using System.Linq;
 
 /*
 
@@ -19,16 +21,6 @@ using System.Collections.Generic;
  . : 何もせずにターン終了
  ; : 階段を下りる
  シフトキー + 方向キー : その方向へ矢を放つ(矢が必要)
-
-** アイテムウィンドウを開いて「いる」とき:
-
- h : アイテムを使用(または装備)
- i : アイテムウィンドウを閉じる
- j : カーソルを下に移動
- k : カーソルを上に移動
- o : アイテムをソート
- ; : アイテムを置く
- シフトキー + 方向キー : アイテムをその方向へ投げる
 
 */
 
@@ -116,10 +108,7 @@ public class MainSystem : MonoBehaviour {
         // }
 
         if (GUI.Button(new Rect(600, 0, 100, 40), "test")) {
-            // Debug.Log("click");
-            var text = GameObject.Find("Text");
-            var t = text.GetComponent<Text>();
-            t.text = DLog.ToText();
+
         }
         else if (GUI.Button(new Rect(600, 40*1, 100, 40), "zoom in")) {
             var camera = GameObject.Find("Main Camera");
@@ -132,7 +121,6 @@ public class MainSystem : MonoBehaviour {
     }
 
     private Player CreatePlayer(int row, int col) {
-        // var obj = Resources.Load("Prefabs/piece1");
         var obj = Resources.Load("Prefabs/Character/kabocha_1");
         var gobj = (GameObject)GameObject.Instantiate(obj, Vector3.zero, Quaternion.identity);
         return new Player(row, col, gobj);
@@ -198,7 +186,6 @@ public class MainSystem : MonoBehaviour {
     private void SysTurnStart() {
         _turnCount++;
         DLog.D("ターン: {0}", _turnCount);
-
     }
 
     private void SysTurnFinish() {
@@ -218,7 +205,9 @@ public class MainSystem : MonoBehaviour {
         Assert.IsTrue(_actQueue.Count == 0);
 
         Dir dir = Utils.ToDir(drow, dcol);
-        if (_map.CanAdvance(_player.Loc, dir)) {
+        Loc to = _player.Loc.Forward(dir);
+        bool notExistsEnemy = !_enemies.Where(e => e.Loc.Row == to.Row && e.Loc.Col == to.Col).Any();
+        if (_map.CanAdvance(_player.Loc, dir) && notExistsEnemy) {
             Debug.LogFormat("player move delta:{0}", new Loc(drow, dcol));
             _actQueue.Add(new ActPlayerMove(_player, drow, dcol));
 
@@ -246,15 +235,7 @@ public class MainSystem : MonoBehaviour {
     }
 
     private bool DetectEnemyAct(Loc playerNextLoc) {
-        // 捨てられる act をログに出力する
-
-        // foreach (var enemy in _enemies) {
-        //     if (enemy.ActCount > 0) {
-        //         _actQueue.Add(EnemyStrategy.Simple(enemy, _player, playerNextLoc));
-        //     }
-        // }
         _actQueue.AddRange(EnemyStrategy.Detect(_enemies, _player, playerNextLoc, _map));
-
         return _actQueue.Count > 0;
     }
 }
