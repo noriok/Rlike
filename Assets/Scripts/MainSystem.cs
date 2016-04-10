@@ -56,6 +56,22 @@ public class MainSystem : MonoBehaviour {
         var e = EnemyFactory.CreateEnemy(0, 1);
         _enemies.Add(e);
         _enemies.Add(EnemyFactory.CreateEnemy(2, 2));
+
+        // マップチップ、テスト
+        var g  = Resources.Load("Prefabs/MapChip/pipo-map001_0");
+        var g2 = Resources.Load("Prefabs/MapChip/pipo-map001_at-yama2_0");
+        var a = Instantiate(g, new Vector3(0.0f, 0, 0), Quaternion.identity);
+        var b = Instantiate(g, new Vector3(0.3f, 0, 0), Quaternion.identity);
+
+        for (int i = 0; i < 10; i++) {
+            for (int j = 0; j < 10; j++) {
+                float x = j * Config.ChipSize;
+                float y = -i * Config.ChipSize;
+                var o = Instantiate(g, new Vector3(x, y, 0), Quaternion.identity);
+                Instantiate(g2, new Vector3(x, y, 0), Quaternion.identity);
+            }
+        }
+        Debug.Log(g);
     }
 
     void Update() {
@@ -116,7 +132,8 @@ public class MainSystem : MonoBehaviour {
     }
 
     private Player CreatePlayer(int row, int col) {
-        var obj = Resources.Load("Prefabs/piece1");
+        // var obj = Resources.Load("Prefabs/piece1");
+        var obj = Resources.Load("Prefabs/Character/kabocha_1");
         var gobj = (GameObject)GameObject.Instantiate(obj, Vector3.zero, Quaternion.identity);
         return new Player(row, col, gobj);
     }

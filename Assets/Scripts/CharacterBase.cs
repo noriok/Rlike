@@ -20,8 +20,9 @@ public class CharacterBase {
         ActCount = 1;
         _loc = new Loc(row, col);
         _gobj = gobj;
-        _gobj.transform.position = new Vector3(col, -row, 0);
-        // Debug.Log("ctr CharacterBase");
+        float x =  Config.ChipSize * col;
+        float y = -Config.ChipSize * row;
+        _gobj.transform.position = new Vector3(x, y, 0);
     }
 
     public void UpdateLoc(Loc loc) {

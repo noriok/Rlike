@@ -15,9 +15,11 @@ public class ActPlayerMove : Act {
 
         float duration = 0.4f;
         float elapsed = 0;
+        float dx = _dcol * Config.ChipSize;
+        float dy = _drow * Config.ChipSize;
         while (elapsed <= duration) {
-            float x = Mathf.Lerp(src.x, src.x + _dcol, elapsed / duration);
-            float y = Mathf.Lerp(src.y, src.y - _drow, elapsed / duration);
+            float x = Mathf.Lerp(src.x, src.x + dx, elapsed / duration);
+            float y = Mathf.Lerp(src.y, src.y - dy, elapsed / duration);
             Actor.Position = new Vector3(x, y, 0);
             elapsed += Time.deltaTime;
             yield return null;

@@ -1,0 +1,1432 @@
+fileFormatVersion: 2
+guid: e418b2f08168246a6930040217c99980
+timeCreated: 1460265677
+licenseType: Free
+TextureImporter:
+  fileIDToRecycleName:
+    21300000: pipo-map001_0
+    21300002: pipo-map001_1
+    21300004: pipo-map001_2
+    21300006: pipo-map001_3
+    21300008: pipo-map001_4
+    21300010: pipo-map001_5
+    21300012: pipo-map001_6
+    21300014: pipo-map001_7
+    21300016: pipo-map001_8
+    21300018: pipo-map001_9
+    21300020: pipo-map001_10
+    21300022: pipo-map001_11
+    21300024: pipo-map001_12
+    21300026: pipo-map001_13
+    21300028: pipo-map001_14
+    21300030: pipo-map001_15
+    21300032: pipo-map001_16
+    21300034: pipo-map001_17
+    21300036: pipo-map001_18
+    21300038: pipo-map001_19
+    21300040: pipo-map001_20
+    21300042: pipo-map001_21
+    21300044: pipo-map001_22
+    21300046: pipo-map001_23
+    21300048: pipo-map001_24
+    21300050: pipo-map001_25
+    21300052: pipo-map001_26
+    21300054: pipo-map001_27
+    21300056: pipo-map001_28
+    21300058: pipo-map001_29
+    21300060: pipo-map001_30
+    21300062: pipo-map001_31
+    21300064: pipo-map001_32
+    21300066: pipo-map001_33
+    21300068: pipo-map001_34
+    21300070: pipo-map001_35
+    21300072: pipo-map001_36
+    21300074: pipo-map001_37
+    21300076: pipo-map001_38
+    21300078: pipo-map001_39
+    21300080: pipo-map001_40
+    21300082: pipo-map001_41
+    21300084: pipo-map001_42
+    21300086: pipo-map001_43
+    21300088: pipo-map001_44
+    21300090: pipo-map001_45
+    21300092: pipo-map001_46
+    21300094: pipo-map001_47
+    21300096: pipo-map001_48
+    21300098: pipo-map001_49
+    21300100: pipo-map001_50
+    21300102: pipo-map001_51
+    21300104: pipo-map001_52
+    21300106: pipo-map001_53
+    21300108: pipo-map001_54
+    21300110: pipo-map001_55
+    21300112: pipo-map001_56
+    21300114: pipo-map001_57
+    21300116: pipo-map001_58
+    21300118: pipo-map001_59
+    21300120: pipo-map001_60
+    21300122: pipo-map001_61
+    21300124: pipo-map001_62
+    21300126: pipo-map001_63
+    21300128: pipo-map001_64
+    21300130: pipo-map001_65
+    21300132: pipo-map001_66
+    21300134: pipo-map001_67
+    21300136: pipo-map001_68
+    21300138: pipo-map001_69
+    21300140: pipo-map001_70
+    21300142: pipo-map001_71
+    21300144: pipo-map001_72
+    21300146: pipo-map001_73
+  serializedVersion: 2
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 1
+    linearTexture: 0
+    correctGamma: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 0
+  cubemapConvolution: 0
+  cubemapConvolutionSteps: 7
+  cubemapConvolutionExponent: 1.5
+  seamlessCubemap: 0
+  textureFormat: -1
+  maxTextureSize: 2048
+  textureSettings:
+    filterMode: -1
+    aniso: 16
+    mipBias: -1
+    wrapMode: 1
+  nPOTScale: 0
+  lightmap: 0
+  rGBM: 0
+  compressionQuality: 50
+  allowsAlphaSplitting: 0
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spritePixelsToUnits: 100
+  alphaIsTransparency: 1
+  textureType: 8
+  buildTargetSettings: []
+  spriteSheet:
+    sprites:
+    - name: pipo-map001_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 400
+        width: 40
+        height: 40
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -20, y: 20}
+        - {x: -20, y: -20}
+        - {x: 20, y: -20}
+        - {x: 20, y: 20}
+    - name: pipo-map001_1
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 360
+        width: 40
+        height: 40
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -7, y: 11}
+        - {x: -11, y: 9}
+        - {x: -11, y: -8}
+        - {x: -7, y: -13}
+        - {x: 8, y: -13}
+        - {x: 11, y: -10}
+        - {x: 11, y: 5}
+        - {x: 9, y: 11}
+    - name: pipo-map001_2
+      rect:
+        serializedVersion: 2
+        x: 40
+        y: 360
+        width: 40
+        height: 40
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 3, y: 18}
+        - {x: -10, y: 18}
+        - {x: -20, y: 9}
+        - {x: -20, y: -12}
+        - {x: -5, y: -20}
+        - {x: 14, y: -20}
+        - {x: 20, y: -12}
+        - {x: 20, y: 5}
+        - {x: 16, y: 14}
+    - name: pipo-map001_3
+      rect:
+        serializedVersion: 2
+        x: 80
+        y: 360
+        width: 40
+        height: 40
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -16, y: 20}
+        - {x: -20, y: 14}
+        - {x: -20, y: -17}
+        - {x: -15, y: -20}
+        - {x: 15, y: -20}
+        - {x: 20, y: -16}
+        - {x: 20, y: 10}
+        - {x: 10, y: 20}
+    - name: pipo-map001_4
+      rect:
+        serializedVersion: 2
+        x: 120
+        y: 360
+        width: 40
+        height: 40
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 6, y: 15}
+        - {x: -7, y: 15}
+        - {x: -16, y: 5}
+        - {x: -16, y: -6}
+        - {x: -11, y: -13}
+        - {x: -4, y: -15}
+        - {x: 10, y: -15}
+        - {x: 16, y: -9}
+        - {x: 16, y: 2}
+        - {x: 11, y: 13}
+    - name: pipo-map001_5
+      rect:
+        serializedVersion: 2
+        x: 160
+        y: 360
+        width: 40
+        height: 40
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -7, y: 20}
+        - {x: -20, y: 15}
+        - {x: -20, y: -20}
+        - {x: 20, y: -20}
+        - {x: 20, y: 17}
+        - {x: 15, y: 20}
+    - name: pipo-map001_6
+      rect:
+        serializedVersion: 2
+        x: 200
+        y: 360
+        width: 40
+        height: 40
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -19, y: 18}
+        - {x: -20, y: 15}
+        - {x: -20, y: -12}
+        - {x: -10, y: -20}
+        - {x: 15, y: -20}
+        - {x: 20, y: -13}
+        - {x: 20, y: 8}
+        - {x: 15, y: 18}
+    - name: pipo-map001_7
+      rect:
+        serializedVersion: 2
+        x: 240
+        y: 360
+        width: 40
+        height: 40
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -12, y: 19}
+        - {x: -20, y: 14}
+        - {x: -20, y: -15}
+        - {x: -17, y: -20}
+        - {x: 18, y: -20}
+        - {x: 20, y: -17}
+        - {x: 20, y: 11}
+        - {x: 17, y: 19}
+    - name: pipo-map001_8
+      rect:
+        serializedVersion: 2
+        x: 280
+        y: 360
+        width: 40
+        height: 40
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 0, y: 15}
+        - {x: -3, y: 15}
+        - {x: -11, y: 3}
+        - {x: -16, y: -11}
+        - {x: -16, y: -17}
+        - {x: -12, y: -20}
+        - {x: 20, y: -20}
+        - {x: 20, y: -14}
+        - {x: 4, y: 13}
+    - name: pipo-map001_9
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 320
+        width: 40
+        height: 40
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -20, y: -20}
+        - {x: 20, y: -20}
+        - {x: 20, y: 10}
+        - {x: -20, y: 10}
+    - name: pipo-map001_10
+      rect:
+        serializedVersion: 2
+        x: 40
+        y: 320
+        width: 40
+        height: 40
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -20, y: 20}
+        - {x: -20, y: -20}
+        - {x: 20, y: -20}
+        - {x: 20, y: 20}
+    - name: pipo-map001_11
+      rect:
+        serializedVersion: 2
+        x: 80
+        y: 320
+        width: 40
+        height: 40
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -20, y: -20}
+        - {x: 20, y: -20}
+        - {x: 20, y: 10}
+        - {x: -20, y: 10}
+    - name: pipo-map001_12
+      rect:
+        serializedVersion: 2
+        x: 120
+        y: 320
+        width: 40
+        height: 40
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -20, y: 20}
+        - {x: -20, y: -20}
+        - {x: 20, y: -20}
+        - {x: 20, y: 20}
+    - name: pipo-map001_13
+      rect:
+        serializedVersion: 2
+        x: 160
+        y: 320
+        width: 40
+        height: 40
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -20, y: 20}
+        - {x: -20, y: -20}
+        - {x: 20, y: -20}
+        - {x: 20, y: 20}
+    - name: pipo-map001_14
+      rect:
+        serializedVersion: 2
+        x: 200
+        y: 320
+        width: 40
+        height: 40
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -20, y: 20}
+        - {x: -20, y: -20}
+        - {x: 20, y: -20}
+        - {x: 20, y: 20}
+    - name: pipo-map001_15
+      rect:
+        serializedVersion: 2
+        x: 240
+        y: 320
+        width: 40
+        height: 40
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -11, y: 20}
+        - {x: -18, y: 18}
+        - {x: -20, y: 11}
+        - {x: -20, y: -14}
+        - {x: -17, y: -20}
+        - {x: 18, y: -20}
+        - {x: 20, y: -19}
+        - {x: 20, y: 17}
+        - {x: 19, y: 20}
+    - name: pipo-map001_16
+      rect:
+        serializedVersion: 2
+        x: 280
+        y: 320
+        width: 40
+        height: 40
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -9, y: 20}
+        - {x: -20, y: 9}
+        - {x: -20, y: -12}
+        - {x: -15, y: -20}
+        - {x: 20, y: -20}
+        - {x: 20, y: 16}
+        - {x: 12, y: 20}
+    - name: pipo-map001_17
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 280
+        width: 40
+        height: 40
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -20, y: 20}
+        - {x: -20, y: 4}
+        - {x: -13, y: 1}
+        - {x: 16, y: 1}
+        - {x: 20, y: 3}
+        - {x: 20, y: 20}
+    - name: pipo-map001_18
+      rect:
+        serializedVersion: 2
+        x: 40
+        y: 280
+        width: 40
+        height: 40
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -20, y: 20}
+        - {x: -20, y: 12}
+        - {x: -19, y: 11}
+        - {x: 19, y: 11}
+        - {x: 20, y: 12}
+        - {x: 20, y: 20}
+    - name: pipo-map001_19
+      rect:
+        serializedVersion: 2
+        x: 80
+        y: 280
+        width: 40
+        height: 40
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -20, y: 20}
+        - {x: -20, y: 5}
+        - {x: -18, y: 2}
+        - {x: 18, y: 2}
+        - {x: 20, y: 5}
+        - {x: 20, y: 20}
+    - name: pipo-map001_20
+      rect:
+        serializedVersion: 2
+        x: 120
+        y: 280
+        width: 40
+        height: 40
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -20, y: 20}
+        - {x: -20, y: 12}
+        - {x: -19, y: 11}
+        - {x: 19, y: 11}
+        - {x: 20, y: 12}
+        - {x: 20, y: 20}
+    - name: pipo-map001_21
+      rect:
+        serializedVersion: 2
+        x: 160
+        y: 280
+        width: 40
+        height: 40
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 9, y: 12}
+        - {x: -6, y: 12}
+        - {x: -13, y: 9}
+        - {x: -13, y: -9}
+        - {x: -7, y: -15}
+        - {x: 3, y: -15}
+        - {x: 14, y: -13}
+        - {x: 18, y: -6}
+        - {x: 18, y: 0}
+        - {x: 14, y: 7}
+    - name: pipo-map001_22
+      rect:
+        serializedVersion: 2
+        x: 200
+        y: 280
+        width: 40
+        height: 40
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 7, y: 13}
+        - {x: -11, y: 13}
+        - {x: -12, y: 10}
+        - {x: -12, y: -15}
+        - {x: 11, y: -15}
+        - {x: 15, y: -11}
+        - {x: 15, y: -1}
+        - {x: 14, y: 9}
+    - name: pipo-map001_23
+      rect:
+        serializedVersion: 2
+        x: 240
+        y: 280
+        width: 40
+        height: 40
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -16, y: 20}
+        - {x: -18, y: 19}
+        - {x: -20, y: 12}
+        - {x: -20, y: -15}
+        - {x: -12, y: -20}
+        - {x: 11, y: -20}
+        - {x: 20, y: -10}
+        - {x: 20, y: 11}
+        - {x: 9, y: 20}
+    - name: pipo-map001_24
+      rect:
+        serializedVersion: 2
+        x: 280
+        y: 280
+        width: 40
+        height: 40
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -13, y: 20}
+        - {x: -20, y: 9}
+        - {x: -20, y: -8}
+        - {x: -11, y: -20}
+        - {x: 20, y: -20}
+        - {x: 20, y: 16}
+        - {x: 11, y: 20}
+    - name: pipo-map001_25
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 240
+        width: 40
+        height: 40
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 14, y: 20}
+        - {x: -20, y: -9}
+        - {x: -20, y: -20}
+        - {x: 20, y: -20}
+        - {x: 20, y: 20}
+    - name: pipo-map001_26
+      rect:
+        serializedVersion: 2
+        x: 40
+        y: 240
+        width: 40
+        height: 40
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -20, y: 20}
+        - {x: -20, y: -20}
+        - {x: 20, y: -20}
+        - {x: 20, y: -5}
+        - {x: -9, y: 20}
+    - name: pipo-map001_27
+      rect:
+        serializedVersion: 2
+        x: 80
+        y: 240
+        width: 40
+        height: 40
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -20, y: 20}
+        - {x: -20, y: -20}
+        - {x: 20, y: -20}
+        - {x: 20, y: 20}
+    - name: pipo-map001_28
+      rect:
+        serializedVersion: 2
+        x: 120
+        y: 240
+        width: 40
+        height: 40
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -20, y: 20}
+        - {x: -20, y: -20}
+        - {x: 20, y: -20}
+        - {x: 20, y: 20}
+    - name: pipo-map001_29
+      rect:
+        serializedVersion: 2
+        x: 160
+        y: 240
+        width: 40
+        height: 40
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -1, y: 9}
+        - {x: -17, y: -3}
+        - {x: -20, y: -9}
+        - {x: -20, y: -20}
+        - {x: 20, y: -20}
+        - {x: 20, y: 15}
+        - {x: 7, y: 13}
+      - - {x: -2, y: 20}
+        - {x: -1, y: 17}
+        - {x: 20, y: 17}
+        - {x: 20, y: 20}
+    - name: pipo-map001_30
+      rect:
+        serializedVersion: 2
+        x: 200
+        y: 240
+        width: 40
+        height: 40
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -20, y: 16}
+        - {x: -20, y: -20}
+        - {x: 20, y: -20}
+        - {x: 20, y: -3}
+        - {x: 7, y: 16}
+      - - {x: -20, y: 20}
+        - {x: -20, y: 17}
+        - {x: 0, y: 17}
+        - {x: 2, y: 19}
+        - {x: 2, y: 20}
+    - name: pipo-map001_31
+      rect:
+        serializedVersion: 2
+        x: 240
+        y: 240
+        width: 40
+        height: 40
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -1, y: 9}
+        - {x: -17, y: -3}
+        - {x: -20, y: -9}
+        - {x: -20, y: -20}
+        - {x: 20, y: -20}
+        - {x: 20, y: 15}
+        - {x: 7, y: 13}
+      - - {x: -2, y: 20}
+        - {x: -1, y: 17}
+        - {x: 20, y: 17}
+        - {x: 20, y: 20}
+    - name: pipo-map001_32
+      rect:
+        serializedVersion: 2
+        x: 280
+        y: 240
+        width: 40
+        height: 40
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -20, y: 16}
+        - {x: -20, y: -20}
+        - {x: 20, y: -20}
+        - {x: 20, y: -3}
+        - {x: 7, y: 16}
+      - - {x: -20, y: 20}
+        - {x: -20, y: 17}
+        - {x: 20, y: 17}
+        - {x: 20, y: 20}
+    - name: pipo-map001_33
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 200
+        width: 40
+        height: 40
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -20, y: 20}
+        - {x: -20, y: -1}
+        - {x: -13, y: -13}
+        - {x: 2, y: -20}
+        - {x: 20, y: -20}
+        - {x: 20, y: 20}
+    - name: pipo-map001_34
+      rect:
+        serializedVersion: 2
+        x: 40
+        y: 200
+        width: 40
+        height: 40
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -20, y: 20}
+        - {x: -20, y: -20}
+        - {x: 11, y: -20}
+        - {x: 20, y: -1}
+        - {x: 20, y: 20}
+    - name: pipo-map001_35
+      rect:
+        serializedVersion: 2
+        x: 80
+        y: 200
+        width: 40
+        height: 40
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -20, y: 20}
+        - {x: -20, y: -20}
+        - {x: 20, y: -20}
+        - {x: 20, y: 20}
+    - name: pipo-map001_36
+      rect:
+        serializedVersion: 2
+        x: 120
+        y: 200
+        width: 40
+        height: 40
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -20, y: 20}
+        - {x: -20, y: -20}
+        - {x: 20, y: -20}
+        - {x: 20, y: 20}
+    - name: pipo-map001_37
+      rect:
+        serializedVersion: 2
+        x: 160
+        y: 200
+        width: 40
+        height: 40
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -20, y: 20}
+        - {x: -20, y: 0}
+        - {x: -18, y: -11}
+        - {x: -6, y: -20}
+        - {x: 20, y: -20}
+        - {x: 20, y: 20}
+    - name: pipo-map001_38
+      rect:
+        serializedVersion: 2
+        x: 200
+        y: 200
+        width: 40
+        height: 40
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -20, y: 20}
+        - {x: -20, y: -20}
+        - {x: 4, y: -20}
+        - {x: 12, y: -18}
+        - {x: 20, y: -3}
+        - {x: 20, y: 20}
+    - name: pipo-map001_39
+      rect:
+        serializedVersion: 2
+        x: 240
+        y: 200
+        width: 40
+        height: 40
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -20, y: 20}
+        - {x: -20, y: -7}
+        - {x: -6, y: -20}
+        - {x: 20, y: -20}
+        - {x: 20, y: 20}
+    - name: pipo-map001_40
+      rect:
+        serializedVersion: 2
+        x: 280
+        y: 200
+        width: 40
+        height: 40
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -20, y: 20}
+        - {x: -20, y: -20}
+        - {x: 13, y: -20}
+        - {x: 20, y: -5}
+        - {x: 20, y: 20}
+    - name: pipo-map001_41
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 160
+        width: 40
+        height: 40
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 13, y: 13}
+        - {x: -13, y: 13}
+        - {x: -13, y: -10}
+        - {x: -11, y: -12}
+        - {x: 10, y: -12}
+        - {x: 16, y: -6}
+        - {x: 16, y: 12}
+      - - {x: 17, y: 7}
+        - {x: 19, y: 5}
+        - {x: 20, y: 5}
+        - {x: 20, y: 12}
+        - {x: 17, y: 11}
+    - name: pipo-map001_42
+      rect:
+        serializedVersion: 2
+        x: 40
+        y: 160
+        width: 40
+        height: 40
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -20, y: 20}
+        - {x: -20, y: 1}
+        - {x: -18, y: -2}
+        - {x: -15, y: -3}
+        - {x: -15, y: -7}
+        - {x: -13, y: -20}
+        - {x: 20, y: -20}
+        - {x: 20, y: 20}
+    - name: pipo-map001_43
+      rect:
+        serializedVersion: 2
+        x: 80
+        y: 160
+        width: 40
+        height: 40
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -20, y: 20}
+        - {x: -20, y: -20}
+        - {x: 14, y: -20}
+        - {x: 20, y: -17}
+        - {x: 20, y: 20}
+    - name: pipo-map001_44
+      rect:
+        serializedVersion: 2
+        x: 120
+        y: 160
+        width: 40
+        height: 40
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -20, y: 20}
+        - {x: -20, y: 8}
+        - {x: -17, y: -20}
+        - {x: 20, y: -20}
+        - {x: 20, y: 14}
+        - {x: 2, y: 20}
+      - - {x: -20, y: -9}
+        - {x: -17, y: -8}
+        - {x: -17, y: 0}
+        - {x: -19, y: 2}
+        - {x: -20, y: 2}
+    - name: pipo-map001_45
+      rect:
+        serializedVersion: 2
+        x: 160
+        y: 160
+        width: 40
+        height: 40
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -7, y: 19}
+        - {x: -20, y: 13}
+        - {x: -20, y: -20}
+        - {x: 20, y: -20}
+        - {x: 20, y: 19}
+    - name: pipo-map001_46
+      rect:
+        serializedVersion: 2
+        x: 200
+        y: 160
+        width: 40
+        height: 40
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -14, y: 19}
+        - {x: -18, y: 18}
+        - {x: -20, y: 15}
+        - {x: -20, y: -14}
+        - {x: -18, y: -20}
+        - {x: 20, y: -20}
+        - {x: 20, y: 7}
+        - {x: 8, y: 19}
+    - name: pipo-map001_47
+      rect:
+        serializedVersion: 2
+        x: 240
+        y: 160
+        width: 40
+        height: 40
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 1, y: 19}
+        - {x: -7, y: 17}
+        - {x: -20, y: 7}
+        - {x: -20, y: -20}
+        - {x: 20, y: -20}
+        - {x: 20, y: 5}
+        - {x: 12, y: 19}
+      - - {x: 20, y: 18}
+        - {x: 20, y: 20}
+        - {x: 15, y: 20}
+        - {x: 17, y: 17}
+    - name: pipo-map001_48
+      rect:
+        serializedVersion: 2
+        x: 280
+        y: 160
+        width: 40
+        height: 40
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -18, y: 20}
+        - {x: -20, y: 14}
+        - {x: -20, y: -20}
+        - {x: 20, y: -20}
+        - {x: 20, y: 17}
+        - {x: 19, y: 20}
+      - - {x: -20, y: 20}
+        - {x: -20, y: 17}
+        - {x: -18, y: 17}
+        - {x: -16, y: 19}
+        - {x: -16, y: 20}
+    - name: pipo-map001_49
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 120
+        width: 40
+        height: 40
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -20, y: 20}
+        - {x: -20, y: -19}
+        - {x: -17, y: -20}
+        - {x: 11, y: -20}
+        - {x: 19, y: -17}
+        - {x: 20, y: -11}
+        - {x: 20, y: 20}
+    - name: pipo-map001_50
+      rect:
+        serializedVersion: 2
+        x: 40
+        y: 120
+        width: 40
+        height: 40
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -17, y: 20}
+        - {x: -18, y: 19}
+        - {x: -18, y: -19}
+        - {x: -17, y: -20}
+        - {x: 20, y: -20}
+        - {x: 20, y: 20}
+    - name: pipo-map001_51
+      rect:
+        serializedVersion: 2
+        x: 80
+        y: 120
+        width: 40
+        height: 40
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -20, y: 20}
+        - {x: -20, y: -20}
+        - {x: 20, y: -20}
+        - {x: 20, y: 18}
+        - {x: 18, y: 20}
+    - name: pipo-map001_52
+      rect:
+        serializedVersion: 2
+        x: 120
+        y: 120
+        width: 40
+        height: 40
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -17, y: 20}
+        - {x: -17, y: -20}
+        - {x: 20, y: -20}
+        - {x: 20, y: 20}
+    - name: pipo-map001_53
+      rect:
+        serializedVersion: 2
+        x: 160
+        y: 120
+        width: 40
+        height: 40
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -20, y: 20}
+        - {x: -20, y: -20}
+        - {x: 17, y: -20}
+        - {x: 20, y: -15}
+        - {x: 20, y: 20}
+    - name: pipo-map001_54
+      rect:
+        serializedVersion: 2
+        x: 200
+        y: 120
+        width: 40
+        height: 40
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -19, y: 20}
+        - {x: -20, y: 16}
+        - {x: -20, y: -20}
+        - {x: 20, y: -20}
+        - {x: 20, y: 20}
+    - name: pipo-map001_55
+      rect:
+        serializedVersion: 2
+        x: 240
+        y: 120
+        width: 40
+        height: 40
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -20, y: 20}
+        - {x: -20, y: -20}
+        - {x: 14, y: -20}
+        - {x: 20, y: -12}
+        - {x: 20, y: 20}
+    - name: pipo-map001_56
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 80
+        width: 40
+        height: 40
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -20, y: 20}
+        - {x: -20, y: -20}
+        - {x: 19, y: -20}
+        - {x: 20, y: -19}
+        - {x: 20, y: 17}
+        - {x: 13, y: 20}
+    - name: pipo-map001_57
+      rect:
+        serializedVersion: 2
+        x: 40
+        y: 80
+        width: 40
+        height: 40
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -16, y: 20}
+        - {x: -16, y: -20}
+        - {x: 20, y: -20}
+        - {x: 20, y: 20}
+      - - {x: -20, y: -18}
+        - {x: -17, y: -17}
+        - {x: -17, y: 8}
+        - {x: -19, y: 10}
+        - {x: -20, y: 10}
+    - name: pipo-map001_58
+      rect:
+        serializedVersion: 2
+        x: 80
+        y: 80
+        width: 40
+        height: 40
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -20, y: 20}
+        - {x: -20, y: -15}
+        - {x: -18, y: -20}
+        - {x: 18, y: -20}
+        - {x: 18, y: 20}
+    - name: pipo-map001_59
+      rect:
+        serializedVersion: 2
+        x: 120
+        y: 80
+        width: 40
+        height: 40
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -10, y: 18}
+        - {x: -15, y: 15}
+        - {x: -15, y: -20}
+        - {x: 20, y: -20}
+        - {x: 20, y: 18}
+    - name: pipo-map001_60
+      rect:
+        serializedVersion: 2
+        x: 160
+        y: 80
+        width: 40
+        height: 40
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -20, y: 18}
+        - {x: -20, y: -20}
+        - {x: 20, y: -20}
+        - {x: 20, y: 5}
+        - {x: 16, y: 18}
+    - name: pipo-map001_61
+      rect:
+        serializedVersion: 2
+        x: 200
+        y: 80
+        width: 40
+        height: 40
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -16, y: 18}
+        - {x: -18, y: 16}
+        - {x: -18, y: -20}
+        - {x: 16, y: -20}
+        - {x: 17, y: -16}
+        - {x: 17, y: 14}
+        - {x: 11, y: 18}
+    - name: pipo-map001_62
+      rect:
+        serializedVersion: 2
+        x: 240
+        y: 80
+        width: 40
+        height: 40
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 7, y: 18}
+        - {x: -9, y: 18}
+        - {x: -18, y: -1}
+        - {x: -18, y: -20}
+        - {x: 20, y: -20}
+        - {x: 20, y: -3}
+        - {x: 15, y: 7}
+    - name: pipo-map001_63
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 40
+        width: 40
+        height: 40
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -8, y: 14}
+        - {x: -15, y: 9}
+        - {x: -15, y: -12}
+        - {x: 17, y: -12}
+        - {x: 17, y: 11}
+        - {x: 12, y: 14}
+    - name: pipo-map001_64
+      rect:
+        serializedVersion: 2
+        x: 40
+        y: 40
+        width: 40
+        height: 40
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -16, y: 19}
+        - {x: -17, y: 16}
+        - {x: -17, y: -20}
+        - {x: 20, y: -20}
+        - {x: 20, y: 17}
+        - {x: 16, y: 19}
+    - name: pipo-map001_65
+      rect:
+        serializedVersion: 2
+        x: 80
+        y: 40
+        width: 40
+        height: 40
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -18, y: 20}
+        - {x: -18, y: -19}
+        - {x: 20, y: -19}
+        - {x: 20, y: 20}
+    - name: pipo-map001_66
+      rect:
+        serializedVersion: 2
+        x: 120
+        y: 40
+        width: 40
+        height: 40
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -15, y: 20}
+        - {x: -15, y: -19}
+        - {x: 12, y: -19}
+        - {x: 20, y: -18}
+        - {x: 20, y: 20}
+    - name: pipo-map001_67
+      rect:
+        serializedVersion: 2
+        x: 160
+        y: 40
+        width: 40
+        height: 40
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -20, y: 20}
+        - {x: -20, y: -18}
+        - {x: -15, y: -19}
+        - {x: 17, y: -19}
+        - {x: 20, y: -13}
+        - {x: 20, y: 20}
+    - name: pipo-map001_68
+      rect:
+        serializedVersion: 2
+        x: 200
+        y: 40
+        width: 40
+        height: 40
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -16, y: 20}
+        - {x: -16, y: -11}
+        - {x: -7, y: -20}
+        - {x: 7, y: -20}
+        - {x: 20, y: -5}
+        - {x: 20, y: 19}
+        - {x: 17, y: 20}
+    - name: pipo-map001_69
+      rect:
+        serializedVersion: 2
+        x: 240
+        y: 40
+        width: 40
+        height: 40
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -20, y: 20}
+        - {x: -20, y: -20}
+        - {x: 18, y: -20}
+        - {x: 20, y: -18}
+        - {x: 20, y: 20}
+    - name: pipo-map001_70
+      rect:
+        serializedVersion: 2
+        x: 280
+        y: 40
+        width: 40
+        height: 40
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -17, y: -11}
+        - {x: -17, y: 20}
+        - {x: -20, y: 20}
+        - {x: -20, y: -12}
+    - name: pipo-map001_71
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 40
+        height: 40
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -14, y: 20}
+        - {x: -20, y: 18}
+        - {x: -20, y: -19}
+        - {x: 19, y: -19}
+        - {x: 20, y: -17}
+        - {x: 20, y: 14}
+        - {x: 15, y: 20}
+    - name: pipo-map001_72
+      rect:
+        serializedVersion: 2
+        x: 40
+        y: 0
+        width: 40
+        height: 40
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -20, y: 17}
+        - {x: -20, y: -17}
+        - {x: -14, y: -20}
+        - {x: 13, y: -20}
+        - {x: 18, y: -19}
+        - {x: 20, y: -16}
+        - {x: 20, y: 19}
+        - {x: -15, y: 19}
+    - name: pipo-map001_73
+      rect:
+        serializedVersion: 2
+        x: 80
+        y: 0
+        width: 40
+        height: 40
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 10, y: 20}
+        - {x: -15, y: 20}
+        - {x: -20, y: 19}
+        - {x: -20, y: -18}
+        - {x: -13, y: -20}
+        - {x: 6, y: -20}
+        - {x: 17, y: -18}
+        - {x: 20, y: -15}
+        - {x: 20, y: 13}
+    outline: []
+  spritePackingTag: 
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
