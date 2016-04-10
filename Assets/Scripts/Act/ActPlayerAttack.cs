@@ -14,5 +14,6 @@ public class ActPlayerAttack : Act {
 
     public override void RunEffect(MainSystem sys) {
         Debug.LogFormat("@@@ player attack target:{0}", _target);
+        DLog.D("{0} attack target:{1}", Actor, _target);
     }
 }

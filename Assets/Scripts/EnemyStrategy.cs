@@ -15,57 +15,9 @@ public static class EnemyStrategy {
     }
 
     // loc から dir 方向へ進んだ Loc を返す
-    private static Loc Forward(Loc loc, Dir dir) {
-        int drow = 0;
-        int dcol = 0;
-        switch (dir) {
-        case Dir.N:  drow = -1; dcol =  0; break;
-        case Dir.NE: drow = -1; dcol =  1; break;
-        case Dir.E:  drow =  0; dcol =  1; break;
-        case Dir.SE: drow =  1; dcol =  1; break;
-        case Dir.S:  drow =  1; dcol =  0; break;
-        case Dir.SW: drow =  1; dcol = -1; break;
-        case Dir.W:  drow =  0; dcol = -1; break;
-        case Dir.NW: drow = -1; dcol = -1; break;
-        }
-        return new Loc(loc.Row + drow, loc.Col + dcol);
-    }
 
     // fm から to に向かうために進むべき方向を返す
-    private static Dir Toward(Loc fm, Loc to) {
-        Loc delta = to - fm;
-        int drow = delta.Row;
-        int dcol = delta.Col;
 
-        if (drow != 0) drow /= Math.Abs(drow);
-        if (dcol != 0) dcol /= Math.Abs(dcol);
-
-        Assert.IsFalse(drow == 0 && dcol == 0);
-        if (drow == -1) {
-            switch (dcol) {
-            case -1: return Dir.NW;
-            case  0: return Dir.N;
-            case  1: return Dir.NE;
-            }
-        }
-        else if (drow == 0) {
-            switch (dcol) {
-            case -1: return Dir.W;
-            case  0: Assert.IsTrue(false); break;
-            case  1: return Dir.E;
-            }
-        }
-        else if (drow == 1) {
-            switch (dcol) {
-                case -1: return Dir.SW;
-                case  0: return Dir.S;
-                case  1: return Dir.SE;
-            }
-        }
-
-        Assert.IsTrue(false);
-        return Dir.N; // ここには到達しない
-    }
 
     // TODO: 移動するキャラがいるなら、そのキャラを全て返す
     //       移動するキャラがいないなら、移動以外の行動を行うキャラを 1 体返す
@@ -99,7 +51,7 @@ public static class EnemyStrategy {
 
                 // プレイヤーに近づく
 
-                Dir dir = Toward(enemy.Loc, playerNextLoc); // プレイヤーの方向
+                Dir dir = enemy.Loc.Toward(playerNextLoc); // プレイヤーの方向
                 Dir[] dirs = {
                     dir, // プレイヤー進行方向
                     // TODO:プレイヤーに近づく方向に進むように。
@@ -108,7 +60,7 @@ public static class EnemyStrategy {
                 };
 
                 foreach (Dir d in dirs) {
-                    Loc to = Forward(enemy.Loc, d);
+                    Loc to = enemy.Loc.Forward(d);
                     Debug.LogFormat("enemy.Loc:{0} playerNextLoc:{1} to:{2}", enemy.Loc, playerNextLoc, to);
                     // Debug.LogFormat("to: {0} enemy: {1} playerNextLoc: {2}", to, enemy.Loc, playerNextLoc);
                     if (!locs[to.Row, to.Col]) { // 空いているなら、移動する

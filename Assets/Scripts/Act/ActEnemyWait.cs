@@ -9,6 +9,7 @@ public class ActEnemyWait : Act {
 
     public override void RunEffect(MainSystem sys) {
         Debug.Log("@@@ enemy wait");
+        DLog.D("{0} wait", Actor);
     }
 
 }

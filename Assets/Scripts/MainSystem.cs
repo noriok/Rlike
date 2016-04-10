@@ -109,9 +109,9 @@ public class MainSystem : MonoBehaviour {
 
         if (GUI.Button(new Rect(600, 0, 100, 40), "test")) {
             // Debug.Log("click");
-            // var text = GameObject.Find("Text");
-            // var t = text.GetComponent<Text>();
-            // t.text = "test message";
+            var text = GameObject.Find("Text");
+            var t = text.GetComponent<Text>();
+            t.text = DLog.ToText();
         }
     }
 
@@ -171,6 +171,9 @@ public class MainSystem : MonoBehaviour {
     // システム関連
 
     private void SysFinishTurn() {
+        var text = GameObject.Find("Text").GetComponent<Text>();
+        text.text = DLog.ToText();
+        DLog.Clear();
 
         // 行動回数の復帰
         foreach (var e in _enemies) {

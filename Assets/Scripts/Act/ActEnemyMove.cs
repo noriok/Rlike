@@ -35,7 +35,7 @@ public class ActEnemyMove : Act {
 
     public override void RunEffect(MainSystem sys) {
         var nextLoc = Actor.Loc + new Loc(_drow, _dcol);
-        Debug.LogFormat("@@@ enemy move {0} -> {1}", Actor.Loc, nextLoc);
+        DLog.D("{0} move {1} -> {2}", Actor, Actor.Loc, nextLoc);
         Actor.UpdateLoc(nextLoc);
     }
 }

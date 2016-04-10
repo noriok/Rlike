@@ -16,5 +16,6 @@ public class ActEnemyAttack : Act {
         // Actor が _target に攻撃
 
         Debug.Log(string.Format("enemy attack Self:{0}(Loc:{1}) Target:{2}(Loc:{3})", Actor, Actor.Loc, _target, _target.Loc));
+        DLog.D("{0} Attack target {1}", Actor, _target);
     }
 }
