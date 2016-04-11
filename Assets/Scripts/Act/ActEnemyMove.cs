@@ -15,6 +15,8 @@ public class ActEnemyMove : Act {
     }
 
     private IEnumerator MoveAnimation() {
+        Actor.ChangeDir(Utils.ToDir(_drow, _dcol));
+
         var src = Actor.Position;
 
         float duration = 0.4f;

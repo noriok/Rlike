@@ -36,7 +36,7 @@ TagManager:
   - 
   - 
   - 
-  - 
+  - Test Front
   m_SortingLayers:
   - name: Default
     uniqueID: 0
@@ -52,4 +52,7 @@ TagManager:
     locked: 0
   - name: Character Base
     uniqueID: 3508093035
+    locked: 0
+  - name: Test Front
+    uniqueID: 2894918921
     locked: 0

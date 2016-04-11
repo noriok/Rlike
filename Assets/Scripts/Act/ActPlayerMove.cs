@@ -46,7 +46,6 @@ public class ActPlayerMove : Act {
 
     public override void RunEffect(MainSystem sys) {
         var nextLoc = Actor.Loc + new Loc(_drow, _dcol);
-        Debug.LogFormat("@@@ player move {0} -> {1}", Actor.Loc, nextLoc);
         DLog.D("{0} move {1} -> {2}", Actor, Actor.Loc, nextLoc);
         Actor.UpdateLoc(nextLoc);
     }

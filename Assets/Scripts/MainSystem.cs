@@ -47,7 +47,7 @@ public class MainSystem : MonoBehaviour {
 
         var e = EnemyFactory.CreateEnemy(1, 4);
         _enemies.Add(e);
-        _enemies.Add(EnemyFactory.CreateEnemy(2, 2));
+//        _enemies.Add(EnemyFactory.CreateEnemy(2, 2));
 
         // カメラズーム
         var camera = GameObject.Find("Main Camera");
@@ -94,7 +94,6 @@ public class MainSystem : MonoBehaviour {
             ExecutePlayerMove(-1, 1);
         }
         else if (Input.GetKeyDown(KeyCode.Period)) { // 何もせずターン終了
-            Debug.Log("SKIP PLAYER TURN");
             ExecutePlayerWait();
         }
     }
@@ -108,7 +107,13 @@ public class MainSystem : MonoBehaviour {
         // }
 
         if (GUI.Button(new Rect(600, 0, 100, 40), "test")) {
+            var obj = GameObject.Find("hone_3_W");
+            Debug.Log(obj);
 
+            var anim = obj.GetComponent<Animator>();
+            Debug.Log(anim);
+
+            anim.SetTrigger("ToS"); // アニメーションの切り替え
         }
         else if (GUI.Button(new Rect(600, 40*1, 100, 40), "zoom in")) {
             var camera = GameObject.Find("Main Camera");
