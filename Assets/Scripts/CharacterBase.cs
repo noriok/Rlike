@@ -14,6 +14,10 @@ public class CharacterBase {
     public int ActCount { get; set; }
 
     private Loc _loc;
+    private Dir _dir = Dir.S;
+    // 同じトリガーを繰り返し実行しないように前回のトリガーを記憶する
+    // 斜め画像を用意するまでの暫定対応
+    private string _triggerName = "ToS";
     private GameObject _gobj;
 
     public CharacterBase(int row, int col, GameObject gobj) {
@@ -30,6 +34,9 @@ public class CharacterBase {
     }
 
     public void ChangeDir(Dir dir) {
+        // if (_dir == dir) return; // TODO:斜めの画像がある場合は dir で判定する
+        _dir = dir;
+
         string name = "ToN";
         switch (dir) {
         case Dir.N:  name = "ToN"; break;
@@ -41,6 +48,9 @@ public class CharacterBase {
         case Dir.W:  name = "ToW"; break;
         case Dir.NW: name = "ToN"; break;
         }
+
+        if (_triggerName == name) return;
+        _triggerName = name;
 
         var anim = _gobj.GetComponent<Animator>();
         anim.SetTrigger(name);
