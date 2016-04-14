@@ -33,6 +33,7 @@ public class CharacterBase {
         _loc = loc;
     }
 
+    // TODO:UpdateLoc に揃えて UpdateDir にする
     public void ChangeDir(Dir dir) {
         // if (_dir == dir) return; // TODO:斜めの画像がある場合は dir で判定する
         _dir = dir;
@@ -54,6 +55,5 @@ public class CharacterBase {
 
         var anim = _gobj.GetComponent<Animator>();
         anim.SetTrigger(name);
-        DLog.D("name: {0}", name);
     }
 }
