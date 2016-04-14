@@ -107,27 +107,26 @@ public class MainSystem : MonoBehaviour {
         // }
 
         if (GUI.Button(new Rect(600, 0, 100, 40), "test")) {
-            var obj = GameObject.Find("hone_3_W");
-            Debug.Log(obj);
-
-            var anim = obj.GetComponent<Animator>();
-            Debug.Log(anim);
-
-            anim.SetTrigger("ToS"); // アニメーションの切り替え
         }
         else if (GUI.Button(new Rect(600, 40*1, 100, 40), "zoom in")) {
-            var camera = GameObject.Find("Main Camera");
-            camera.GetComponent<Camera>().orthographicSize -= 0.1f;
+            ZoomIn();
         }
         else if (GUI.Button(new Rect(600, 40*2, 100, 40), "zoom out")) {
-            var camera = GameObject.Find("Main Camera");
-            camera.GetComponent<Camera>().orthographicSize += 0.1f;
+            ZoomOut();
         }
     }
 
-    private Player CreatePlayer(int row, int col) {
-        // var obj = Resources.Load("Prefabs/Character/kabocha_1");
+    private void ZoomIn() {
+        var camera = GameObject.Find("Main Camera");
+        camera.GetComponent<Camera>().orthographicSize -= 0.1f;
+    }
 
+    private void ZoomOut() {
+        var camera = GameObject.Find("Main Camera");
+        camera.GetComponent<Camera>().orthographicSize += 0.1f;
+    }
+
+    private Player CreatePlayer(int row, int col) {
         var obj = Resources.Load("Prefabs/Animations/kabocha_0");
         var gobj = (GameObject)GameObject.Instantiate(obj, Vector3.zero, Quaternion.identity);
         return new Player(row, col, gobj);

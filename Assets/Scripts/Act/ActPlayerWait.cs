@@ -8,7 +8,6 @@ public class ActPlayerWait : Act {
     }
 
     public override void RunEffect(MainSystem sys) {
-        Debug.Log("@@@ player wait");
         DLog.D("{0} wait", Actor);
     }
 }
