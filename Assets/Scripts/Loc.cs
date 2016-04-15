@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 // using UnityEngine.Assertions;
 
 // immutable. 内部状態は変更しない
@@ -51,6 +52,38 @@ public struct Loc {
         case Dir.NW: drow = -1; dcol = -1; break;
         }
         return new Loc(Row + drow, Col + dcol);
+    }
+
+    // dir 方向へ(なるべく)前進する Loc を返す。
+    // (前方、斜め前方、側面方向の Loc を返す)
+    public Loc[] Forwards(Dir dir) {
+        return new[] {
+            Forward(dir),
+            Forward(dir.Clockwise()),
+            Forward(dir.Anticlockwise()),
+            Forward(dir.Clockwise().Clockwise()),
+            Forward(dir.Anticlockwise().Anticlockwise()),
+        };
+    }
+
+    // 斜め方向
+    public Loc[] ForwardsDiagonally(Dir dir) {
+        return new[] {
+            Forward(dir.Clockwise()),
+            Forward(dir.Anticlockwise()),
+        };
+    }
+
+    // 横方向
+    public Loc[] ForwardsCrossly(Dir dir) {
+        return new[] {
+            Forward(dir.Clockwise().Clockwise()),
+            Forward(dir.Anticlockwise().Anticlockwise()),
+        };
+    }
+
+    public Loc Backward(Dir dir) {
+        return Forward(dir.Opposite());
     }
 
     // loc との距離の 2 乗を返す

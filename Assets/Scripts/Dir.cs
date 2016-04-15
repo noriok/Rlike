@@ -42,4 +42,8 @@ public static class DirExtensions {
         Assert.IsTrue(false);
         return Dir.N;
     }
+
+    public static Dir Opposite(this Dir dir) {
+        return dir.Clockwise().Clockwise().Clockwise().Clockwise();
+    }
 }
