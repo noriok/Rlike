@@ -25,7 +25,7 @@ public struct Loc {
         return false;
     }
 
-    // to へ向いたときの方向
+    // to への方向
     public Dir Toward(Loc to) {
         Loc delta = to - this;
         int drow = delta.Row;
@@ -87,10 +87,14 @@ public struct Loc {
     }
 
     // loc との距離の 2 乗を返す
-    public int DistanceSq(Loc loc) {
+    public int SqDistance(Loc loc) {
         int drow = Row - loc.Row;
         int dcol = Col - loc.Col;
         return drow * drow + dcol * dcol;
+    }
+
+    public int ManhattanDistance(Loc loc) {
+        return Math.Abs(Row - loc.Row) + Math.Abs(Col - loc.Col);
     }
 
     public override string ToString() {
