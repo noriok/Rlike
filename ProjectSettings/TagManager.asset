@@ -53,6 +53,12 @@ TagManager:
   - name: Character Base
     uniqueID: 3508093035
     locked: 0
+  - name: Effect Base
+    uniqueID: 2040051141
+    locked: 0
+  - name: Font Base
+    uniqueID: 2493646599
+    locked: 0
   - name: Test Front
     uniqueID: 2894918921
     locked: 0

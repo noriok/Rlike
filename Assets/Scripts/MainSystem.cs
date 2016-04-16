@@ -2,7 +2,7 @@
 using UnityEngine.Assertions;
 using UnityEngine.UI;
 // using System;
-// using System.Collections;
+using System.Collections;
 
 using System.Collections.Generic;
 using System.Linq;
@@ -42,12 +42,66 @@ public class MainSystem : MonoBehaviour {
     private Map _map;
     private int _turnCount = 0;
 
+    IEnumerator PopupDigits(int n, Vector3 pos) {
+        float fontWidth = 0.14f;
+
+        var digits = new List<GameObject>();
+        var ds = Utils.Digits(n);
+        float x = pos.x - fontWidth * ds.Length / 2.0f + fontWidth / 2;
+        foreach (var d in ds) {
+            var obj = Resources.Load("Prefabs/Digits/digits_green_" + d);
+            var gobj = (GameObject)Instantiate(obj, new Vector3(x, pos.y, pos.z), Quaternion.identity);
+            digits.Add(gobj);
+            x += fontWidth;
+        }
+
+        float v = -0.059f; // velocity
+        float g = 0.008f; // gravity
+        float elapsed = 0;
+
+        int frame = 0;
+        float y = pos.y;
+        while (true) {
+            int f = (int)(elapsed / 0.033f);
+            if (frame < f) {
+                frame++;
+                y -= v;
+                v += g;
+                if (y <= pos.y) {
+                    v *= -0.45f;
+                    y = 0;
+
+                    if (Mathf.Abs(v) < 0.016f) {
+                        v = 0;
+                        foreach (var digit in digits) {
+                            var p = digit.transform.position;
+                            p.y = y;
+                            digit.transform.position = p;
+                        }
+                        yield return new WaitForSeconds(0.8f);
+                        foreach (var digit in digits) {
+                            Destroy(digit);
+                        }
+                        yield break;
+                    }
+                }
+
+                foreach (var digit in digits) {
+                    var p = digit.transform.position;
+                    p.y = y;
+                    digit.transform.position = p;
+                }
+            }
+            elapsed += Time.deltaTime;
+            yield return null;
+        }
+    }
+
     void Start() {
         _player = CreatePlayer(1, 1);
 
-        var e = EnemyFactory.CreateEnemy(1, 4);
-        _enemies.Add(e);
-//        _enemies.Add(EnemyFactory.CreateEnemy(2, 2));
+        _enemies.Add(EnemyFactory.CreateEnemy(1, 4));
+        _enemies.Add(EnemyFactory.CreateEnemy(2, 2));
 
         // カメラズーム
         var camera = GameObject.Find("Main Camera");
@@ -66,34 +120,34 @@ public class MainSystem : MonoBehaviour {
 
         Assert.IsTrue(_gameState == GameState.InputWait);
 
-        if (Input.GetKeyDown(KeyCode.Space)) {
+        if (Input.GetKey(KeyCode.Space)) {
             ExecutePlayerAttack();
         }
-        else if (Input.GetKeyDown(KeyCode.J)) { // 南
+        else if (Input.GetKey(KeyCode.J)) { // 南
             ExecutePlayerMove(1, 0);
         }
-        else if (Input.GetKeyDown(KeyCode.K)) { // 北
+        else if (Input.GetKey(KeyCode.K)) { // 北
             ExecutePlayerMove(-1, 0);
         }
-        else if (Input.GetKeyDown(KeyCode.L)) { // 東
+        else if (Input.GetKey(KeyCode.L)) { // 東
             ExecutePlayerMove(0, 1);
         }
-        else if (Input.GetKeyDown(KeyCode.H)) { // 西
+        else if (Input.GetKey(KeyCode.H)) { // 西
             ExecutePlayerMove(0, -1);
         }
-        else if (Input.GetKeyDown(KeyCode.B)) { // 南西
+        else if (Input.GetKey(KeyCode.B)) { // 南西
             ExecutePlayerMove(1, -1);
         }
-        else if (Input.GetKeyDown(KeyCode.N)) { // 南東
+        else if (Input.GetKey(KeyCode.N)) { // 南東
             ExecutePlayerMove(1, 1);
         }
-        else if (Input.GetKeyDown(KeyCode.Y)) { // 北西
+        else if (Input.GetKey(KeyCode.Y)) { // 北西
             ExecutePlayerMove(-1, -1);
         }
-        else if (Input.GetKeyDown(KeyCode.U)) { // 北東
+        else if (Input.GetKey(KeyCode.U)) { // 北東
             ExecutePlayerMove(-1, 1);
         }
-        else if (Input.GetKeyDown(KeyCode.Period)) { // 何もせずターン終了
+        else if (Input.GetKey(KeyCode.Period)) { // 何もせずターン終了
             ExecutePlayerWait();
         }
     }
@@ -107,6 +161,8 @@ public class MainSystem : MonoBehaviour {
         // }
 
         if (GUI.Button(new Rect(600, 0, 100, 40), "test")) {
+            var n = new System.Random().Next(100);
+            StartCoroutine(PopupDigits(n, Vector3.zero));
         }
         else if (GUI.Button(new Rect(600, 40*1, 100, 40), "zoom in")) {
             ZoomIn();
