@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
+// using System.Collections.Generic;
 // using UnityEngine.Assertions;
 
 // immutable. 内部状態は変更しない

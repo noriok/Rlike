@@ -100,10 +100,4 @@ public class Map {
 
         return true;
     }
-
-    // fm から dir に向かって前進する位置にいるキャラに対して攻撃可能か
-    public bool CanAttack(Loc src, Dir dir) {
-        // 移動できるなら、攻撃可能
-        return CanAdvance(src, dir);
-    }
 }
