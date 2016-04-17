@@ -1,10 +1,14 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 // using System.Collections;
 
 public class CharacterBase {
     public int Row { get { return _loc.Row; } }
     public int Col { get { return _loc.Col; } }
     public Loc Loc { get { return _loc; } }
+
+    public int Hp { get; private set; }
+    public int MaxHp { get; private set; }
 
     public Vector3 Position {
         get { return _gobj.transform.position; }
@@ -27,6 +31,12 @@ public class CharacterBase {
         float x =  Config.ChipSize * col;
         float y = -Config.ChipSize * row;
         _gobj.transform.position = new Vector3(x, y, 0);
+
+        Hp = MaxHp = 100;
+    }
+
+    public virtual void UpdateHp(int delta) {
+        Hp = Utils.Clamp(Hp + delta, 0, 100);
     }
 
     public void UpdateLoc(Loc loc) {
