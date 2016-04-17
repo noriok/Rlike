@@ -36,8 +36,12 @@ public class CharacterBase {
         Hp = MaxHp = 100;
     }
 
-    public virtual void UpdateHp(int delta) {
-        Hp = Utils.Clamp(Hp + delta, 0, 100);
+    public void Destroy() {
+        GameObject.Destroy(_gobj);
+    }
+
+    public virtual void DamageHp(int damage) {
+        Hp = Utils.Clamp(Hp - damage, 0, 100);
     }
 
     public void UpdateLoc(Loc loc) {

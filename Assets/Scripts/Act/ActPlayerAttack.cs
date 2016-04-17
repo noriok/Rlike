@@ -20,11 +20,16 @@ public class ActPlayerAttack : Act {
             dst.y = (src.y + _target.Position.y) / 2;
             Actor.Position = dst;
 
-            var dmg = new System.Random().Next(30);
+            var dmg = new System.Random().Next(60);
+            _target.DamageHp(dmg);
+
             var pos = _target.Position;
             pos.y -= 0.09f;
             sys.StartCoroutine(EffectAnim.PopupWhiteDigits(dmg, pos, () => {
                 Actor.Position = src;
+                if (_target.Hp <= 0) {
+                    _target.Destroy();
+                }
                 AnimationFinished = true;
             }));
         }
@@ -32,5 +37,7 @@ public class ActPlayerAttack : Act {
 
     public override void RunEffect(MainSystem sys) {
         DLog.D("{0} attack target:{1}", Actor, _target);
+
+
     }
 }

@@ -18,8 +18,8 @@ public class Enemy : CharacterBase {
         _barGreen = barGreen;
     }
 
-    public override void UpdateHp(int delta) {
-        base.UpdateHp(delta);
+    public override void DamageHp(int delta) {
+        base.DamageHp(delta);
 
         float scale = Hp * HP_GAUGE_MAX_SCALE / MaxHp;
         _barGreen.transform.localScale = new Vector3(scale, 1, 1);

@@ -150,9 +150,23 @@ public class MainSystem : MonoBehaviour {
     }
 
     private void UpdateAct() {
+       // HP がゼロの敵は削除する
+        bool updated = true;
+        while (updated) {
+            updated = false;
+            for (int i = 0; i < _enemies.Count; i++) {
+                if (_enemies[i].Hp <= 0) {
+                    _enemies.RemoveAt(i);
+                    updated = true;
+                    break;
+                }
+            }
+        }
+
         // 移動するキャラのタスクを先に実行する
         bool moveFinished = true;
         foreach (var act in _acts) {
+            if (act.Actor.Hp <= 0) continue;
             if (act.IsMoveAct() && !act.Finished) {
                 act.UpdateAct(this);
                 moveFinished = moveFinished && act.Finished;
@@ -164,6 +178,7 @@ public class MainSystem : MonoBehaviour {
         // 全てのキャラの移動が完了したら、(移動以外の)行動を一つずつ実行する
         bool actFinished = true;
         foreach (var act in _acts) {
+            if (act.Actor.Hp <= 0) continue;
             if (act.Finished || act.IsMoveAct()) continue;
 
             act.UpdateAct(this);
