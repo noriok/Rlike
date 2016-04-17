@@ -27,6 +27,7 @@ public static class EffectAnim {
 
         float v = -0.059f; // velocity
         float g = 0.008f; // gravity
+		g *= 2;
         float elapsed = 0;
 
         int frame = 0;
@@ -41,7 +42,7 @@ public static class EffectAnim {
                     v *= -0.45f;
                     y = pos.y;
 
-                    if (Mathf.Abs(v) < 0.016f) {
+                    if (Mathf.Abs(v) < 0.016f + 0.01) {
                         v = 0;
                         foreach (var digit in digits) {
                             var p = digit.transform.position;
