@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+﻿// using UnityEngine;
 // using System.Collections;
 
 public class ActEnemyWait : Act {
@@ -8,8 +8,6 @@ public class ActEnemyWait : Act {
     }
 
     public override void RunEffect(MainSystem sys) {
-        Debug.Log("@@@ enemy wait");
         DLog.D("{0} wait", Actor);
     }
-
 }

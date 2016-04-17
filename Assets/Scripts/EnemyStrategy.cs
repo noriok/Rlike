@@ -47,7 +47,6 @@ public static class EnemyStrategy {
             if (enemies[i].ActCount <= 0) {
                 used[i] = true; // 行動済み
             }
-
             Loc loc = enemies[i].Loc;
             locs[loc.Row, loc.Col] = true;
         }
@@ -80,8 +79,6 @@ public static class EnemyStrategy {
             }
         }
 
-        if (q.Count > 0) return q;
-
         // 攻撃(移動以外)するキャラ
         for (int i = 0; i < enemies.Count; i++) {
             if (used[i]) continue;
@@ -89,6 +86,13 @@ public static class EnemyStrategy {
                 q.Add(new ActEnemyAttack(enemies[i], player));
                 used[i] = true;
             }
+        }
+
+        // 移動も行動も出来ないキャラは待機
+        for (int i = 0; i < enemies.Count; i++) {
+            if (used[i]) continue;
+            q.Add(new ActEnemyWait(enemies[i]));
+            used[i] = true;
         }
 
         return q;

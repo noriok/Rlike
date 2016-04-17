@@ -10,6 +10,10 @@ public class ActPlayerMove : Act {
         _dcol = dcol;
     }
 
+    public override bool IsMoveAct() {
+        return true;
+    }
+
     private IEnumerator MoveAnimation() {
         Actor.ChangeDir(Utils.ToDir(_drow, _dcol));
         Debug.Log("###### setTrigger");

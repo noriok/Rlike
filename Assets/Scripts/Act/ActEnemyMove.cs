@@ -14,6 +14,10 @@ public class ActEnemyMove : Act {
         _dcol = nextLoc.Col - enemy.Col;
     }
 
+    public override bool IsMoveAct() {
+        return true;
+    }
+
     private IEnumerator MoveAnimation() {
         Actor.ChangeDir(Utils.ToDir(_drow, _dcol));
 

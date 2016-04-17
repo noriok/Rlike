@@ -9,11 +9,18 @@ public class ActPlayerAttack : Act {
     }
 
     public override void RunAnimation(MainSystem sys) {
-        AnimationFinished = true;
+        if (_target == null) {
+            AnimationFinished = true;
+        }
+        else {
+            var dmg = new System.Random().Next(30);
+            var pos = _target.Position;
+            pos.y -= 0.09f;
+            sys.StartCoroutine(EffectAnim.PopupWhiteDigits(dmg, pos, () => AnimationFinished = true));
+        }
     }
 
     public override void RunEffect(MainSystem sys) {
-        // Debug.LogFormat("@@@ player attack target:{0}", _target);
         DLog.D("{0} attack target:{1}", Actor, _target);
     }
 }

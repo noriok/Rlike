@@ -13,6 +13,11 @@
         AnimationFinished = true;
     }
 
+    // このタスクがキャラクターを移動させるタスクかどうか
+    public virtual bool IsMoveAct() {
+        return false;
+    }
+
     public Act(CharacterBase actor) {
         Actor = actor;
     }

@@ -7,20 +7,6 @@ using UnityEngine.UI;
 using System.Collections.Generic;
 using System.Linq;
 
-/*
-
- j : 南  に移動 (移動先に敵がいる場合は、敵への攻撃)
- k : 北  に移動
- l : 東  に移動
- h : 西  に移動
- b : 南西に移動
- n : 南東に移動
- y : 北西に移動
- u : 北東に移動
- . : 何もせずにターン終了
-
-*/
-
 enum GameState {
     InputWait, // 入力待ち
     Act,       // 行動中
@@ -34,7 +20,7 @@ public class MainSystem : MonoBehaviour {
     private Player _player;
     private List<Enemy> _enemies = new List<Enemy>();
 
-    private List<Act> _actQueue = new List<Act>();
+    private List<Act> _acts = new List<Act>();
 
     private Map _map;
     private int _turnCount = 0;
@@ -163,36 +149,55 @@ public class MainSystem : MonoBehaviour {
     }
 
     private void UpdateAct() {
-        bool finished = true;
-        foreach (var act in _actQueue) {
-            act.UpdateAct(this);
-            finished = finished && act.Finished;
+        // 移動するキャラのタスクを先に実行する
+        bool moveFinished = true;
+        foreach (var act in _acts) {
+            if (act.IsMoveAct() && !act.Finished) {
+                act.UpdateAct(this);
+                moveFinished = moveFinished && act.Finished;
+            }
         }
 
-        if (finished) { // 全てのタスクが終了した
-            Debug.Log("--- finished ---");
-            _actQueue.Clear();
+        if (!moveFinished) return; // 移動が完了するまで待機
 
-            // 行動していないキャラがいあるなら、行動を決定する
-            bool existsActor = DetectEnemyAct(_player.Loc);
-            if (existsActor) {
-                Debug.Log("(next actor exists)");
-            }
-            if (!existsActor) { // 行動するキャラは存在しない
-                // 全てのキャラの行動が終了した
+        // 全てのキャラの移動が完了したら、(移動以外の)行動を一つずつ実行する
+        bool actFinished = true;
+        foreach (var act in _acts) {
+            if (act.Finished || act.IsMoveAct()) continue;
+
+            act.UpdateAct(this);
+            actFinished = false;
+            break; // 行動処理は 1 体ずつ行う
+        }
+
+        // 予約されている全てのタスクが終了した
+        if (actFinished) {
+            // 行動していないキャラの Act を取得
+            var acts = DetectEnemyAct(_player.Loc);
+
+            Debug.Log("acts.Count = " + acts.Count);
+            if (acts.Count == 0) { // 全てのキャラの行動が終了した
+                Debug.Log("行動終了!!!!!!");
                 ChangeGameState(GameState.TurnFinish);
+            }
+            else {
+                _acts.AddRange(acts); // Act を追加
             }
         }
     }
 
     // システム関連
 
+    // ターンスタート直前
     private void SysTurnStart() {
         _turnCount++;
         DLog.D("ターン: {0}", _turnCount);
     }
 
+    // ターン終了後
     private void SysTurnFinish() {
+        _acts.Clear();
+
         var text = GameObject.Find("Text").GetComponent<Text>();
         text.text = DLog.ToText();
         DLog.Clear();
@@ -206,17 +211,16 @@ public class MainSystem : MonoBehaviour {
     // プレイヤーの行動
 
     private void ExecutePlayerMove(int drow, int dcol) {
-        Assert.IsTrue(_actQueue.Count == 0);
+        Assert.IsTrue(_acts.Count == 0);
 
         Dir dir = Utils.ToDir(drow, dcol);
         Loc to = _player.Loc.Forward(dir);
         bool notExistsEnemy = !_enemies.Where(e => e.Loc.Row == to.Row && e.Loc.Col == to.Col).Any();
         if (_map.CanAdvance(_player.Loc, dir) && notExistsEnemy) {
-            // Debug.LogFormat("player move delta:{0}", new Loc(drow, dcol));
-            _actQueue.Add(new ActPlayerMove(_player, drow, dcol));
+            _acts.Add(new ActPlayerMove(_player, drow, dcol));
 
             var playerNextLoc = _player.Loc + new Loc(drow, dcol);
-            DetectEnemyAct(playerNextLoc);
+            _acts.AddRange(DetectEnemyAct(playerNextLoc));
             ChangeGameState(GameState.Act);
         }
         else {
@@ -226,21 +230,38 @@ public class MainSystem : MonoBehaviour {
     }
 
     private void ExecutePlayerWait() {
-        Assert.IsTrue(_actQueue.Count == 0);
+        Assert.IsTrue(_acts.Count == 0);
 
-        _actQueue.Add(new ActPlayerWait(_player));
+        _acts.Add(new ActPlayerWait(_player));
         ChangeGameState(GameState.Act);
     }
 
     private void ExecutePlayerAttack() {
-        Assert.IsTrue(_actQueue.Count == 0);
+        Assert.IsTrue(_acts.Count == 0);
 
-        _actQueue.Add(new ActPlayerAttack(_player, null));
+        Dir dir = _player.Dir;
+        Loc loc = _player.Loc.Forward(dir);
+
+        Enemy target = null;
+        Enemy enemy = FindEnemy(loc);
+        if (enemy != null && _map.CanAdvance(_player.Loc, dir)) {
+            target = enemy;
+        }
+
+        _acts.Add(new ActPlayerAttack(_player, target));
         ChangeGameState(GameState.Act);
     }
 
-    private bool DetectEnemyAct(Loc playerNextLoc) {
-        _actQueue.AddRange(EnemyStrategy.Detect(_enemies, _player, playerNextLoc, _map));
-        return _actQueue.Count > 0;
+    private List<Act> DetectEnemyAct(Loc playerNextLoc) {
+        return EnemyStrategy.Detect(_enemies, _player, playerNextLoc, _map);
+    }
+
+    private Enemy FindEnemy(Loc loc) {
+        foreach (var e in _enemies) {
+            if (e.Row == loc.Row && e.Col == loc.Col) {
+                return e;
+            }
+        }
+        return null;
     }
 }

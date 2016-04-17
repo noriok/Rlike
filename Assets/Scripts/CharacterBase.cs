@@ -6,6 +6,7 @@ public class CharacterBase {
     public int Row { get { return _loc.Row; } }
     public int Col { get { return _loc.Col; } }
     public Loc Loc { get { return _loc; } }
+    public Dir Dir { get { return _dir; } }
 
     public int Hp { get; private set; }
     public int MaxHp { get; private set; }
