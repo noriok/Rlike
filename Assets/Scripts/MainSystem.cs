@@ -34,6 +34,10 @@ public class MainSystem : MonoBehaviour {
         // カメラズーム
         var camera = GameObject.Find("Main Camera");
         camera.GetComponent<Camera>().orthographicSize = 2.5f;
+        var pos = _player.Position;
+        float z = camera.transform.position.z;
+        camera.transform.position = new Vector3(pos.x, pos.y + Config.CameraOffsetY, z);
+
         // 3.2 => 9 マス
         // 2.8 => 8 マス
         // 2.5 => 7 マス

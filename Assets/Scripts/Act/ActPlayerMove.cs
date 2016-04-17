@@ -33,7 +33,7 @@ public class ActPlayerMove : Act {
             elapsed += Time.deltaTime;
 
             // カメラの位置も合わせる
-            camera.transform.position = new Vector3(x, y, cameraZ);
+            camera.transform.position = new Vector3(x, y + Config.CameraOffsetY , cameraZ);
             yield return null;
         }
 
@@ -41,7 +41,7 @@ public class ActPlayerMove : Act {
         float x2 = src.x + dx;
         float y2 = src.y - dy;
         Actor.Position = new Vector3(x2, y2, 0);
-        camera.transform.position = new Vector3(x2, y2, cameraZ);
+        camera.transform.position = new Vector3(x2, y2 + Config.CameraOffsetY, cameraZ);
 
         AnimationFinished = true;
     }
