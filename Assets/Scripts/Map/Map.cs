@@ -24,6 +24,8 @@ public class Map {
     public int Rows { get { return _map.GetLength(0); }}
     public int Cols { get { return _map.GetLength(1); }}
 
+    private GameObject _mapLayer;
+
     public Map() {
         var lines = TestMap.Trim().Split(new[] { '\n' });
 
@@ -40,6 +42,8 @@ public class Map {
             }
         }
 
+        _mapLayer = new GameObject("MapLayer");
+
         var flat = Resources.Load("Prefabs/MapChip/pipo-map001_0");
         var mountain = Resources.Load("Prefabs/MapChip/pipo-map001_at-yama2_0");
         for (int i = 0; i < rows; i++) {
@@ -48,10 +52,12 @@ public class Map {
                 float y = i * Config.ChipSize;
 
                 var pos = new Vector3(x, -y, 0);
-                GameObject.Instantiate(flat, pos, Quaternion.identity);
+                var floatObj = (GameObject)GameObject.Instantiate(flat, pos, Quaternion.identity);
+                floatObj.transform.SetParent(_mapLayer.transform);
                 switch (_map[i, j]) {
                 case '#':
-                    GameObject.Instantiate(mountain, pos, Quaternion.identity);
+                    var mtObj = (GameObject)GameObject.Instantiate(mountain, pos, Quaternion.identity);
+                    mtObj.transform.SetParent(_mapLayer.transform);
                     break;
                 }
             }
