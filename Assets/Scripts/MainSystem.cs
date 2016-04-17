@@ -33,7 +33,12 @@ public class MainSystem : MonoBehaviour {
 
         // カメラズーム
         var camera = GameObject.Find("Main Camera");
-        camera.GetComponent<Camera>().orthographicSize = 1.5f;
+        camera.GetComponent<Camera>().orthographicSize = 2.5f;
+        // 3.2 => 9 マス
+        // 2.8 => 8 マス
+        // 2.5 => 7 マス
+        // 2.1 => 6 マス
+        // 1.74 => 5
 
         _map = new Map();
 
@@ -84,6 +89,12 @@ public class MainSystem : MonoBehaviour {
         else if (Input.GetKey(KeyCode.S)) { // スキル使う
             ExecutePlayerUseSkill();
         }
+
+        var button = GameObject.Find("Canvas/Button_S");
+        var b = button.GetComponent<Button2>();
+        if (b.Pressed) {
+            ExecutePlayerMove(1, 0);
+        }
     }
 
     void OnGUI() {
@@ -94,20 +105,13 @@ public class MainSystem : MonoBehaviour {
         // if (button("Test 1")) {
         // }
 
-        if (GUI.Button(new Rect(600, 0, 100, 40), "test")) {
-            var obj = Resources.Load("Prefabs/Mask/black");
-            var gobj = (GameObject)Instantiate(obj, Vector3.zero, Quaternion.identity);
-            var renderer = gobj.GetComponent<SpriteRenderer>();
-            var color = renderer.color;
-            color.a = 0.3f;
-            renderer.color = color;
-
-
+        int x = 300;
+        if (GUI.Button(new Rect(x, 0, 100, 40), "test")) {
         }
-        else if (GUI.Button(new Rect(600, 40*1, 100, 40), "zoom in")) {
+        else if (GUI.Button(new Rect(x, 40*1, 100, 40), "zoom in")) {
             ZoomIn();
         }
-        else if (GUI.Button(new Rect(600, 40*2, 100, 40), "zoom out")) {
+        else if (GUI.Button(new Rect(x, 40*2, 100, 40), "zoom out")) {
             ZoomOut();
         }
     }
@@ -226,7 +230,7 @@ public class MainSystem : MonoBehaviour {
     private void SysTurnFinish() {
         _acts.Clear();
 
-        var text = GameObject.Find("Text").GetComponent<Text>();
+        var text = GameObject.Find("Canvas/Text").GetComponent<Text>();
         text.text = DLog.ToText();
         DLog.Clear();
 
