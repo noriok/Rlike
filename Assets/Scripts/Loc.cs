@@ -4,8 +4,8 @@
 
 // immutable. 内部状態は変更しない
 public struct Loc {
-    public int Row { get; private set; }
-    public int Col { get; private set; }
+    public int Row { get; }
+    public int Col { get; }
 
     public Loc(int row, int col) {
         Row = row;
