@@ -38,6 +38,21 @@ public class ActPlayerUseSkill : Act {
 		_targets = targets;
 	}
 
+	private IEnumerator MaskFade(GameObject obj, float alphaFrom, float alphaTo) {
+		var renderer = obj.GetComponent<SpriteRenderer>();
+
+		float duration = 0.8f;
+		float elapsed = 0;
+		while (elapsed <= duration) {
+			float a = Mathf.Lerp(alphaFrom, alphaTo, elapsed / duration);
+			var color = renderer.color;
+			color.a = a;
+			renderer.color = color;
+			elapsed += Time.deltaTime;
+			yield return null;
+		}
+	}
+
 	private IEnumerator Anim(MainSystem sys) {
 		var obj = Resources.Load("Prefabs/Animations/aura");
 		var gobj = (GameObject)GameObject.Instantiate(obj, Actor.Position, Quaternion.identity);
@@ -45,11 +60,20 @@ public class ActPlayerUseSkill : Act {
 			yield return null;
 		}
 
+		// 黒マスクで画面全体を暗くする
+		var mask = (GameObject)GameObject.Instantiate(Resources.Load("Prefabs/Mask/black"), Actor.Position, Quaternion.identity);
+		mask.transform.localScale = new Vector3(10f, 10f, 1);
+
+		yield return MaskFade(mask, 0, 0.5f);
+
 		var obj2 = Resources.Load("Prefabs/Animations/skill");
 		var gobj2 = (GameObject)GameObject.Instantiate(obj2, Actor.Position, Quaternion.identity);
 		while (gobj2 != null) {
 			yield return null;
 		}
+
+		yield return MaskFade(mask, 0.5f, 0);
+		GameObject.Destroy(mask);
 
 		var damageAnims = new List<DamageWait>();
 		for (int i = 0; i < _targets.Length; i++) {

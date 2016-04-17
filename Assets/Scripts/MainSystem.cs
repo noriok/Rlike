@@ -95,8 +95,12 @@ public class MainSystem : MonoBehaviour {
         // }
 
         if (GUI.Button(new Rect(600, 0, 100, 40), "test")) {
-            var obj = Resources.Load("Prefabs/Animations/heal");
-            Instantiate(obj, Vector3.zero, Quaternion.identity);
+            var obj = Resources.Load("Prefabs/Mask/black");
+            var gobj = (GameObject)Instantiate(obj, Vector3.zero, Quaternion.identity);
+            var renderer = gobj.GetComponent<SpriteRenderer>();
+            var color = renderer.color;
+            color.a = 0.3f;
+            renderer.color = color;
 
 
         }

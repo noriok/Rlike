@@ -53,6 +53,9 @@ TagManager:
   - name: Character Base
     uniqueID: 3508093035
     locked: 0
+  - name: Character Over
+    uniqueID: 2552114113
+    locked: 0
   - name: Effect Base
     uniqueID: 2040051141
     locked: 0
