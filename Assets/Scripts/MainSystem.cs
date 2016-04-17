@@ -16,6 +16,7 @@ enum GameState {
 }
 
 public class MainSystem : MonoBehaviour {
+    private CameraManager _cameraManager = new CameraManager();
     private GameState _gameState;
     private Player _player;
     private List<Enemy> _enemies = new List<Enemy>();
@@ -33,20 +34,19 @@ public class MainSystem : MonoBehaviour {
 
         // カメラズーム
         var camera = GameObject.Find("Main Camera");
-        camera.GetComponent<Camera>().orthographicSize = 2.5f;
+        camera.GetComponent<Camera>().orthographicSize = _cameraManager.CurrentSize;
         var pos = _player.Position;
         float z = camera.transform.position.z;
         camera.transform.position = new Vector3(pos.x, pos.y + Config.CameraOffsetY, z);
 
-        // 3.2 => 9 マス
-        // 2.8 => 8 マス
-        // 2.5 => 7 マス
-        // 2.1 => 6 マス
-        // 1.74 => 5
-
         _map = new Map();
-
         ChangeGameState(GameState.TurnStart);
+
+        // Zoom ボタンのクリックイベント
+        var btn = GameObject.Find("Button_Zoom").GetComponent<Button>();
+        btn.onClick.AddListener(() => {
+            camera.GetComponent<Camera>().orthographicSize = _cameraManager.NextSize();
+        });
     }
 
     void Update() {
