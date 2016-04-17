@@ -48,6 +48,16 @@ public class CharacterBase {
         _loc = loc;
     }
 
+    public void PlayAnimation() {
+        var anim = _gobj.GetComponent<Animator>();
+        anim.enabled = true;
+    }
+
+    public void StopAnimation() {
+        var anim = _gobj.GetComponent<Animator>();
+        anim.enabled = false;
+    }
+
     // TODO:UpdateLoc に揃えて UpdateDir にする
     public void ChangeDir(Dir dir) {
         // if (_dir == dir) return; // TODO:斜めの画像がある場合は dir で判定する
