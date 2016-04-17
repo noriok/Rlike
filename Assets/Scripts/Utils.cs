@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 // using UnityEngine;
 using UnityEngine.Assertions;
 
@@ -43,5 +44,11 @@ public static class Utils {
         }
         xs.Reverse();
         return xs.ToArray();
+    }
+
+    public static T Clamp<T>(T val, T low, T high) where T : IComparable<T> {
+        if (val.CompareTo(low) < 0) return low;
+        if (val.CompareTo(high) > 0) return high;
+        return val;
     }
 }
