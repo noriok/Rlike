@@ -1,5 +1,5 @@
 ﻿using System;
-// using System.Collections.Generic;
+using System.Collections.Generic;
 // using UnityEngine.Assertions;
 
 // immutable. 内部状態は変更しない
@@ -84,6 +84,18 @@ public struct Loc {
 
     public Loc Backward(Dir dir) {
         return Forward(dir.Opposite());
+    }
+
+    public Loc[] Neighbors() {
+        var locs = new List<Loc>();
+        for (int i = -1; i <= 1; i++) {
+            for (int j = -1; j <= 1; j++) {
+                if (Math.Abs(i) + Math.Abs(j) > 0) {
+                    locs.Add(new Loc { Row = Row + i, Col = Col + j});
+                }
+            }
+        }
+        return locs.ToArray();
     }
 
     // loc との距離の 2 乗を返す
