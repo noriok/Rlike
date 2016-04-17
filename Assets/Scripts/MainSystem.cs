@@ -193,7 +193,7 @@ public class MainSystem : MonoBehaviour {
             }
         }
 
-        if (!moveFinished) return; // 移動が完了するまで待機
+        if (!moveFinished) return; // 移動タスクが完了するまで待機
 
         // 全てのキャラの移動が完了したら、(移動以外の)行動を一つずつ実行する
         bool actFinished = true;
@@ -210,10 +210,7 @@ public class MainSystem : MonoBehaviour {
         if (actFinished) {
             // 行動していないキャラの Act を取得
             var acts = DetectEnemyAct(_player.Loc);
-
-            Debug.Log("acts.Count = " + acts.Count);
             if (acts.Count == 0) { // 全てのキャラの行動が終了した
-                Debug.Log("行動終了!!!!!!");
                 ChangeGameState(GameState.TurnFinish);
             }
             else {
@@ -245,18 +242,15 @@ public class MainSystem : MonoBehaviour {
     }
 
     // プレイヤーの行動
-
+    // TODO: 引数を Dir に変更
     private void ExecutePlayerMove(int drow, int dcol) {
         Assert.IsTrue(_acts.Count == 0);
 
         Dir dir = Utils.ToDir(drow, dcol);
         Loc to = _player.Loc.Forward(dir);
-        bool notExistsEnemy = !_enemies.Where(e => e.Loc.Row == to.Row && e.Loc.Col == to.Col).Any();
-        if (_map.CanAdvance(_player.Loc, dir) && notExistsEnemy) {
+        if (_map.CanAdvance(_player.Loc, dir) && !ExistsEnemy(to)) {
             _acts.Add(new ActPlayerMove(_player, drow, dcol));
-
-            var playerNextLoc = _player.Loc + new Loc(drow, dcol);
-            _acts.AddRange(DetectEnemyAct(playerNextLoc));
+            _acts.AddRange(DetectEnemyAct(to));
             ChangeGameState(GameState.Act);
         }
         else {
