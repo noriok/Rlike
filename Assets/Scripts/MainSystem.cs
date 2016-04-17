@@ -78,8 +78,11 @@ public class MainSystem : MonoBehaviour {
         else if (Input.GetKey(KeyCode.Period)) { // 何もせずターン終了
             ExecutePlayerWait();
         }
-        else if (Input.GetKey(KeyCode.A)) {
+        else if (Input.GetKey(KeyCode.A)) { // 回復アイテム使う
             ExecutePlayerUseItem();
+        }
+        else if (Input.GetKey(KeyCode.S)) { // スキル使う
+            ExecutePlayerUseSkill();
         }
     }
 
@@ -277,6 +280,13 @@ public class MainSystem : MonoBehaviour {
         Assert.IsTrue(_acts.Count == 0);
 
         _acts.Add(new ActPlayerUseItem(_player));
+        ChangeGameState(GameState.Act);
+    }
+
+    private void ExecutePlayerUseSkill() {
+        Assert.IsTrue(_acts.Count == 0);
+
+        _acts.Add(new ActPlayerUseSkill(_player, _enemies.ToArray()));
         ChangeGameState(GameState.Act);
     }
 

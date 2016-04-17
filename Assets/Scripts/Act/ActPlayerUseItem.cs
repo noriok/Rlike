@@ -28,7 +28,7 @@ public class ActPlayerUseItem : Act {
 	}
 
 	public override void RunEffect(MainSystem sys) {
-
+		DLog.D("{0} item", Actor);
 	}
 
 }
