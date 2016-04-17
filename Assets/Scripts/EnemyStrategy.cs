@@ -16,8 +16,8 @@ public static class EnemyStrategy {
         };
 
         Array.Sort(locs, (a, b) => {
-            var x = a.SqDistance(to);
-            var y = b.SqDistance(to);
+            var x = a.SquareDistance(to);
+            var y = b.SquareDistance(to);
             return x.CompareTo(y);
         });
         return locs;
@@ -34,8 +34,8 @@ public static class EnemyStrategy {
     public static List<Act> Detect(List<Enemy> enemies, Player player, Loc playerNextLoc, Map map) {
         // 敵をプレイヤーに近い距離順にソートする
         enemies.Sort((a, b) => {
-            var x = a.Loc.SqDistance(playerNextLoc);
-            var y = b.Loc.SqDistance(playerNextLoc);
+            var x = a.Loc.SquareDistance(playerNextLoc);
+            var y = b.Loc.SquareDistance(playerNextLoc);
             return x.CompareTo(y);
         });
 

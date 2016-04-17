@@ -87,7 +87,7 @@ public struct Loc {
     }
 
     // loc との距離の 2 乗を返す
-    public int SqDistance(Loc loc) {
+    public int SquareDistance(Loc loc) {
         int drow = Row - loc.Row;
         int dcol = Col - loc.Col;
         return drow * drow + dcol * dcol;
