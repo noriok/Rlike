@@ -40,6 +40,10 @@ public class CharacterBase {
         GameObject.Destroy(_gobj);
     }
 
+    public Loc Front() {
+        return Loc.Forward(Dir);
+    }
+
     public virtual void DamageHp(int damage) {
         Hp = Utils.Clamp(Hp - damage, 0, 100);
     }

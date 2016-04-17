@@ -314,4 +314,8 @@ public class MainSystem : MonoBehaviour {
         }
         return null;
     }
+
+    public bool ExistsEnemy(Loc loc) {
+        return FindEnemy(loc) != null;
+    }
 }

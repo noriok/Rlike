@@ -10,7 +10,7 @@ public class ActEnemyAttack : Act {
         _target = target;
     }
 
-    private IEnumerator Anim() {
+    private IEnumerator Anim(MainSystem sys) {
        // 攻撃キャラを、ターゲットとの中間に移動させる(攻撃アニメーションの代替)
         var src = Actor.Position;
         var dst = src;
@@ -21,8 +21,10 @@ public class ActEnemyAttack : Act {
         // ターゲットの方を向く
         Actor.ChangeDir(Actor.Loc.Toward(_target.Loc));
 
-        // ターゲットは攻撃者の方を向く
-        _target.ChangeDir(_target.Loc.Toward(Actor.Loc));
+        // ターゲットは攻撃者の方を向く。ただし既に敵の方を向いている場合は向きは変えない
+        if (!sys.ExistsEnemy(_target.Front())) {
+            _target.ChangeDir(_target.Loc.Toward(Actor.Loc));
+        }
 
         var dmg = new System.Random().Next(30);
         var pos = _target.Position;
@@ -34,7 +36,7 @@ public class ActEnemyAttack : Act {
     }
 
     public override void RunAnimation(MainSystem sys) {
-        sys.StartCoroutine(Anim());
+        sys.StartCoroutine(Anim(sys));
     }
 
     public override void RunEffect(MainSystem sys) {
