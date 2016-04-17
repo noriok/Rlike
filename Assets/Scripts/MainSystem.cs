@@ -78,6 +78,9 @@ public class MainSystem : MonoBehaviour {
         else if (Input.GetKey(KeyCode.Period)) { // 何もせずターン終了
             ExecutePlayerWait();
         }
+        else if (Input.GetKey(KeyCode.A)) {
+            ExecutePlayerUseItem();
+        }
     }
 
     void OnGUI() {
@@ -89,6 +92,8 @@ public class MainSystem : MonoBehaviour {
         // }
 
         if (GUI.Button(new Rect(600, 0, 100, 40), "test")) {
+            var obj = Resources.Load("Prefabs/Animations/heal");
+            Instantiate(obj, Vector3.zero, Quaternion.identity);
 
 
         }
@@ -265,6 +270,13 @@ public class MainSystem : MonoBehaviour {
         }
 
         _acts.Add(new ActPlayerAttack(_player, target));
+        ChangeGameState(GameState.Act);
+    }
+
+    private void ExecutePlayerUseItem() {
+        Assert.IsTrue(_acts.Count == 0);
+
+        _acts.Add(new ActPlayerUseItem(_player));
         ChangeGameState(GameState.Act);
     }
 
