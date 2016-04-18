@@ -1,10 +1,9 @@
-﻿using UnityEngine;
+﻿// using UnityEngine;
 using System.Collections;
 
 public class ActTrapHeal : Act {
 
 	public ActTrapHeal(CharacterBase target) : base(target) {
-
 	}
 
 	public override bool IsTrapAct() {

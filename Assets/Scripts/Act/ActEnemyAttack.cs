@@ -1,7 +1,6 @@
-﻿using System;
+﻿// using System;
 using System.Collections;
-using UnityEngine;
-// using System.Collections;
+// using UnityEngine;
 
 public class ActEnemyAttack : Act {
     private CharacterBase _target;

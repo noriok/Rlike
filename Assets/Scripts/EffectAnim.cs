@@ -1,5 +1,5 @@
 ﻿using UnityEngine;
-using System;
+// using System;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -72,6 +72,14 @@ public static class EffectAnim {
         }
     }
 
+    public static IEnumerator Dead(Vector3 pos) {
+	    var obj = Resources.Load("Prefabs/Animations/dead");
+		var gobj = (GameObject)GameObject.Instantiate(obj, pos, Quaternion.identity);
+		while (gobj != null) {
+			yield return null;
+		}
+    }
+
     public static IEnumerator Heal(CharacterBase target) {
 		var obj = Resources.Load("Prefabs/Animations/heal");
 		var gobj = (GameObject)GameObject.Instantiate(obj, target.Position, Quaternion.identity);
@@ -81,5 +89,13 @@ public static class EffectAnim {
         while (gobj != null) {
             yield return null;
         }
+    }
+
+    public static IEnumerator Aura(CharacterBase target) {
+		var obj = Resources.Load("Prefabs/Animations/aura");
+		var gobj = (GameObject)GameObject.Instantiate(obj, target.Position, Quaternion.identity);
+		while (gobj != null) {
+			yield return null;
+		}
     }
 }

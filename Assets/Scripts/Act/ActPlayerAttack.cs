@@ -1,6 +1,5 @@
 ﻿using System.Collections;
-using UnityEngine;
-// using System.Collections;
+// using UnityEngine;
 
 public class ActPlayerAttack : Act {
     private CharacterBase _target;
@@ -23,16 +22,13 @@ public class ActPlayerAttack : Act {
         Actor.Position = src;
 
         if (_target.Hp <= 0) { // 敵を倒したときに爆発アニメーション
-            var obj = Resources.Load("Prefabs/Animations/dead");
-            var gobj = (GameObject)GameObject.Instantiate(obj, _target.Position, Quaternion.identity);
+            var pos = _target.Position;
             _target.Destroy();
-            while (gobj != null) {
-                yield return null;
-            }
+            yield return EffectAnim.Dead(pos);
         }
     }
 
     public override void Apply(MainSystem sys) {
-        DLog.D("{0} attack target:{1}", Actor, _target);
+        DLog.D("{0} attack --> {1}", Actor, _target);
     }
 }

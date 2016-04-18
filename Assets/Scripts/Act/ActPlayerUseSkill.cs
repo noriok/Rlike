@@ -13,12 +13,9 @@ public class DamageWait {
 
 		yield return EffectAnim.PopupWhiteDigits(_target, dmg);
 		if (_target.Hp <= 0) {
-			var obj = Resources.Load("Prefabs/Animations/dead");
-			var gobj = (GameObject)GameObject.Instantiate(obj, _target.Position, Quaternion.identity);
+			var pos = _target.Position;
 			_target.Destroy();
-			while (gobj != null) {
-				yield return null;
-			}
+			yield return EffectAnim.Dead(pos);
 		}
 		AnimationFinished = true;
 	}
@@ -52,11 +49,7 @@ public class ActPlayerUseSkill : Act {
 	}
 
 	protected override IEnumerator RunAnimation(MainSystem sys) {
-		var obj = Resources.Load("Prefabs/Animations/aura");
-		var gobj = (GameObject)GameObject.Instantiate(obj, Actor.Position, Quaternion.identity);
-		while (gobj != null) {
-			yield return null;
-		}
+		yield return EffectAnim.Aura(Actor);
 
 		// 黒マスクで画面全体を暗くする
 		var mask = (GameObject)GameObject.Instantiate(Resources.Load("Prefabs/Mask/black"), Actor.Position, Quaternion.identity);
