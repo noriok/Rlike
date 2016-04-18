@@ -293,8 +293,13 @@ public class MainSystem : MonoBehaviour {
             target = enemy;
         }
 
-        _acts.Add(new ActPlayerAttack(_player, target));
-        ChangeGameState(GameState.Act);
+        if (target == null) { // TODO:攻撃モーションがないので、代わりに待機する
+            ExecutePlayerWait();
+        }
+        else {
+            _acts.Add(new ActPlayerAttack(_player, target));
+            ChangeGameState(GameState.Act);
+        }
     }
 
     private void ExecutePlayerUseItem() {
