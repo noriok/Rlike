@@ -10,7 +10,7 @@ public class ActEnemyAttack : Act {
         _target = target;
     }
 
-    private IEnumerator Anim(MainSystem sys) {
+    protected override IEnumerator RunAnimation(MainSystem sys) {
        // 攻撃キャラを、ターゲットとの中間に移動させる(攻撃アニメーションの代替)
         var src = Actor.Position;
         var dst = src;
@@ -29,14 +29,9 @@ public class ActEnemyAttack : Act {
         var dmg = new System.Random().Next(30);
         yield return EffectAnim.PopupWhiteDigits(_target, dmg);
         Actor.Position = src;
-        AnimationFinished = true;
     }
 
-    public override void RunAnimation(MainSystem sys) {
-        sys.StartCoroutine(Anim(sys));
-    }
-
-    public override void RunEffect(MainSystem sys) {
+    public override void Apply(MainSystem sys) {
         // Actor が _target に攻撃
         DLog.D("{0} attack --> {1}", Actor, _target);
     }

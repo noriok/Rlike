@@ -11,19 +11,14 @@ public class ActTrapHeal : Act {
 		return true;
 	}
 
-	private IEnumerator Anime() {
+	protected override IEnumerator RunAnimation(MainSystem sys) {
 		yield return EffectAnim.Heal(Actor);
 
 		var healHp = 10;
 		yield return EffectAnim.PopupGreenDigits(Actor, healHp);
-		AnimationFinished = true;
 	}
 
-	public override void RunAnimation(MainSystem sys) {
-		sys.StartCoroutine(Anime());
-	}
-
-	public override void RunEffect(MainSystem sys) {
+	public override void Apply(MainSystem sys) {
 		DLog.D("Trap heal {0}", Actor);
 	}
 }

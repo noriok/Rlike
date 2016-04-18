@@ -7,19 +7,14 @@ public class ActPlayerUseItem : Act {
 
 	}
 
-	private IEnumerator Wait() {
+	protected override IEnumerator RunAnimation(MainSystem sys) {
 		yield return EffectAnim.Heal(Actor);
 
 		var healHp = new System.Random().Next(29) + 1;
 		yield return EffectAnim.PopupGreenDigits(Actor, healHp);
-		AnimationFinished = true;
 	}
 
-	public override void RunAnimation(MainSystem sys) {
-		sys.StartCoroutine(Wait());
-	}
-
-	public override void RunEffect(MainSystem sys) {
+	public override void Apply(MainSystem sys) {
 		DLog.D("{0} item", Actor);
 	}
 }

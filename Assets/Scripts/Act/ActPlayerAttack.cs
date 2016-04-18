@@ -9,7 +9,7 @@ public class ActPlayerAttack : Act {
         _target = target;
     }
 
-    private IEnumerator Anim() {
+    protected override IEnumerator RunAnimation(MainSystem sys) {
         // 攻撃キャラを、ターゲットの中間に移動させる(攻撃アニメーションの代替)
         var src = Actor.Position;
         var dst = src;
@@ -30,19 +30,9 @@ public class ActPlayerAttack : Act {
                 yield return null;
             }
         }
-        AnimationFinished = true;
     }
 
-    public override void RunAnimation(MainSystem sys) {
-        if (_target == null) {
-            AnimationFinished = true;
-        }
-        else {
-            sys.StartCoroutine(Anim());
-        }
-    }
-
-    public override void RunEffect(MainSystem sys) {
+    public override void Apply(MainSystem sys) {
         DLog.D("{0} attack target:{1}", Actor, _target);
     }
 }

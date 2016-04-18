@@ -1,16 +1,22 @@
-﻿public abstract class Act {
-    public CharacterBase Actor { get; private set; }
+﻿using System.Collections;
 
+public abstract class Act {
+    public CharacterBase Actor { get; private set; }
     public bool Finished { get; private set; }
-    protected bool AnimationFinished { get; set; }
 
     private bool _started;
+    private bool _animationFinished;
 
-    public abstract void RunEffect(MainSystem sys);
+    private IEnumerator StartAnimation(MainSystem sys) {
+        yield return RunAnimation(sys);
+        _animationFinished = true;
+    }
 
-    public virtual void RunAnimation(MainSystem sys) {
-        // アニメーションが完了したら、AnimationFinished を true にする
-        AnimationFinished = true;
+    protected virtual IEnumerator RunAnimation(MainSystem sys) {
+        yield break;
+    }
+
+    public virtual void Apply(MainSystem sys) {
     }
 
     // このタスクがキャラクターを移動させるタスクかどうか
@@ -31,13 +37,14 @@
 
         if (!_started) {
             _started = true;
-            RunAnimation(sys);
+            sys.StartCoroutine(StartAnimation(sys));
             return;
         }
 
-        if (AnimationFinished) {
+        //if (AnimationFinished) {
+        if (_animationFinished) {
             // TODO:RunEffectで効果を実行。コールはサブクラスで行う
-            RunEffect(sys);
+            Apply(sys);
             Actor.ActCount--;
             Finished = true;
         }

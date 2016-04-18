@@ -18,7 +18,7 @@ public class ActEnemyMove : Act {
         return true;
     }
 
-    private IEnumerator MoveAnimation() {
+    protected override IEnumerator RunAnimation(MainSystem sys) {
         Actor.ChangeDir(Utils.ToDir(_drow, _dcol));
 
         var src = Actor.Position;
@@ -39,15 +39,9 @@ public class ActEnemyMove : Act {
         float x2 = src.x + dx;
         float y2 = src.y - dy;
         Actor.Position = new Vector3(x2, y2, 0);
-
-        AnimationFinished = true;
     }
 
-    public override void RunAnimation(MainSystem sys) {
-        sys.StartCoroutine(MoveAnimation());
-    }
-
-    public override void RunEffect(MainSystem sys) {
+    public override void Apply(MainSystem sys) {
         var nextLoc = Actor.Loc + new Loc(_drow, _dcol);
         DLog.D("{0} move {1} -> {2}", Actor, Actor.Loc, nextLoc);
         Actor.UpdateLoc(nextLoc);

@@ -51,7 +51,7 @@ public class ActPlayerUseSkill : Act {
 		}
 	}
 
-	private IEnumerator Anim(MainSystem sys) {
+	protected override IEnumerator RunAnimation(MainSystem sys) {
 		var obj = Resources.Load("Prefabs/Animations/aura");
 		var gobj = (GameObject)GameObject.Instantiate(obj, Actor.Position, Quaternion.identity);
 		while (gobj != null) {
@@ -87,15 +87,9 @@ public class ActPlayerUseSkill : Act {
 			if (finished) break;
 			yield return null;
 		}
-
-		AnimationFinished = true;
 	}
 
-	public override void RunAnimation(MainSystem sys) {
-		sys.StartCoroutine(Anim(sys));
-	}
-
-	public override void RunEffect(MainSystem sys) {
+	public override void Apply(MainSystem sys) {
 		DLog.D("{0} skill", Actor);
 	}
 }

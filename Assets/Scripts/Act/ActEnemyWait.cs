@@ -7,7 +7,7 @@ public class ActEnemyWait : Act {
 
     }
 
-    public override void RunEffect(MainSystem sys) {
+    public override void Apply(MainSystem sys) {
         DLog.D("{0} wait", Actor);
     }
 }
