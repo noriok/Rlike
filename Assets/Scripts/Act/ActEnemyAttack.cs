@@ -27,11 +27,8 @@ public class ActEnemyAttack : Act {
         }
 
         var dmg = new System.Random().Next(30);
-        var pos = _target.Position;
-        pos.y -= 0.09f;
-        yield return EffectAnim.PopupWhiteDigits(dmg, pos, () => {
-            Actor.Position = src;
-        });
+        yield return EffectAnim.PopupWhiteDigits(_target, dmg);
+        Actor.Position = src;
         AnimationFinished = true;
     }
 

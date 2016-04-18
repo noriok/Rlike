@@ -19,12 +19,8 @@ public class ActPlayerAttack : Act {
 
         var dmg = new System.Random().Next(60);
         _target.DamageHp(dmg);
-
-        var pos = _target.Position;
-        pos.y -= 0.09f;
-        yield return EffectAnim.PopupWhiteDigits(dmg, pos, () => {
-            Actor.Position = src;
-        });
+        yield return EffectAnim.PopupWhiteDigits(_target, dmg);
+        Actor.Position = src;
 
         if (_target.Hp <= 0) { // 敵を倒したときに爆発アニメーション
             var obj = Resources.Load("Prefabs/Animations/dead");

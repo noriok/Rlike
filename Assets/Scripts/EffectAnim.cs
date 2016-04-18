@@ -4,15 +4,19 @@ using System.Collections;
 using System.Collections.Generic;
 
 public static class EffectAnim {
-    public static IEnumerator PopupWhiteDigits(int n, Vector3 pos, Action finishedCallback) {
-        return PopupDigits(n, pos, finishedCallback, "Prefabs/Digits/digits_white_");
+    public static IEnumerator PopupWhiteDigits(CharacterBase target, int n) {
+        var pos = target.Position;
+        pos.y -= 0.09f;
+        return PopupDigits(pos, n, "Prefabs/Digits/digits_white_");
     }
 
-    public static IEnumerator PopupGreenDigits(int n, Vector3 pos, Action finishedCallback) {
-        return PopupDigits(n, pos, finishedCallback, "Prefabs/Digits/digits_green_");
+    public static IEnumerator PopupGreenDigits(CharacterBase target, int n) {
+        var pos = target.Position;
+        pos.y -= 0.09f;
+        return PopupDigits(pos, n, "Prefabs/Digits/digits_green_");
     }
 
-    private static IEnumerator PopupDigits(int n, Vector3 pos, Action finishedCallback, string pathPrefix) {
+    private static IEnumerator PopupDigits(Vector3 pos, int n, string pathPrefix) {
         float fontWidth = 0.14f;
 
         var digits = new List<GameObject>();
@@ -66,8 +70,16 @@ public static class EffectAnim {
             elapsed += Time.deltaTime;
             yield return null;
         }
-
-		finishedCallback();
     }
 
+    public static IEnumerator Heal(CharacterBase target) {
+		var obj = Resources.Load("Prefabs/Animations/heal");
+		var gobj = (GameObject)GameObject.Instantiate(obj, target.Position, Quaternion.identity);
+		var pos = gobj.transform.position;
+		pos.y += 0.15f;
+		gobj.transform.position = pos;
+        while (gobj != null) {
+            yield return null;
+        }
+    }
 }

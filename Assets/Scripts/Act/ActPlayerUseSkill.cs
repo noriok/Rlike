@@ -11,9 +11,7 @@ public class DamageWait {
 		var dmg = 9999;
 		_target.DamageHp(dmg);
 
-		var pos = _target.Position;
-		pos.y -= 0.09f;
-		yield return EffectAnim.PopupWhiteDigits(dmg, pos, () => {});
+		yield return EffectAnim.PopupWhiteDigits(_target, dmg);
 		if (_target.Hp <= 0) {
 			var obj = Resources.Load("Prefabs/Animations/dead");
 			var gobj = (GameObject)GameObject.Instantiate(obj, _target.Position, Quaternion.identity);
