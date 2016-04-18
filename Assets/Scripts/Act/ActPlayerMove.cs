@@ -16,7 +16,6 @@ public class ActPlayerMove : Act {
 
     private IEnumerator MoveAnimation() {
         Actor.ChangeDir(Utils.ToDir(_drow, _dcol));
-        Debug.Log("###### setTrigger");
         var src = Actor.Position;
 
         var camera = GameObject.Find("Main Camera").GetComponent<Camera>();

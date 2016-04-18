@@ -18,6 +18,10 @@
         return false;
     }
 
+    public virtual bool IsTrapAct() {
+        return false;
+    }
+
     public Act(CharacterBase actor) {
         Actor = actor;
     }
@@ -32,6 +36,7 @@
         }
 
         if (AnimationFinished) {
+            // TODO:RunEffectで効果を実行。コールはサブクラスで行う
             RunEffect(sys);
             Actor.ActCount--;
             Finished = true;

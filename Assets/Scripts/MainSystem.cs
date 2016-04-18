@@ -195,7 +195,18 @@ public class MainSystem : MonoBehaviour {
 
         if (!moveFinished) return; // 移動タスクが完了するまで待機
 
-        // 全てのキャラの移動が完了したら、(移動以外の)行動を一つずつ実行する
+        // TODO:トラップイベントの処理
+        bool trapFinished = true;
+        foreach (var act in _acts) {
+            if (act.IsTrapAct() && !act.Finished) {
+                act.UpdateAct(this);
+                trapFinished = trapFinished && act.Finished;
+            }
+        }
+
+        if (!trapFinished) return; // トラップタスクが完了するまで待機
+
+        // 移動タスク、トラップタスクが完了したら、それ以外の行動を一つずつ実行していく
         bool actFinished = true;
         foreach (var act in _acts) {
             if (act.Actor.Hp <= 0) continue;
@@ -250,6 +261,10 @@ public class MainSystem : MonoBehaviour {
         Loc to = _player.Loc.Forward(dir);
         if (_map.CanAdvance(_player.Loc, dir) && !ExistsEnemy(to)) {
             _acts.Add(new ActPlayerMove(_player, drow, dcol));
+
+            // TODO:移動先にトラップがあるなら、トラップイベントを発生させる
+            // _acts.Add(new ActTrapHeal(_player));
+
             _acts.AddRange(DetectEnemyAct(to));
             ChangeGameState(GameState.Act);
         }
