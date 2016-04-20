@@ -19,6 +19,8 @@ public class ActTrapWarp : ActTrap {
 
 		// TODO:ワープ後の位置
 		Actor.Position = src;
+		Actor.ChangeDir(Dir.S);
+		yield return new WaitForSeconds(0.4f);
 	}
 
 	public override void Apply(MainSystem sys) {
