@@ -264,6 +264,7 @@ public class MainSystem : MonoBehaviour {
 
             // TODO:移動先にトラップがあるなら、トラップイベントを発生させる
             // _acts.Add(new ActTrapHeal(_player));
+            _acts.Add(new ActTrapWarp(_player));
 
             _acts.AddRange(DetectEnemyAct(to));
             ChangeGameState(GameState.Act);
