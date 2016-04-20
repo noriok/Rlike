@@ -16,31 +16,13 @@ public class ActPlayerMove : Act {
 
     protected override IEnumerator RunAnimation(MainSystem sys) {
         Actor.ChangeDir(Utils.ToDir(_drow, _dcol));
-        var src = Actor.Position;
 
         var camera = GameObject.Find("Main Camera").GetComponent<Camera>();
         float cameraZ = camera.transform.position.z;
-
-        float duration = 0.4f;
-        float elapsed = 0;
-        float dx = _dcol * Config.ChipSize;
-        float dy = _drow * Config.ChipSize;
-        while (elapsed <= duration) {
-            float x = Mathf.Lerp(src.x, src.x + dx, elapsed / duration);
-            float y = Mathf.Lerp(src.y, src.y - dy, elapsed / duration);
-            Actor.Position = new Vector3(x, y, 0);
-            elapsed += Time.deltaTime;
-
+        yield return CAction.Walk(Actor, _drow, _dcol, (x, y) => {
             // カメラの位置も合わせる
-            camera.transform.position = new Vector3(x, y + Config.CameraOffsetY , cameraZ);
-            yield return null;
-        }
-
-        // 位置ずれしないように最終位置にセット
-        float x2 = src.x + dx;
-        float y2 = src.y - dy;
-        Actor.Position = new Vector3(x2, y2, 0);
-        camera.transform.position = new Vector3(x2, y2 + Config.CameraOffsetY, cameraZ);
+            camera.transform.position = new Vector3(x, y + Config.CameraOffsetY, cameraZ);
+        });
     }
 
     public override void Apply(MainSystem sys) {
