@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 
 public class Enemy : CharacterBase {
     private const float HP_GAUGE_MAX_SCALE = 60.0f;
@@ -23,6 +24,22 @@ public class Enemy : CharacterBase {
 
         float scale = Hp * HP_GAUGE_MAX_SCALE / MaxHp;
         _barGreen.transform.localScale = new Vector3(scale, 1, 1);
+    }
+
+    public override IEnumerator DamageAnim(int delta) {
+        int fm = Hp;
+        int to = Utils.Clamp(Hp - delta, 0, MaxHp);
+
+        float duration = 0.3f;
+        float elapsed = 0;
+        while (elapsed <= duration) {
+            elapsed += Time.deltaTime;
+
+            float p = Mathf.Lerp(fm, to, elapsed / duration);
+            float scale = p * HP_GAUGE_MAX_SCALE / MaxHp;
+            _barGreen.transform.localScale = new Vector3(scale, 1, 1);
+            yield return null;
+        }
     }
 
     public override string ToString() {

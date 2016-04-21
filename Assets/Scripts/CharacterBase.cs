@@ -1,6 +1,6 @@
 ﻿// using System;
 using UnityEngine;
-// using System.Collections;
+using System.Collections;
 
 public class CharacterBase {
     public int Row { get { return _loc.Row; } }
@@ -84,5 +84,9 @@ public class CharacterBase {
 
         var anim = _gobj.GetComponent<Animator>();
         anim.SetTrigger(name);
+    }
+
+    public virtual IEnumerator DamageAnim(int delta) {
+        yield break;
     }
 }

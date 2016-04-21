@@ -17,8 +17,11 @@ public class ActPlayerAttack : Act {
         Actor.Position = dst;
 
         var dmg = new System.Random().Next(60);
+
+        yield return Anim.Par(sys,
+                              () => _target.DamageAnim(dmg),
+                              () => EffectAnim.PopupWhiteDigits(_target, dmg));
         _target.DamageHp(dmg);
-        yield return EffectAnim.PopupWhiteDigits(_target, dmg);
         Actor.Position = src;
 
         if (_target.Hp <= 0) { // 敵を倒したときに爆発アニメーション
