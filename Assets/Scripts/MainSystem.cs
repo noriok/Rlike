@@ -28,6 +28,7 @@ public class MainSystem : MonoBehaviour {
 
     void Start() {
         _player = CreatePlayer(1, 1);
+        _player.AddStatus(Status.Sleep);
 
         _enemies.Add(EnemyFactory.CreateEnemy(1, 4));
         _enemies.Add(EnemyFactory.CreateEnemy(2, 2));
@@ -111,6 +112,7 @@ public class MainSystem : MonoBehaviour {
 
         int x = 300;
         if (GUI.Button(new Rect(x, 0, 100, 40), "test")) {
+            _player.RemoveAllStatus();
         }
         else if (GUI.Button(new Rect(x, 40*1, 100, 40), "zoom in")) {
             ZoomIn();

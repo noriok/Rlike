@@ -1,6 +1,7 @@
 ﻿// using System;
 using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class CharacterBase {
     public int Row { get { return _loc.Row; } }
@@ -24,6 +25,8 @@ public class CharacterBase {
     // 斜め画像を用意するまでの暫定対応
     private string _triggerName = "ToS";
     private GameObject _gobj;
+
+    private Dictionary<Status, GameObject> _status = new Dictionary<Status, GameObject>();
 
     public CharacterBase(int row, int col, GameObject gobj) {
         ActCount = 1;
@@ -53,17 +56,26 @@ public class CharacterBase {
     }
 
     public void AddStatus(Status status) {
+        if (_status.ContainsKey(status)) return;
+
         var sleep = (GameObject)GameObject.Instantiate(Resources.Load("Prefabs/Animations/status-sleep"), Vector3.zero, Quaternion.identity);
         sleep.transform.SetParent(_gobj.transform);
         sleep.transform.localPosition = new Vector3(0, 0.18f, 0);
+        _status.Add(status, sleep);
     }
 
-    private void RemoveStatus() {
-        // TODO
+    public void RemoveStatus(Status status) {
+        if (_status.ContainsKey(status)) {
+            GameObject.Destroy(_status[status]);
+            _status.Remove(status);
+        }
     }
 
-    private void RemoveAllStatus() {
-        // TODO
+    public void RemoveAllStatus() {
+        foreach (var kv in _status) {
+            GameObject.Destroy(kv.Value);
+        }
+        _status.Clear();
     }
 
     public void PlayAnimation() {
