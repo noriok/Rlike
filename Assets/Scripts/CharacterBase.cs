@@ -52,6 +52,20 @@ public class CharacterBase {
         _loc = loc;
     }
 
+    public void AddStatus(Status status) {
+        var sleep = (GameObject)GameObject.Instantiate(Resources.Load("Prefabs/Animations/status-sleep"), Vector3.zero, Quaternion.identity);
+        sleep.transform.SetParent(_gobj.transform);
+        sleep.transform.localPosition = new Vector3(0, 0.18f, 0);
+    }
+
+    private void RemoveStatus() {
+        // TODO
+    }
+
+    private void RemoveAllStatus() {
+        // TODO
+    }
+
     public void PlayAnimation() {
         var anim = _gobj.GetComponent<Animator>();
         anim.enabled = true;

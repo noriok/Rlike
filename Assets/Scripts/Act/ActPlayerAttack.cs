@@ -18,6 +18,7 @@ public class ActPlayerAttack : Act {
 
         var dmg = new System.Random().Next(60);
 
+        // TODO:Func<IEnumerator> ではなくて、IEnumerator を渡す
         yield return Anim.Par(sys,
                               () => _target.DamageAnim(dmg),
                               () => EffectAnim.PopupWhiteDigits(_target, dmg));
