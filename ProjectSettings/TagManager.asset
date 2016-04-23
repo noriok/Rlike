@@ -44,8 +44,14 @@ TagManager:
   - name: Map Base
     uniqueID: 1951686265
     locked: 0
-  - name: Map Over
+  - name: Map Base Over
     uniqueID: 1179829097
+    locked: 0
+  - name: Map Object
+    uniqueID: 2285230449
+    locked: 0
+  - name: Map Over
+    uniqueID: 1893154971
     locked: 0
   - name: Item Base
     uniqueID: 2377645225
