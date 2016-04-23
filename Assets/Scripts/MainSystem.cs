@@ -326,19 +326,23 @@ public class MainSystem : MonoBehaviour {
         Dir dir = _player.Dir;
         Loc loc = _player.Loc.Forward(dir);
 
-        Enemy target = null;
         Enemy enemy = FindEnemy(loc);
         if (enemy != null && _map.CanAdvance(_player.Loc, dir)) {
-            target = enemy;
+            // 敵へ攻撃する
+            _acts.Add(new ActPlayerAttack(_player, enemy));
+            ChangeGameState(GameState.Act);
+            return;
         }
 
-        if (target == null) { // TODO:攻撃モーションがないので、代わりに待機する
-            ExecutePlayerWait();
-        }
-        else {
-            _acts.Add(new ActPlayerAttack(_player, target));
+        Treasure treasure = _map.FindTreasure(loc);
+        if (treasure != null) {
+            // 宝箱を開ける
+            _acts.Add(new ActPlayerOpenTreasure(_player, treasure));
             ChangeGameState(GameState.Act);
+            return;
         }
+
+        ExecutePlayerWait();
     }
 
     private void ExecutePlayerUseItem() {

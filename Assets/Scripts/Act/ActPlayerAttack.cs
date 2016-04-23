@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 // using UnityEngine;
 
 public class ActPlayerAttack : Act {
@@ -16,7 +17,8 @@ public class ActPlayerAttack : Act {
         dst.y = (src.y + _target.Position.y) / 2;
         Actor.Position = dst;
 
-        var dmg = new System.Random().Next(60);
+        var rand = new Random();
+        var dmg = 20 + rand.Next(-2, 5);
 
         // TODO:Func<IEnumerator> ではなくて、IEnumerator を渡す
         yield return Anim.Par(sys,

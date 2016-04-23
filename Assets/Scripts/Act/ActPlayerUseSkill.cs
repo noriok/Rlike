@@ -8,7 +8,7 @@ public class DamageWait {
 	private CharacterBase _target;
 
 	private IEnumerator Run(MainSystem sys) {
-		var dmg = 9999;
+		var dmg = 999;
 		yield return Anim.Par(sys,
 							  () => _target.DamageAnim(dmg),
 							  () => EffectAnim.PopupWhiteDigits(_target, dmg));

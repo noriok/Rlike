@@ -36,7 +36,7 @@ public class CharacterBase {
         float y = -Config.ChipSize * row;
         _gobj.transform.position = new Vector3(x, y, 0);
 
-        Hp = MaxHp = 100;
+        Hp = MaxHp = 40;
     }
 
     public void Destroy() {
