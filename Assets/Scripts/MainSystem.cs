@@ -2,8 +2,8 @@
 using UnityEngine.Assertions;
 using UnityEngine.UI;
 // using System;
-// using System.Collections;
 
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -130,6 +130,37 @@ public class MainSystem : MonoBehaviour {
     private void ZoomOut() {
         var camera = GameObject.Find("Main Camera");
         camera.GetComponent<Camera>().orthographicSize += 0.1f;
+    }
+
+    public float OrthographicSize {
+        get {
+            var camera = GameObject.Find("Main Camera");
+            return camera.GetComponent<Camera>().orthographicSize;
+        }
+    }
+
+    public IEnumerator CameraZoom(float delta) {
+        var camera = GameObject.Find("Main Camera").GetComponent<Camera>();
+        float src = OrthographicSize;
+        float dst = src + delta;
+
+        float duration = 0.4f;
+        float elapsed = 0;
+        while (elapsed <= duration) {
+            elapsed += Time.deltaTime;
+            float size = UTween.Ease(EaseType.OutCubic, src, dst, elapsed / duration);
+            camera.orthographicSize = size;
+            yield return null;
+        }
+        camera.orthographicSize = dst;
+    }
+
+    public IEnumerator CameraZoomIn(float delta) {
+        return CameraZoom(-delta);
+    }
+
+    public IEnumerator CameraZoomOut(float delta) {
+        return CameraZoom(delta);
     }
 
     private Player CreatePlayer(int row, int col) {

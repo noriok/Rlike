@@ -7,11 +7,12 @@ public class DamageWait {
 
 	private CharacterBase _target;
 
-	private IEnumerator Anim() {
+	private IEnumerator Run(MainSystem sys) {
 		var dmg = 9999;
+		yield return Anim.Par(sys,
+							  () => _target.DamageAnim(dmg),
+							  () => EffectAnim.PopupWhiteDigits(_target, dmg));
 		_target.DamageHp(dmg);
-
-		yield return EffectAnim.PopupWhiteDigits(_target, dmg);
 		if (_target.Hp <= 0) {
 			var pos = _target.Position;
 			_target.Destroy();
@@ -22,7 +23,7 @@ public class DamageWait {
 
 	public DamageWait(CharacterBase target, MainSystem sys) {
 		_target = target;
-		sys.StartCoroutine(Anim());
+		sys.StartCoroutine(Run(sys));
 	}
 }
 
@@ -51,6 +52,10 @@ public class ActPlayerUseSkill : Act {
 	protected override IEnumerator RunAnimation(MainSystem sys) {
 		yield return EffectAnim.Aura(Actor);
 
+		float cameraZoomDelta = 0.65f;
+		// TODO:カメラを引く
+		yield return sys.CameraZoomOut(cameraZoomDelta);
+
 		// 黒マスクで画面全体を暗くする
 		var mask = (GameObject)GameObject.Instantiate(Resources.Load("Prefabs/Mask/black"), Actor.Position, Quaternion.identity);
 		mask.transform.localScale = new Vector3(10f, 10f, 1);
@@ -63,6 +68,7 @@ public class ActPlayerUseSkill : Act {
 			yield return null;
 		}
 
+		yield return sys.CameraZoomIn(cameraZoomDelta);
 		yield return MaskFade(mask, 0.5f, 0);
 		GameObject.Destroy(mask);
 
