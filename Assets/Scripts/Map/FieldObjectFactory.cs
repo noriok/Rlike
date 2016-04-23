@@ -43,4 +43,9 @@ public static class FieldObjectFactory {
 		var obj = Create("Prefabs/Trap/trap_damage", loc.ToPosition(), layer);
 		return new TrapDamage(loc, obj);
 	}
+
+	public static Trap CreateTrapSummon(Loc loc, GameObject layer) {
+		var obj = Create("Prefabs/Trap/trap_summon", loc.ToPosition(), layer);
+		return new TrapSummon(loc, obj);
+	}
 }

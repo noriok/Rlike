@@ -109,6 +109,17 @@ public static class EffectAnim {
 		}
     }
 
+    public static IEnumerator Aura2(Vector3 pos) {
+		var obj = Resources.Load("Prefabs/Animations/aura2");
+		var gobj = (GameObject)GameObject.Instantiate(obj, pos, Quaternion.identity);
+        var p = gobj.transform.position;
+        p.y += 0.07f;
+        gobj.transform.position = p;
+		while (gobj != null) {
+			yield return null;
+		}
+    }
+
     public static IEnumerator Skill(Vector3 pos) {
 		var obj2 = Resources.Load("Prefabs/Animations/skill");
 		var gobj2 = (GameObject)GameObject.Instantiate(obj2, pos, Quaternion.identity);

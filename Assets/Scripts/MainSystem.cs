@@ -392,4 +392,14 @@ public class MainSystem : MonoBehaviour {
     public bool ExistsEnemy(Loc loc) {
         return FindEnemy(loc) != null;
     }
+
+    public IEnumerator Summon(Loc loc) {
+        // TODO: assert(loc に敵がいない)
+        var e = EnemyFactory.CreateEnemy(loc.Row, loc.Col);
+        _enemies.Add(e);
+
+        yield return Anim.Par(this,
+                              () => e.FadeIn(),
+                              () => EffectAnim.Aura2(e.Position));
+    }
 }

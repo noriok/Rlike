@@ -29,7 +29,7 @@ public class CharacterBase {
     private Dictionary<Status, GameObject> _status = new Dictionary<Status, GameObject>();
 
     public CharacterBase(int row, int col, GameObject gobj) {
-        ActCount = 1;
+        ActCount = 0;
         _loc = new Loc(row, col);
         _gobj = gobj;
         float x =  Config.ChipSize * col;
@@ -126,5 +126,9 @@ public class CharacterBase {
 
     public bool IsSleep() {
         return _status.ContainsKey(Status.Sleep);
+    }
+
+    public IEnumerator FadeIn() {
+        return CAction.FadeIn(_gobj, 0.5f);
     }
 }
