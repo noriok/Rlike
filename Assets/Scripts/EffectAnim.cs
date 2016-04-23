@@ -81,7 +81,17 @@ public static class EffectAnim {
     }
 
     public static IEnumerator Heal(Vector3 pos) {
-		var obj = Resources.Load("Prefabs/Animations/heal");
+        var obj = Resources.Load("Prefabs/Animations/heal_heart");
+		var gobj = (GameObject)GameObject.Instantiate(obj, pos, Quaternion.identity);
+		var p = gobj.transform.position;
+		gobj.transform.position = p;
+        while (gobj != null) {
+            yield return null;
+        }
+    }
+
+    public static IEnumerator Warp(Vector3 pos) {
+		var obj = Resources.Load("Prefabs/Animations/warp");
 		var gobj = (GameObject)GameObject.Instantiate(obj, pos, Quaternion.identity);
 		var p = gobj.transform.position;
 		p.y += 0.15f;

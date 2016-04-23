@@ -33,4 +33,9 @@ public static class FieldObjectFactory {
 		var obj = Create("Prefabs/Trap/trap_heal", loc.ToPosition(), layer);
 		return new TrapHeal(loc, obj);
 	}
+
+	public static Trap CreateTrapWarp(Loc loc, GameObject layer) {
+		var obj = Create("Prefabs/Trap/trap_warp", loc.ToPosition(), layer);
+		return new TrapWarp(loc, obj);
+	}
 }

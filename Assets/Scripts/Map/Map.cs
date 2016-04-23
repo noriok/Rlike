@@ -75,6 +75,7 @@ public class Map {
 
         // ワナ
         _fieldObjects.Add(FieldObjectFactory.CreateTrapHeal(new Loc(3, 5), _mapLayer));
+        _fieldObjects.Add(FieldObjectFactory.CreateTrapWarp(new Loc(3, 6), _mapLayer));
     }
 
     private T FindFieldObject<T>(Loc loc) where T : FieldObject {
