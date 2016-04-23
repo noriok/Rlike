@@ -4,6 +4,7 @@ using UnityEngine;
 public class Enemy : CharacterBase {
     private const float HP_GAUGE_MAX_SCALE = 60.0f;
     private GameObject _barGreen;
+    private GameObject _barYellow;
 
     public Enemy(int row, int col, GameObject gobj) : base(row, col, gobj) {
 
@@ -11,6 +12,12 @@ public class Enemy : CharacterBase {
         var barRed = (GameObject)GameObject.Instantiate(Resources.Load("Prefabs/HpBar/bar-red"), Vector3.zero, Quaternion.identity);
         barRed.transform.SetParent(gobj.transform);
         barRed.transform.localPosition = new Vector3(0, 0.18f, 0);
+
+        var barYellow = (GameObject)GameObject.Instantiate(Resources.Load("Prefabs/HpBar/bar-yellow"), Vector3.zero, Quaternion.identity);
+        barYellow.transform.SetParent(gobj.transform);
+        barYellow.transform.localPosition = new Vector3(-0.15f, 0.18f, 0);
+        barYellow.transform.localScale = new Vector3(HP_GAUGE_MAX_SCALE, 1, 1);
+        _barYellow = barYellow;
 
         var barGreen = (GameObject)GameObject.Instantiate(Resources.Load("Prefabs/HpBar/bar-green"), Vector3.zero, Quaternion.identity);
         barGreen.transform.SetParent(gobj.transform);
@@ -30,6 +37,10 @@ public class Enemy : CharacterBase {
         int fm = Hp;
         int to = Utils.Clamp(Hp - delta, 0, MaxHp);
 
+        float greenScale = to * HP_GAUGE_MAX_SCALE / MaxHp;
+        _barGreen.transform.localScale = new Vector3(greenScale, 1, 1);
+        yield return new WaitForSeconds(0.3f);
+
         float duration = 0.3f;
         float elapsed = 0;
         while (elapsed <= duration) {
@@ -37,7 +48,7 @@ public class Enemy : CharacterBase {
 
             float p = Mathf.Lerp(fm, to, elapsed / duration);
             float scale = p * HP_GAUGE_MAX_SCALE / MaxHp;
-            _barGreen.transform.localScale = new Vector3(scale, 1, 1);
+            _barYellow.transform.localScale = new Vector3(scale, 1, 1);
             yield return null;
         }
     }
