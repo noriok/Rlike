@@ -25,7 +25,11 @@ public class MainSystem : MonoBehaviour {
     private Map _map;
     private int _turnCount = 0;
 
+    private KeyPad _keyPad;
+
     void Start() {
+        _keyPad = new KeyPad();
+
         _player = CreatePlayer(1, 1);
 
         _enemies.Add(EnemyFactory.CreateEnemy(1, 4));
@@ -62,6 +66,42 @@ public class MainSystem : MonoBehaviour {
 
         Assert.IsTrue(_gameState == GameState.InputWait);
 
+
+        Dir dir;
+        if (_keyPad.IsMove(out dir)) {
+            int drow = 0;
+            int dcol = 0;
+            switch (dir) {
+            case Dir.N:  drow = -1; dcol =  0; break;
+            case Dir.NE: drow = -1; dcol =  1; break;
+            case Dir.E:  drow =  0; dcol =  1; break;
+            case Dir.SE: drow =  1; dcol =  1; break;
+            case Dir.S:  drow =  1; dcol =  0; break;
+            case Dir.SW: drow =  1; dcol = -1; break;
+            case Dir.W:  drow =  0; dcol = -1; break;
+            case Dir.NW: drow = -1; dcol = -1; break;
+            }
+            ExecutePlayerMove(drow, dcol);
+            return;
+        }
+        else if (_keyPad.IsAttack()) {
+            ExecutePlayerAttack();
+            return;
+        }
+
+        if (Input.GetKey(KeyCode.A)) { // 回復アイテム使う
+            Debug.Log("press a");
+            ExecutePlayerUseItem();
+        }
+        else if (Input.GetKey(KeyCode.S)) { // スキル使う
+            ExecutePlayerUseSkill();
+        }
+        else if (Input.GetKey(KeyCode.Period)) { // 何もせずターン終了
+            ExecutePlayerWait();
+        }
+
+
+/*
         if (Input.GetKey(KeyCode.Space)) {
             ExecutePlayerAttack();
         }
@@ -105,6 +145,14 @@ public class MainSystem : MonoBehaviour {
         if (b.Pressed) {
             ExecutePlayerMove(1, 0);
         }
+
+        if (Input.touchCount > 0) {
+            Touch touch = Input.GetTouch(0);
+            if (touch.phase == TouchPhase.Began) {
+                ExecutePlayerAttack();
+            }
+        }
+*/
     }
 
     void OnGUI() {

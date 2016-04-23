@@ -39,7 +39,7 @@ public class Enemy : CharacterBase {
 
         float greenScale = to * HP_GAUGE_MAX_SCALE / MaxHp;
         _barGreen.transform.localScale = new Vector3(greenScale, 1, 1);
-        yield return new WaitForSeconds(0.3f);
+        yield return new WaitForSeconds(0.43f);
 
         float duration = 0.3f;
         float elapsed = 0;
