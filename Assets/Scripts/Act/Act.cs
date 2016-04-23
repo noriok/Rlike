@@ -40,7 +40,6 @@ public abstract class Act {
 
         if (!_started) {
             _started = true;
-            Debug.LogFormat("run anim {0}", Actor);
             sys.StartCoroutine(StartAnimation(sys));
             return;
         }

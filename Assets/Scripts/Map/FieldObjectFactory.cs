@@ -26,4 +26,11 @@ public static class FieldObjectFactory {
 		var obj = Create("Prefabs/MapObject/notice-board", loc.ToPosition(), layer);
 		return new NoticeBoard(loc, obj, msg);
 	}
+
+	// trap
+
+	public static Trap CreateTrapHeal(Loc loc, GameObject layer) {
+		var obj = Create("Prefabs/Trap/trap_heal", loc.ToPosition(), layer);
+		return new TrapHeal(loc, obj);
+	}
 }

@@ -15,7 +15,7 @@ public class Treasure : FieldObject {
 		_anim.SetActive(false);
 	}
 
-	public override IEnumerator RunAnimation() {
+	public override IEnumerator RunAnimation(CharacterBase sender, MainSystem sys) {
 		_open.SetActive(false);
 		_close.SetActive(false);
 		_anim.SetActive(true);

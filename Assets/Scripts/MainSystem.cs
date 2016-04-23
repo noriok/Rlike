@@ -1,7 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.Assertions;
 using UnityEngine.UI;
-// using System;
 
 using System.Collections;
 using System.Collections.Generic;
@@ -309,8 +308,10 @@ public class MainSystem : MonoBehaviour {
             _acts.Add(new ActPlayerMove(_player, drow, dcol));
 
             // TODO:移動先にトラップがあるなら、トラップイベントを発生させる
-            // _acts.Add(new ActTrapHeal(_player));
-            // _acts.Add(new ActTrapWarp(_player));
+            Trap trap = _map.FindTrap(to);
+            if (trap != null) {
+                _acts.Add(new ActTrap(_player, trap));
+            }
 
             _acts.AddRange(DetectEnemyAct(to));
             ChangeGameState(GameState.Act);
@@ -363,8 +364,6 @@ public class MainSystem : MonoBehaviour {
 
     private void ExecutePlayerUseItem() {
         Assert.IsTrue(_acts.Count == 0);
-
-        Debug.Log("--> use item");
 
         _acts.Add(new ActPlayerUseItem(_player));
         ChangeGameState(GameState.Act);

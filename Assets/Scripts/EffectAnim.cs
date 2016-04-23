@@ -80,12 +80,12 @@ public static class EffectAnim {
 		}
     }
 
-    public static IEnumerator Heal(CharacterBase target) {
+    public static IEnumerator Heal(Vector3 pos) {
 		var obj = Resources.Load("Prefabs/Animations/heal");
-		var gobj = (GameObject)GameObject.Instantiate(obj, target.Position, Quaternion.identity);
-		var pos = gobj.transform.position;
-		pos.y += 0.15f;
-		gobj.transform.position = pos;
+		var gobj = (GameObject)GameObject.Instantiate(obj, pos, Quaternion.identity);
+		var p = gobj.transform.position;
+		p.y += 0.15f;
+		gobj.transform.position = p;
         while (gobj != null) {
             yield return null;
         }

@@ -71,6 +71,10 @@ public class Map {
         _fieldObjects.Add(FieldObjectFactory.CreateBonfire(new Loc(3, 3), _mapLayer));
         _fieldObjects.Add(FieldObjectFactory.CreateTreasure(new Loc(4, 4), _mapLayer));
         _fieldObjects.Add(FieldObjectFactory.CreateNoticeBoard(new Loc(1, 2), _mapLayer, "立て札のメッセージ"));
+
+
+        // ワナ
+        _fieldObjects.Add(FieldObjectFactory.CreateTrapHeal(new Loc(3, 5), _mapLayer));
     }
 
     private T FindFieldObject<T>(Loc loc) where T : FieldObject {
@@ -88,6 +92,10 @@ public class Map {
 
     public NoticeBoard FindNoticeBoard(Loc loc) {
         return FindFieldObject<NoticeBoard>(loc);
+    }
+
+    public Trap FindTrap(Loc loc) {
+        return FindFieldObject<Trap>(loc);
     }
 
     public bool OutOfMap(Loc loc) {
@@ -116,9 +124,10 @@ public class Map {
         return _map[row, col] == MapChar.Floor;
     }
 
-    public bool ExistsFieldObject(Loc loc) {
+    // FieldObject かつ Obstacle なオブジェクト
+    public bool ExistsObstacleFieldObject(Loc loc) {
         foreach (var obj in _fieldObjects) {
-            if (loc == obj.Loc) {
+            if (loc == obj.Loc && obj.IsObstacle()) {
                 return true;
             }
         }
@@ -131,7 +140,7 @@ public class Map {
         if (!(IsFloor(fm) && IsFloor(to))) return false;
 
         // 障害物が配置されているか
-        if (ExistsFieldObject(to)) return false;
+        if (ExistsObstacleFieldObject(to)) return false;
 
         if (fm.Row != to.Row && fm.Col != to.Col) { // 斜め移動
 

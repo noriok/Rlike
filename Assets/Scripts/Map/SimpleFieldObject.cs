@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class SimpleFieldObject : FieldObject {
+public abstract class SimpleFieldObject : FieldObject {
 	private GameObject _gobj;
 
 	public SimpleFieldObject(Loc loc, GameObject gobj) : base(loc) {

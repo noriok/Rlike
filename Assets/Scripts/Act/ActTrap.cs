@@ -1,11 +1,22 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public abstract class ActTrap : Act {
-    public ActTrap(CharacterBase target) : base(target) {
+public class ActTrap : Act {
+	private Trap _trap;
+
+    public ActTrap(CharacterBase sender, Trap trap) : base(sender) {
+		_trap = trap;
 	}
 
 	public override bool IsTrapAct() {
 		return true;
+	}
+
+	protected override IEnumerator RunAnimation(MainSystem sys) {
+		yield return _trap.RunAnimation(Actor, sys);
+	}
+
+	public override void Apply(MainSystem sys) {
+		DLog.D("Trap {0}", Actor);
 	}
 }

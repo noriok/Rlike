@@ -3,7 +3,7 @@ using System.Collections;
 
 public class ActTrapSummonEnemy : ActTrap {
 
-	public ActTrapSummonEnemy(CharacterBase target) : base(target) {
+	public ActTrapSummonEnemy(CharacterBase target) : base(target, null) {
 
 	}
 

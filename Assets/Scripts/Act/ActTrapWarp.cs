@@ -3,7 +3,7 @@ using System.Collections;
 
 public class ActTrapWarp : ActTrap {
 
-	public ActTrapWarp(CharacterBase target) : base(target) {
+	public ActTrapWarp(CharacterBase target) : base(target, null) {
 	}
 
 	protected override IEnumerator RunAnimation(MainSystem sys) {

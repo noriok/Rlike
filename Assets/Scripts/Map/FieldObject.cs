@@ -8,7 +8,11 @@ public abstract class FieldObject {
 		Loc = loc;
 	}
 
-	public virtual IEnumerator RunAnimation() {
+	public virtual IEnumerator RunAnimation(CharacterBase sender, MainSystem sys) {
 		yield break;
+	}
+
+	public virtual bool IsObstacle() {
+		return true;
 	}
 }

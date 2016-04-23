@@ -9,7 +9,7 @@ public class ActPlayerOpenTreasure : Act {
 	}
 
 	protected override IEnumerator RunAnimation(MainSystem sys) {
-		yield return _treasure.RunAnimation();
+		yield return _treasure.RunAnimation(Actor, sys);
 	}
 
 	public override void Apply(MainSystem sys) {
