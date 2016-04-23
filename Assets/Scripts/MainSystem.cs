@@ -99,60 +99,6 @@ public class MainSystem : MonoBehaviour {
         else if (Input.GetKey(KeyCode.Period)) { // 何もせずターン終了
             ExecutePlayerWait();
         }
-
-
-/*
-        if (Input.GetKey(KeyCode.Space)) {
-            ExecutePlayerAttack();
-        }
-        else if (Input.GetKey(KeyCode.J)) { // 南
-            ExecutePlayerMove(1, 0);
-        }
-        else if (Input.GetKey(KeyCode.K)) { // 北
-            ExecutePlayerMove(-1, 0);
-        }
-        else if (Input.GetKey(KeyCode.L)) { // 東
-            ExecutePlayerMove(0, 1);
-        }
-        else if (Input.GetKey(KeyCode.H)) { // 西
-            ExecutePlayerMove(0, -1);
-        }
-        else if (Input.GetKey(KeyCode.B)) { // 南西
-            ExecutePlayerMove(1, -1);
-        }
-        else if (Input.GetKey(KeyCode.N)) { // 南東
-            ExecutePlayerMove(1, 1);
-        }
-        else if (Input.GetKey(KeyCode.Y)) { // 北西
-            ExecutePlayerMove(-1, -1);
-        }
-        else if (Input.GetKey(KeyCode.U)) { // 北東
-            ExecutePlayerMove(-1, 1);
-        }
-        else if (Input.GetKey(KeyCode.Period)) { // 何もせずターン終了
-            ExecutePlayerWait();
-        }
-        else if (Input.GetKey(KeyCode.A)) { // 回復アイテム使う
-            Debug.Log("press a");
-            ExecutePlayerUseItem();
-        }
-        else if (Input.GetKey(KeyCode.S)) { // スキル使う
-            ExecutePlayerUseSkill();
-        }
-
-        var button = GameObject.Find("Canvas/Button_S");
-        var b = button.GetComponent<Button2>();
-        if (b.Pressed) {
-            ExecutePlayerMove(1, 0);
-        }
-
-        if (Input.touchCount > 0) {
-            Touch touch = Input.GetTouch(0);
-            if (touch.phase == TouchPhase.Began) {
-                ExecutePlayerAttack();
-            }
-        }
-*/
     }
 
     void OnGUI() {
