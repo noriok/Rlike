@@ -26,4 +26,26 @@ public static class CAction {
 		if (updateCallback != null) updateCallback(x2, y2);
 	}
 
+    public static IEnumerator Quake(GameObject layer, float duration) {
+        float d = 0.015f;
+        var offsets = new[,] {
+            { -d, d }, { 0, 0 }, { d, -d }, { 0, 0 }, { d, d }, { 0, 0 }, { -d, -d },
+        };
+
+        var src = layer.transform.position;
+        float elapsed = 0;
+        while (elapsed < duration) {
+            for (int i = 0; i < offsets.GetLength(0); i++) {
+                if (elapsed >= duration) break;
+
+                var pos = new Vector3(src.x + offsets[i, 0], src.y + offsets[i, 1], src.z);
+                layer.transform.position = pos;
+                yield return new WaitForSeconds(0.014f);
+                elapsed += Time.deltaTime;
+
+            }
+        }
+        layer.transform.position = src;
+    }
+
 }

@@ -48,6 +48,11 @@ public class MainSystem : MonoBehaviour {
         btn.onClick.AddListener(() => {
             camera.GetComponent<Camera>().orthographicSize = _cameraManager.NextSize();
         });
+
+        var btn2 = GameObject.Find("Canvas/Button_Skill").GetComponent<Button>();
+        btn2.onClick.AddListener(() => {
+            ExecutePlayerUseSkill();
+        });
     }
 
     void Update() {
@@ -144,7 +149,7 @@ public class MainSystem : MonoBehaviour {
         float src = OrthographicSize;
         float dst = src + delta;
 
-        float duration = 0.4f;
+        float duration = 0.5f;
         float elapsed = 0;
         while (elapsed <= duration) {
             elapsed += Time.deltaTime;

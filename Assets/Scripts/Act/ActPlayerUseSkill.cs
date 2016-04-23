@@ -52,24 +52,23 @@ public class ActPlayerUseSkill : Act {
 	protected override IEnumerator RunAnimation(MainSystem sys) {
 		yield return EffectAnim.Aura(Actor);
 
-		float cameraZoomDelta = 0.65f;
-		// TODO:カメラを引く
-		yield return sys.CameraZoomOut(cameraZoomDelta);
-
 		// 黒マスクで画面全体を暗くする
 		var mask = (GameObject)GameObject.Instantiate(Resources.Load("Prefabs/Mask/black"), Actor.Position, Quaternion.identity);
-		mask.transform.localScale = new Vector3(10f, 10f, 1);
+		mask.transform.localScale = new Vector3(10f, 15f, 1);
 
-		yield return MaskFade(mask, 0, 0.5f);
+		float cameraZoomDelta = 0.65f;
+		yield return Anim.Par(sys,
+			                  () => sys.CameraZoomOut(cameraZoomDelta),
+							  () => MaskFade(mask, 0, 0.5f));
 
-		var obj2 = Resources.Load("Prefabs/Animations/skill");
-		var gobj2 = (GameObject)GameObject.Instantiate(obj2, Actor.Position, Quaternion.identity);
-		while (gobj2 != null) {
-			yield return null;
-		}
+		yield return Anim.Par(sys,
+		                      () => CAction.Quake(GameObject.Find("MapLayer"), 1.4f),
+							  () => EffectAnim.Skill(Actor.Position));
+		yield return new WaitForSeconds(0.3f);
 
-		yield return sys.CameraZoomIn(cameraZoomDelta);
-		yield return MaskFade(mask, 0.5f, 0);
+		yield return Anim.Par(sys,
+		                      () => sys.CameraZoomIn(cameraZoomDelta),
+							  () => MaskFade(mask, 0.5f, 0));
 		GameObject.Destroy(mask);
 
 		var damageAnims = new List<DamageWait>();
