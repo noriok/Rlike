@@ -325,7 +325,7 @@ public class MainSystem : MonoBehaviour {
 
     private Enemy FindEnemy(Loc loc) {
         foreach (var e in _enemies) {
-            if (e.Row == loc.Row && e.Col == loc.Col) {
+            if (loc == e.Loc) {
                 return e;
             }
         }

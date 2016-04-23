@@ -33,6 +33,18 @@ public struct Loc : IEquatable<Loc> {
         return !a.Equals(b);
     }
 
+    public static Loc operator+(Loc a, Loc b) {
+        return new Loc(a.Row + b.Row, a.Col + b.Col);
+    }
+
+    public static Loc operator-(Loc a, Loc b) {
+        return new Loc(a.Row - b.Row, a.Col - b.Col);
+    }
+
+    public override string ToString() {
+        return string.Format("({0}, {1})", Row, Col);
+    }
+
     // 隣接しているなら true
     public bool IsNeighbor(Loc loc) {
         int drow = Math.Abs(Row - loc.Row);
@@ -130,15 +142,4 @@ public struct Loc : IEquatable<Loc> {
         return Math.Abs(Row - loc.Row) + Math.Abs(Col - loc.Col);
     }
 
-    public override string ToString() {
-        return string.Format("({0}, {1})", Row, Col);
-    }
-
-    public static Loc operator+(Loc a, Loc b) {
-        return new Loc(a.Row + b.Row, a.Col + b.Col);
-    }
-
-    public static Loc operator-(Loc a, Loc b) {
-        return new Loc(a.Row - b.Row, a.Col - b.Col);
-    }
 }
