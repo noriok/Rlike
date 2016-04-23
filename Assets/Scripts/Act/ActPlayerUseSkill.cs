@@ -9,6 +9,8 @@ public class DamageWait {
 
 	private IEnumerator Run(MainSystem sys) {
 		var dmg = 999;
+
+		_target.RemoveStatus(Status.Sleep);
 		yield return Anim.Par(sys,
 							  () => _target.DamageAnim(dmg),
 							  () => EffectAnim.PopupWhiteDigits(_target, dmg));
