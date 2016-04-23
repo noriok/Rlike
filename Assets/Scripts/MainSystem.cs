@@ -94,6 +94,7 @@ public class MainSystem : MonoBehaviour {
             ExecutePlayerWait();
         }
         else if (Input.GetKey(KeyCode.A)) { // 回復アイテム使う
+            Debug.Log("press a");
             ExecutePlayerUseItem();
         }
         else if (Input.GetKey(KeyCode.S)) { // スキル使う
@@ -208,6 +209,8 @@ public class MainSystem : MonoBehaviour {
     }
 
     private void UpdateAct() {
+        Assert.IsTrue(_player.Hp > 0);
+
        // HP がゼロの敵は削除する
         bool updated = true;
         while (updated) {
@@ -360,6 +363,8 @@ public class MainSystem : MonoBehaviour {
 
     private void ExecutePlayerUseItem() {
         Assert.IsTrue(_acts.Count == 0);
+
+        Debug.Log("--> use item");
 
         _acts.Add(new ActPlayerUseItem(_player));
         ChangeGameState(GameState.Act);

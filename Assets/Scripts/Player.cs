@@ -6,7 +6,7 @@ public class Player : CharacterBase {
     public Player(int row, int col, GameObject gobj) : base(row, col, gobj) {
         SyncCameraPosition();
 
-        Hp = MaxHp = 10000000;
+        Hp = MaxHp = 999;
     }
 
     private void SyncCameraPosition() {
@@ -19,6 +19,6 @@ public class Player : CharacterBase {
     }
 
     public override string ToString() {
-        return string.Format("P:{0}", Loc);
+        return string.Format("P: Loc:{0}", Loc);
     }
 }

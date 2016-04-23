@@ -1,10 +1,10 @@
-﻿// using UnityEngine;
+﻿using UnityEngine;
+using UnityEngine.Assertions;
 using System.Collections;
 
 public class ActPlayerUseItem : Act {
 
 	public ActPlayerUseItem(Player player) : base(player) {
-
 	}
 
 	protected override IEnumerator RunAnimation(MainSystem sys) {

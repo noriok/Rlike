@@ -48,7 +48,7 @@ public class CharacterBase {
     }
 
     public virtual void DamageHp(int damage) {
-        Hp = Utils.Clamp(Hp - damage, 0, 100);
+        Hp = Utils.Clamp(Hp - damage, 0, MaxHp);
     }
 
     public void UpdateLoc(Loc loc) {

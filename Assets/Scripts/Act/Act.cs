@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using UnityEngine;
+using System.Collections;
 
 public abstract class Act {
     public CharacterBase Actor { get; private set; }
@@ -30,6 +31,8 @@ public abstract class Act {
 
     public Act(CharacterBase actor) {
         Actor = actor;
+        _started = false;
+        Finished = false;
     }
 
     public void UpdateAct(MainSystem sys) {
@@ -37,6 +40,7 @@ public abstract class Act {
 
         if (!_started) {
             _started = true;
+            Debug.LogFormat("run anim {0}", Actor);
             sys.StartCoroutine(StartAnimation(sys));
             return;
         }
