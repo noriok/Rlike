@@ -28,7 +28,6 @@ public class MainSystem : MonoBehaviour {
 
     void Start() {
         _player = CreatePlayer(1, 1);
-        _player.AddStatus(Status.Sleep);
 
         _enemies.Add(EnemyFactory.CreateEnemy(1, 4));
         _enemies.Add(EnemyFactory.CreateEnemy(2, 2));
