@@ -342,6 +342,14 @@ public class MainSystem : MonoBehaviour {
             return;
         }
 
+        NoticeBoard noticeBoard = _map.FindNoticeBoard(loc);
+        if (noticeBoard != null) {
+            // 立て札を読む
+            _acts.Add(new ActPlayerReadNoticeBoard(_player, noticeBoard));
+            ChangeGameState(GameState.Act);
+            return;
+        }
+
         ExecutePlayerWait();
     }
 

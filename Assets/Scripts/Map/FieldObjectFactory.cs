@@ -21,4 +21,9 @@ public static class FieldObjectFactory {
 		var anim = Create("Prefabs/Animations/treasure-open-anim", pos, layer);
 		return new Treasure(loc, open, close, anim);
 	}
+
+	public static NoticeBoard CreateNoticeBoard(Loc loc, GameObject layer, string msg) {
+		var obj = Create("Prefabs/MapObject/notice-board", loc.ToPosition(), layer);
+		return new NoticeBoard(loc, obj, msg);
+	}
 }

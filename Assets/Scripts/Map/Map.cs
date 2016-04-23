@@ -70,15 +70,24 @@ public class Map {
         // マップ上のオブジェクト
         _fieldObjects.Add(FieldObjectFactory.CreateBonfire(new Loc(3, 3), _mapLayer));
         _fieldObjects.Add(FieldObjectFactory.CreateTreasure(new Loc(4, 4), _mapLayer));
+        _fieldObjects.Add(FieldObjectFactory.CreateNoticeBoard(new Loc(1, 2), _mapLayer, "立て札のメッセージ"));
     }
 
-    public Treasure FindTreasure(Loc loc) {
+    private T FindFieldObject<T>(Loc loc) where T : FieldObject {
         foreach (var obj in _fieldObjects) {
-            if (obj.Loc == loc && obj is Treasure) {
-                return (Treasure)obj;
+            if (obj.Loc == loc && obj is T) {
+                return (T)obj;
             }
         }
         return null;
+    }
+
+    public Treasure FindTreasure(Loc loc) {
+        return FindFieldObject<Treasure>(loc);
+    }
+
+    public NoticeBoard FindNoticeBoard(Loc loc) {
+        return FindFieldObject<NoticeBoard>(loc);
     }
 
     public bool OutOfMap(Loc loc) {
