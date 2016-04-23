@@ -9,8 +9,8 @@ public class CharacterBase {
     public Loc Loc { get { return _loc; } }
     public Dir Dir { get { return _dir; } }
 
-    public int Hp { get; private set; }
-    public int MaxHp { get; private set; }
+    public int Hp { get; protected set; }
+    public int MaxHp { get; protected set; }
 
     public Vector3 Position {
         get { return _gobj.transform.position; }
@@ -62,12 +62,20 @@ public class CharacterBase {
         sleep.transform.SetParent(_gobj.transform);
         sleep.transform.localPosition = new Vector3(0, 0.18f, 0);
         _status.Add(status, sleep);
+
+        if (status == Status.Sleep) {
+            StopAnimation();
+        }
     }
 
     public void RemoveStatus(Status status) {
         if (_status.ContainsKey(status)) {
             GameObject.Destroy(_status[status]);
             _status.Remove(status);
+
+            if (status == Status.Sleep) {
+                PlayAnimation();
+            }
         }
     }
 
@@ -114,5 +122,9 @@ public class CharacterBase {
 
     public virtual IEnumerator DamageAnim(int delta) {
         yield break;
+    }
+
+    public bool IsSleep() {
+        return _status.ContainsKey(Status.Sleep);
     }
 }

@@ -20,6 +20,7 @@ public class ActPlayerAttack : Act {
         var rand = new Random();
         var dmg = 20 + rand.Next(-2, 5);
 
+        _target.RemoveStatus(Status.Sleep);
         // TODO:Func<IEnumerator> ではなくて、IEnumerator を渡す
         yield return Anim.Par(sys,
                               () => _target.DamageAnim(dmg),

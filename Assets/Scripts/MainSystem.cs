@@ -32,6 +32,7 @@ public class MainSystem : MonoBehaviour {
 
         _enemies.Add(EnemyFactory.CreateEnemy(1, 4));
         _enemies.Add(EnemyFactory.CreateEnemy(2, 2));
+        _enemies.Last().AddStatus(Status.Sleep);
 
         // カメラズーム
         var camera = GameObject.Find("Main Camera");
@@ -274,6 +275,16 @@ public class MainSystem : MonoBehaviour {
     private void SysTurnStart() {
         _turnCount++;
         DLog.D("ターン: {0}", _turnCount);
+
+        // 行動回数の復帰
+        foreach (var e in _enemies) {
+            // if (e.IsSleep()) { // 寝ているならこのターンは行動できない
+            //     e.ActCount = 0;
+            // }
+            // else {
+                e.ActCount = 1;
+            // }
+        }
     }
 
     // ターン終了後
@@ -283,11 +294,6 @@ public class MainSystem : MonoBehaviour {
         var text = GameObject.Find("Canvas/Text").GetComponent<Text>();
         text.text = DLog.ToText();
         DLog.Clear();
-
-        // 行動回数の復帰
-        foreach (var e in _enemies) {
-            e.ActCount = 1;
-        }
     }
 
     // プレイヤーの行動

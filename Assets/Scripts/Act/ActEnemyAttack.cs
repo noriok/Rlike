@@ -25,7 +25,9 @@ public class ActEnemyAttack : Act {
             _target.ChangeDir(_target.Loc.Toward(Actor.Loc));
         }
 
+        _target.RemoveStatus(Status.Sleep);
         var dmg = new System.Random().Next(30);
+        _target.DamageHp(dmg);
         yield return EffectAnim.PopupWhiteDigits(_target, dmg);
         Actor.Position = src;
     }

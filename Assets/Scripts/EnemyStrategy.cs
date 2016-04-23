@@ -51,6 +51,16 @@ public static class EnemyStrategy {
             locs[loc.Row, loc.Col] = true;
         }
 
+        // 行動できない敵
+        for (int i = 0; i < enemies.Count; i++) {
+            if (used[i]) continue;
+
+            if (enemies[i].IsSleep()) {
+                used[i] = true;
+                q.Add(new ActEnemyWait(enemies[i]));
+            }
+        }
+
         // 移動するキャラ
         bool updated = true;
         while (updated) {

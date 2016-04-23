@@ -5,6 +5,8 @@ public class Player : CharacterBase {
 
     public Player(int row, int col, GameObject gobj) : base(row, col, gobj) {
         SyncCameraPosition();
+
+        Hp = MaxHp = 10000000;
     }
 
     private void SyncCameraPosition() {
