@@ -3,13 +3,34 @@ using System.Collections.Generic;
 // using UnityEngine.Assertions;
 
 // immutable. 内部状態は変更しない
-public struct Loc {
+public struct Loc : IEquatable<Loc> {
     public int Row { get; private set; }
     public int Col { get; private set; }
 
     public Loc(int row, int col) {
         Row = row;
         Col = col;
+    }
+
+    public bool Equals(Loc o) {
+        return Row == o.Row && Col == o.Col;
+    }
+
+    public override bool Equals(object o) {
+        if (o == null) return false;
+        return Equals((Loc)o);
+    }
+
+    public override int GetHashCode() {
+        return Row ^ Col;
+    }
+
+    public static bool operator==(Loc a, Loc b) {
+        return a.Equals(b);
+    }
+
+    public static bool operator!=(Loc a, Loc b) {
+        return !a.Equals(b);
     }
 
     // 隣接しているなら true
