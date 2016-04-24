@@ -13,23 +13,6 @@ public class Player : CharacterBase {
 
         var pos = gobj.transform.position;
         float d = Config.ChipSize / 2;
-        // var n = UnityUtils.Inst("Prefabs/Dir/dir-N", new Vector3(pos.x, pos.y + d + d/3, pos.z));
-        // n.transform.position = new Vector3(pos.x, pos.y + d + d/3, pos.z);
-        // var ne = UnityUtils.Inst("Prefabs/Dir/dir-NE", pos);
-        // ne.transform.position = new Vector3(pos.x + d, pos.y + d, pos.z);
-        // var e = UnityUtils.Inst("Prefabs/Dir/dir-e", pos);
-        // e.transform.position = new Vector3(pos.x + d, pos.y, pos.z);
-        // var se = UnityUtils.Inst("Prefabs/Dir/dir-se", pos);
-        // se.transform.position = new Vector3(pos.x + d, pos.y - d, pos.z);
-        // var s = UnityUtils.Inst("Prefabs/Dir/dir-s", pos);
-        // s.transform.position = new Vector3(pos.x, pos.y - d - d/3, pos.z);
-        // var sw = UnityUtils.Inst("Prefabs/Dir/dir-sw", pos);
-        // sw.transform.position = new Vector3(pos.x - d, pos.y - d, pos.z);
-        // var w = UnityUtils.Inst("Prefabs/Dir/dir-w", pos);
-        // w.transform.position = new Vector3(pos.x - d, pos.y, pos.z);
-        // var nw = UnityUtils.Inst("Prefabs/Dir/dir-nw", pos);
-        // nw.transform.position = new Vector3(pos.x - d, pos.y + d, pos.z);
-
         var n = UnityUtils.Inst("Prefabs/Dir/dir-N", new Vector3(pos.x, pos.y + d + d/3, pos.z));
         var ne = UnityUtils.Inst("Prefabs/Dir/dir-NE", new Vector3(pos.x + d, pos.y + d, pos.z));
         var e = UnityUtils.Inst("Prefabs/Dir/dir-e", new Vector3(pos.x + d, pos.y, pos.z));
@@ -47,7 +30,6 @@ public class Player : CharacterBase {
         _dirs.Add(Dir.SW, sw);
         _dirs.Add(Dir.W, w);
         _dirs.Add(Dir.NW, nw);
-
         foreach (var kv in _dirs) {
             kv.Value.transform.SetParent(gobj.transform);
             kv.Value.SetActive(false);

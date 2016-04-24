@@ -1,5 +1,5 @@
 ﻿using UnityEngine;
-using System.Collections;
+// using System.Collections;
 
 public static class FieldObjectFactory {
 	private static GameObject Create(string path, Vector3 pos, GameObject layer) {

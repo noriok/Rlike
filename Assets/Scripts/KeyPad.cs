@@ -1,5 +1,5 @@
 ﻿using UnityEngine;
-using System.Collections;
+// using System.Collections;
 
 public class KeyPad {
 	private Button2 _btnN;

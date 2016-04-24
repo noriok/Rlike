@@ -1,5 +1,5 @@
 ﻿using UnityEngine;
-using System.Collections;
+// using System.Collections;
 
 public static class UnityUtils {
 	public static GameObject Inst(string path, Vector3 pos) {

@@ -1,5 +1,5 @@
-﻿using UnityEngine;
-using System.Collections;
+﻿// using UnityEngine;
+// using System.Collections;
 
 public enum Status {
 	Sleep =  (1 << 0),
