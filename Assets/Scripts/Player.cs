@@ -1,4 +1,6 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
+using System.Collections;
 using System.Collections.Generic;
 
 public class Player : CharacterBase {
@@ -9,7 +11,7 @@ public class Player : CharacterBase {
     public Player(int row, int col, GameObject gobj) : base(row, col, gobj) {
         SyncCameraPosition();
 
-        Hp = MaxHp = 99999;
+        Hp = MaxHp = 150;
 
         var pos = gobj.transform.position;
         float d = Config.ChipSize / 2;
@@ -53,6 +55,59 @@ public class Player : CharacterBase {
         foreach (var kv in _dirs) {
             kv.Value.SetActive(false);
         }
+    }
+
+    public override IEnumerator HealAnim(int delta) {
+        float fromHp = Hp;
+        float toHp = Utils.Clamp(Hp + delta, 0, MaxHp);
+
+        var fromAmount = fromHp / MaxHp;
+        var toAmount = toHp / MaxHp;
+        Debug.LogFormat("amount fm:{0} to:{1}", fromAmount, toAmount);
+
+        var imageFg = GameObject.Find("Canvas/Header/Image_HP_FG").GetComponent<Image>();
+        var textHp = GameObject.Find("Canvas/Header/Text_HP_Value").GetComponent<Text>();
+        textHp.text = string.Format("{0}/{1}", toHp, MaxHp);
+
+        imageFg.fillAmount = toAmount;
+        float duration = 0.3f;
+        float elapsed = 0;
+        while (elapsed <= duration) {
+            elapsed += Time.deltaTime;
+            float p = UTween.Ease(EaseType.OutQuad, fromAmount, toAmount, elapsed / duration);
+            imageFg.fillAmount = p;
+            yield return null;
+        }
+        imageFg.fillAmount = toAmount;
+    }
+
+    public override IEnumerator DamageAnim(int delta) {
+        float fromHp = Hp;
+        float toHp = Utils.Clamp(Hp - delta, 0, MaxHp);
+
+        var fromAmount = fromHp / MaxHp;
+        var toAmount = toHp / MaxHp;
+        Debug.LogFormat("amount fm:{0} to:{1}", fromAmount, toAmount);
+
+        var imageFg = GameObject.Find("Canvas/Header/Image_HP_FG").GetComponent<Image>();
+        var imageMg = GameObject.Find("Canvas/Header/Image_HP_MG").GetComponent<Image>();
+
+        var textHp = GameObject.Find("Canvas/Header/Text_HP_Value").GetComponent<Text>();
+        textHp.text = string.Format("{0}/{1}", toHp, MaxHp);
+
+        imageFg.fillAmount = toAmount;
+        imageMg.fillAmount = fromAmount;
+        yield return new WaitForSeconds(0.53f);
+
+        float duration = 0.3f;
+        float elapsed = 0;
+        while (elapsed <= duration) {
+            elapsed += Time.deltaTime;
+            float p = UTween.Ease(EaseType.OutQuad, fromAmount, toAmount, elapsed / duration);
+            imageMg.fillAmount = p;
+            yield return null;
+        }
+        imageMg.fillAmount = toAmount;
     }
 
     public override string ToString() {

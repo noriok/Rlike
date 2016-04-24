@@ -47,6 +47,10 @@ public class CharacterBase {
         return Loc.Forward(Dir);
     }
 
+    public void HealHp(int heal) {
+        Hp = Utils.Clamp(Hp + heal, 0, MaxHp);
+    }
+
     public virtual void DamageHp(int damage) {
         Hp = Utils.Clamp(Hp - damage, 0, MaxHp);
     }
@@ -118,6 +122,10 @@ public class CharacterBase {
 
         var anim = _gobj.GetComponent<Animator>();
         anim.SetTrigger(name);
+    }
+
+    public virtual IEnumerator HealAnim(int delta) {
+        yield break;
     }
 
     public virtual IEnumerator DamageAnim(int delta) {

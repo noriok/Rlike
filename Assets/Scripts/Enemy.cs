@@ -46,7 +46,8 @@ public class Enemy : CharacterBase {
         while (elapsed <= duration) {
             elapsed += Time.deltaTime;
 
-            float p = Mathf.Lerp(fm, to, elapsed / duration);
+            // float p = Mathf.Lerp(fm, to, elapsed / duration);
+            float p = UTween.Ease(EaseType.OutQuad, fm, to, elapsed / duration);
             float scale = p * HP_GAUGE_MAX_SCALE / MaxHp;
             _barYellow.transform.localScale = new Vector3(scale, 1, 1);
             yield return null;

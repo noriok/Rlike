@@ -1,11 +1,13 @@
 ﻿// using System;
 using System.Collections;
 // using UnityEngine;
+using UnityEngine.Assertions;
 
 public class ActEnemyAttack : Act {
     private CharacterBase _target;
 
     public ActEnemyAttack(Enemy enemy, CharacterBase target) : base(enemy) {
+        Assert.IsTrue(target is Player);
         _target = target;
     }
 
@@ -26,9 +28,14 @@ public class ActEnemyAttack : Act {
         }
 
         _target.RemoveStatus(Status.Sleep);
-        var dmg = new System.Random().Next(30);
+        var dmg = 1 + new System.Random().Next(30);
+        // yield return _target.DamageAnim(dmg);
+        yield return Anim.Par(sys,
+                              () => _target.DamageAnim(dmg),
+                              () => EffectAnim.PopupWhiteDigits(_target, dmg));
+
         _target.DamageHp(dmg);
-        yield return EffectAnim.PopupWhiteDigits(_target, dmg);
+        // yield return EffectAnim.PopupWhiteDigits(_target, dmg);
         Actor.Position = src;
     }
 
