@@ -32,9 +32,12 @@ public class MainSystem : MonoBehaviour {
 
         _player = CreatePlayer(1, 1);
 
-        _enemies.Add(EnemyFactory.CreateEnemy(1, 4));
-        _enemies.Add(EnemyFactory.CreateEnemy(2, 2));
-        _enemies.Last().AddStatus(Status.Sleep);
+        bool b = true;
+        if (b) {
+            _enemies.Add(EnemyFactory.CreateEnemy(1, 4));
+            _enemies.Add(EnemyFactory.CreateEnemy(2, 2));
+            _enemies.Last().AddStatus(Status.Sleep);
+        }
 
         // カメラズーム
         var camera = GameObject.Find("Main Camera");
@@ -49,12 +52,16 @@ public class MainSystem : MonoBehaviour {
         // Zoom ボタンのクリックイベント
         var btn = GameObject.Find("Button_Zoom").GetComponent<Button>();
         btn.onClick.AddListener(() => {
-            camera.GetComponent<Camera>().orthographicSize = _cameraManager.NextSize();
+            if (_gameState == GameState.InputWait) {
+                camera.GetComponent<Camera>().orthographicSize = _cameraManager.NextSize();
+            }
         });
 
         var btn2 = GameObject.Find("Canvas/Button_Skill").GetComponent<Button>();
         btn2.onClick.AddListener(() => {
-            ExecutePlayerUseSkill();
+            if (_gameState == GameState.InputWait) {
+                ExecutePlayerUseSkill();
+            }
         });
     }
 
@@ -66,7 +73,9 @@ public class MainSystem : MonoBehaviour {
 
         Assert.IsTrue(_gameState == GameState.InputWait);
 
+        CheckInput();
 
+/*
         Dir dir;
         if (_keyPad.IsMove(out dir)) {
             int drow = 0;
@@ -90,7 +99,6 @@ public class MainSystem : MonoBehaviour {
         }
 
         if (Input.GetKey(KeyCode.A)) { // 回復アイテム使う
-            Debug.Log("press a");
             ExecutePlayerUseItem();
         }
         else if (Input.GetKey(KeyCode.S)) { // スキル使う
@@ -99,6 +107,7 @@ public class MainSystem : MonoBehaviour {
         else if (Input.GetKey(KeyCode.Period)) { // 何もせずターン終了
             ExecutePlayerWait();
         }
+        */
     }
 
     void OnGUI() {
@@ -118,6 +127,40 @@ public class MainSystem : MonoBehaviour {
         }
         else if (GUI.Button(new Rect(x, 40*2, 100, 40), "zoom out")) {
             ZoomOut();
+        }
+    }
+
+    private void CheckInput() {
+        Dir dir;
+        if (_keyPad.IsMove(out dir)) {
+            int drow = 0;
+            int dcol = 0;
+            switch (dir) {
+            case Dir.N:  drow = -1; dcol =  0; break;
+            case Dir.NE: drow = -1; dcol =  1; break;
+            case Dir.E:  drow =  0; dcol =  1; break;
+            case Dir.SE: drow =  1; dcol =  1; break;
+            case Dir.S:  drow =  1; dcol =  0; break;
+            case Dir.SW: drow =  1; dcol = -1; break;
+            case Dir.W:  drow =  0; dcol = -1; break;
+            case Dir.NW: drow = -1; dcol = -1; break;
+            }
+            ExecutePlayerMove(drow, dcol);
+            return;
+        }
+        else if (_keyPad.IsAttack()) {
+            ExecutePlayerAttack();
+            return;
+        }
+
+        if (Input.GetKey(KeyCode.A)) { // 回復アイテム使う
+            ExecutePlayerUseItem();
+        }
+        else if (Input.GetKey(KeyCode.S)) { // スキル使う
+            ExecutePlayerUseSkill();
+        }
+        else if (Input.GetKey(KeyCode.Period)) { // 何もせずターン終了
+            ExecutePlayerWait();
         }
     }
 
@@ -175,10 +218,12 @@ public class MainSystem : MonoBehaviour {
         switch (nextGameState) {
         case GameState.Act:
             Debug.Log("### Act");
+            UpdateAct();
             break;
 
         case GameState.InputWait:
             Debug.Log("### Input Wait");
+            CheckInput();
             break;
 
         case GameState.TurnStart:

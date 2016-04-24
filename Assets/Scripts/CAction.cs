@@ -10,10 +10,11 @@ public static class CAction {
         float dx = dcol * Config.ChipSize;
         float dy = drow * Config.ChipSize;
         while (elapsed <= duration) {
+            elapsed += Time.deltaTime;
             float x = Mathf.Lerp(src.x, src.x + dx, elapsed / duration);
             float y = Mathf.Lerp(src.y, src.y - dy, elapsed / duration);
             target.Position = new Vector3(x, y, 0);
-            elapsed += Time.deltaTime;
+
 
 			if (updateCallback != null) updateCallback(x, y);
             yield return null;
