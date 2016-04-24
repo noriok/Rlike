@@ -9,7 +9,7 @@ public class TrapHeal : Trap {
 	public override IEnumerator RunAnimation(CharacterBase sender, MainSystem sys) {
 		yield return EffectAnim.Heal(sender.Position);
 
-		var healHp = 10 + new System.Random().Next(10);
+		var healHp = 10 + new System.Random().Next(27);
 		yield return Anim.Par(sys,
 		                      () => sender.HealAnim(healHp),
 							  () => EffectAnim.PopupGreenDigits(sender, healHp));

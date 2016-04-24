@@ -11,7 +11,9 @@ public class Player : CharacterBase {
     public Player(int row, int col, GameObject gobj) : base(row, col, gobj) {
         SyncCameraPosition();
 
-        Hp = MaxHp = 150;
+        Hp = MaxHp = 255;
+        var textHp = GameObject.Find("Canvas/Header/Text_HP_Value").GetComponent<Text>();
+        textHp.text = string.Format("{0}/{1}", Hp, MaxHp);
 
         var pos = gobj.transform.position;
         float d = Config.ChipSize / 2;
