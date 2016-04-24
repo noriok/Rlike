@@ -66,6 +66,8 @@ public class MainSystem : MonoBehaviour {
     }
 
     void Update() {
+        _map.UpdateMinimapPlayerIconBlink();
+
         if (_gameState == GameState.Act) {
             UpdateAct();
             return;

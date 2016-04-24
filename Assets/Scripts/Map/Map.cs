@@ -88,6 +88,10 @@ public class Map {
         _minimap.UpdateIcon(playerLoc, enemies);
     }
 
+    public void UpdateMinimapPlayerIconBlink() {
+        _minimap.UpdatePlayerIconBlink();
+    }
+
     public void ShowMinimap() {
         _minimap.Show();
     }

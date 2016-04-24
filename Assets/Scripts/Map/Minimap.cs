@@ -11,6 +11,8 @@ public class Minimap {
 	private GameObject _playerIcon;
 	private List<GameObject> _enemyIcons = new List<GameObject>();
 
+	private float _elapsed;
+
 	public Minimap(char[,] map, List<FieldObject> fieldObjects, Loc playerLoc, List<Enemy> enemies) {
 		if (enemies.Count > Config.EnemyMaxCount) {
 			Debug.LogError("敵の出現数が最大値を超えています。");
@@ -63,6 +65,16 @@ public class Minimap {
 			else {
 				_enemyIcons[i].SetActive(false);
 			}
+		}
+	}
+
+	// プレイヤーアイコンの点滅更新
+	public void UpdatePlayerIconBlink() {
+		float blinkTime = 0.6f;
+		_elapsed += Time.deltaTime;
+		if (_elapsed >= blinkTime) {
+			_playerIcon.SetActive(!_playerIcon.activeSelf);
+			_elapsed -= blinkTime;
 		}
 	}
 
