@@ -17,12 +17,17 @@ public class ActPlayerMove : Act {
     protected override IEnumerator RunAnimation(MainSystem sys) {
         Actor.ChangeDir(Utils.ToDir(_drow, _dcol));
 
+        // TODO: 一歩一歩が連続していないので矢印が点滅してしまう
+        //Actor.ShowDirection(Utils.ToDir(_drow, _dcol));
+
         var camera = GameObject.Find("Main Camera").GetComponent<Camera>();
         float cameraZ = camera.transform.position.z;
         yield return CAction.Walk(Actor, _drow, _dcol, (x, y) => {
             // カメラの位置も合わせる
             camera.transform.position = new Vector3(x, y + Config.CameraOffsetY, cameraZ);
         });
+
+        // Actor.HideDirection();
     }
 
     public override void Apply(MainSystem sys) {

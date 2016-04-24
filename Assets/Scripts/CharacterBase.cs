@@ -131,4 +131,10 @@ public class CharacterBase {
     public IEnumerator FadeIn() {
         return CAction.FadeIn(_gobj, 0.5f);
     }
+
+    public virtual void ShowDirection(Dir dir) {
+    }
+
+    public virtual void HideDirection() {
+    }
 }

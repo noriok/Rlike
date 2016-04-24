@@ -230,6 +230,8 @@ public class MainSystem : MonoBehaviour {
             Debug.Log("### Turn Start");
             SysTurnStart();
 
+            _player.HideDirection();
+
             ChangeGameState(GameState.InputWait);
             break;
 
@@ -344,6 +346,7 @@ public class MainSystem : MonoBehaviour {
         Dir dir = Utils.ToDir(drow, dcol);
         Loc to = _player.Loc.Forward(dir);
         if (_map.CanAdvance(_player.Loc, dir) && !ExistsEnemy(to)) {
+            _player.ShowDirection(dir);
             _acts.Add(new ActPlayerMove(_player, drow, dcol));
 
             // TODO:移動先にトラップがあるなら、トラップイベントを発生させる

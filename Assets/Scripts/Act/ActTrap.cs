@@ -13,6 +13,7 @@ public class ActTrap : Act {
 	}
 
 	protected override IEnumerator RunAnimation(MainSystem sys) {
+		Actor.HideDirection();
 		yield return _trap.RunAnimation(Actor, sys);
 	}
 
