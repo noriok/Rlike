@@ -22,9 +22,18 @@ public class ActPlayerMove : Act {
 
         var camera = GameObject.Find("Main Camera").GetComponent<Camera>();
         float cameraZ = camera.transform.position.z;
+        var minimap = GameObject.Find("Minimap Layer");
         yield return CAction.Walk(Actor, _drow, _dcol, (x, y) => {
+            var pos = camera.transform.position;
+
             // カメラの位置も合わせる
             camera.transform.position = new Vector3(x, y + Config.CameraOffsetY, cameraZ);
+
+            // ミニマップの位置
+            float dx = camera.transform.position.x - pos.x;
+            float dy = camera.transform.position.y - pos.y;
+            var t = minimap.transform.position;
+            minimap.transform.position = new Vector3(t.x + dx, t.y + dy, t.z);
         });
 
         // Actor.HideDirection();

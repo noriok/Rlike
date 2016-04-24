@@ -29,7 +29,9 @@ public class Map {
 
     private List<FieldObject> _fieldObjects = new List<FieldObject>();
 
-    public Map() {
+    private Minimap _minimap;
+
+    public Map(Loc playerLoc, List<Enemy> enemies) {
         var lines = TestMap.Trim().Split(new[] { '\n' });
 
         int rows = lines.Length;
@@ -38,7 +40,7 @@ public class Map {
         _map = new char[rows, cols];
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < cols; j++) {
-                _map[i, j] = MapChar.Floor;
+                _map[i, j] = MapChar.Wall;
             }
             for (int j = 0; j < lines[i].Length; j++) {
                 _map[i, j] = lines[i][j];
@@ -78,6 +80,20 @@ public class Map {
         _fieldObjects.Add(FieldObjectFactory.CreateTrapWarp(new Loc(3, 6), _mapLayer));
         _fieldObjects.Add(FieldObjectFactory.CreateTrapDamage(new Loc(3, 7), _mapLayer));
         _fieldObjects.Add(FieldObjectFactory.CreateTrapSummon(new Loc(3, 8), _mapLayer));
+
+        _minimap = new Minimap(_map, _fieldObjects, playerLoc, enemies);
+    }
+
+    public void UpdateMinimap(Loc playerLoc, List<Enemy> enemies) {
+        _minimap.UpdateIcon(playerLoc, enemies);
+    }
+
+    public void ShowMinimap() {
+        _minimap.Show();
+    }
+
+    public void HideMinimap() {
+        _minimap.Hide();
     }
 
     private T FindFieldObject<T>(Loc loc) where T : FieldObject {

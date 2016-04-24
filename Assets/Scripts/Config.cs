@@ -3,4 +3,8 @@
 
     // プレイヤーとカメラの Y 座標のオフセット
     public const float CameraOffsetY = -0.5f;
+
+    // フロアに配置可能な敵の最大数
+    public const int EnemyMaxCount = 25;
 }
+

@@ -54,6 +54,8 @@ public class ActPlayerUseSkill : Act {
 	protected override IEnumerator RunAnimation(MainSystem sys) {
 		yield return EffectAnim.Aura(Actor);
 
+		sys.HideMinimap();
+
 		// 黒マスクで画面全体を暗くする
 		var mask = (GameObject)GameObject.Instantiate(Resources.Load("Prefabs/Mask/black"), Actor.Position, Quaternion.identity);
 		mask.transform.localScale = new Vector3(10f, 15f, 1);
@@ -72,6 +74,8 @@ public class ActPlayerUseSkill : Act {
 		                      () => sys.CameraZoomIn(cameraZoomDelta),
 							  () => MaskFade(mask, 0.5f, 0));
 		GameObject.Destroy(mask);
+
+		sys.ShowMinimap();
 
 		var damageAnims = new List<DamageWait>();
 		for (int i = 0; i < _targets.Length; i++) {

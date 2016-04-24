@@ -65,6 +65,18 @@ TagManager:
   - name: Effect Base
     uniqueID: 2040051141
     locked: 0
+  - name: Spotlight Base
+    uniqueID: 368364083
+    locked: 0
+  - name: Minimap Base
+    uniqueID: 305813983
+    locked: 0
+  - name: Minimap Field Object Base
+    uniqueID: 3941589595
+    locked: 0
+  - name: Minimap Over
+    uniqueID: 2704339361
+    locked: 0
   - name: Font Base
     uniqueID: 2493646599
     locked: 0

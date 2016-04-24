@@ -46,7 +46,7 @@ public class MainSystem : MonoBehaviour {
         float z = camera.transform.position.z;
         camera.transform.position = new Vector3(pos.x, pos.y + Config.CameraOffsetY, z);
 
-        _map = new Map();
+        _map = new Map(_player.Loc, _enemies);
         ChangeGameState(GameState.TurnStart);
 
         // Zoom ボタンのクリックイベント
@@ -318,6 +318,8 @@ public class MainSystem : MonoBehaviour {
         _turnCount++;
         DLog.D("ターン: {0}", _turnCount);
 
+        _map.UpdateMinimap(_player.Loc, _enemies);
+
         // 行動回数の復帰
         foreach (var e in _enemies) {
             // if (e.IsSleep()) { // 寝ているならこのターンは行動できない
@@ -443,5 +445,13 @@ public class MainSystem : MonoBehaviour {
         yield return Anim.Par(this,
                               () => e.FadeIn(),
                               () => EffectAnim.Aura2(e.Position));
+    }
+
+    public void ShowMinimap() {
+        _map.ShowMinimap();
+    }
+
+    public void HideMinimap()  {
+        _map.HideMinimap();
     }
 }

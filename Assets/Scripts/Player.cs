@@ -39,7 +39,6 @@ public class Player : CharacterBase {
     private void SyncCameraPosition() {
         var camera = GameObject.Find("Main Camera").GetComponent<Camera>();
         float cameraZ = camera.transform.position.z;
-
         float x = Position.x;
         float y = Position.y;
         camera.transform.position = new Vector3(x, y, cameraZ);
