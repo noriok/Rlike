@@ -22,6 +22,8 @@ public class MainSystem : MonoBehaviour {
 
     private List<Act> _acts = new List<Act>();
 
+    private Dialog _dialog;
+
     private Map _map;
     private int _turnCount = 0;
 
@@ -29,6 +31,7 @@ public class MainSystem : MonoBehaviour {
 
     void Start() {
         _keyPad = new KeyPad();
+        _dialog = new Dialog();
 
         _player = CreatePlayer(1, 1);
 
@@ -76,40 +79,6 @@ public class MainSystem : MonoBehaviour {
         Assert.IsTrue(_gameState == GameState.InputWait);
 
         CheckInput();
-
-/*
-        Dir dir;
-        if (_keyPad.IsMove(out dir)) {
-            int drow = 0;
-            int dcol = 0;
-            switch (dir) {
-            case Dir.N:  drow = -1; dcol =  0; break;
-            case Dir.NE: drow = -1; dcol =  1; break;
-            case Dir.E:  drow =  0; dcol =  1; break;
-            case Dir.SE: drow =  1; dcol =  1; break;
-            case Dir.S:  drow =  1; dcol =  0; break;
-            case Dir.SW: drow =  1; dcol = -1; break;
-            case Dir.W:  drow =  0; dcol = -1; break;
-            case Dir.NW: drow = -1; dcol = -1; break;
-            }
-            ExecutePlayerMove(drow, dcol);
-            return;
-        }
-        else if (_keyPad.IsAttack()) {
-            ExecutePlayerAttack();
-            return;
-        }
-
-        if (Input.GetKey(KeyCode.A)) { // 回復アイテム使う
-            ExecutePlayerUseItem();
-        }
-        else if (Input.GetKey(KeyCode.S)) { // スキル使う
-            ExecutePlayerUseSkill();
-        }
-        else if (Input.GetKey(KeyCode.Period)) { // 何もせずターン終了
-            ExecutePlayerWait();
-        }
-        */
     }
 
     void OnGUI() {
@@ -122,7 +91,7 @@ public class MainSystem : MonoBehaviour {
 
         int x = 300;
         if (GUI.Button(new Rect(x, 0, 100, 40), "test")) {
-            _player.RemoveAllStatus();
+            _dialog.Show("ほげほげ\nこんにちは世界");
         }
         else if (GUI.Button(new Rect(x, 40*1, 100, 40), "zoom in")) {
             ZoomIn();
@@ -133,6 +102,8 @@ public class MainSystem : MonoBehaviour {
     }
 
     private void CheckInput() {
+        if (_dialog.IsOpen) return;
+
         Dir dir;
         if (_keyPad.IsMove(out dir)) {
             int drow = 0;
@@ -399,9 +370,8 @@ public class MainSystem : MonoBehaviour {
 
         NoticeBoard noticeBoard = _map.FindNoticeBoard(loc);
         if (noticeBoard != null) {
-            // 立て札を読む
-            _acts.Add(new ActPlayerReadNoticeBoard(_player, noticeBoard));
-            ChangeGameState(GameState.Act);
+            // 立て札を読む場合はターンを消費しない
+            ShowDialog(noticeBoard.Msg);
             return;
         }
 
@@ -455,5 +425,9 @@ public class MainSystem : MonoBehaviour {
 
     public void HideMinimap()  {
         _map.HideMinimap();
+    }
+
+    public void ShowDialog(string message) {
+        _dialog.Show(message);
     }
 }
