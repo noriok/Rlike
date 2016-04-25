@@ -28,10 +28,12 @@ public class MainSystem : MonoBehaviour {
     private int _turnCount = 0;
 
     private KeyPad _keyPad;
+    private FloorBanner _banner;
 
     void Start() {
         _keyPad = new KeyPad();
         _dialog = new Dialog();
+        _banner = new FloorBanner();
 
         _player = CreatePlayer(1, 1);
 
@@ -91,12 +93,16 @@ public class MainSystem : MonoBehaviour {
 
         int x = 300;
         if (GUI.Button(new Rect(x, 0, 100, 40), "test")) {
-            _dialog.Show("ほげほげ\nこんにちは世界");
+            StartCoroutine(_banner.FadeInAnimation("hoge", 1));
         }
-        else if (GUI.Button(new Rect(x, 40*1, 100, 40), "zoom in")) {
+        else if (GUI.Button(new Rect(x, 40*1, 100, 40), "test2")) {
+            StartCoroutine(_banner.FadeOutAnimation());
+
+        }
+        else if (GUI.Button(new Rect(x, 40*2, 100, 40), "zoom in")) {
             ZoomIn();
         }
-        else if (GUI.Button(new Rect(x, 40*2, 100, 40), "zoom out")) {
+        else if (GUI.Button(new Rect(x, 40*3, 100, 40), "zoom out")) {
             ZoomOut();
         }
     }
