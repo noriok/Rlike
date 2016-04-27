@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+// using System;
 
 enum GameState {
     InputWait, // 入力待ち
@@ -416,6 +417,7 @@ public class MainSystem : MonoBehaviour {
     }
 
     public IEnumerator Summon(Loc loc) {
+        Debug.Log("summon loc:" + loc);
         // TODO: assert(loc に敵がいない)
         var e = EnemyFactory.CreateEnemy(loc.Row, loc.Col);
         _enemies.Add(e);

@@ -7,10 +7,7 @@ public class FloorBanner {
 
 	public FloorBanner() {
 		_banner = GameObject.Find("Canvas/FloorBanner");
-		Debug.Log("_banner = " + _banner);
-
 		_banner.SetActive(false);
-
 	}
 
 	public IEnumerator FadeInAnimation(string floorName, int floorNumber) {

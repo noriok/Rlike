@@ -8,10 +8,11 @@ public class TrapSummon : Trap {
 
 	}
 
+	// 一時変数を共有するクロージャとイテレータを同時に使うのを避けるため関数化する
 	// TODO:
 	// 周囲八マスからランダムに選ぶ
 	// その位置に敵がいないことを確認
-	private Func<IEnumerator>[] Foo(Loc src, MainSystem sys) {
+	private Func<IEnumerator>[] Summon(Loc src, MainSystem sys) {
 		var locs = new List<Loc>();
 		locs.Add(new Loc(src.Row - 1, src.Col));
 		locs.Add(new Loc(src.Row, src.Col + 1));
@@ -27,7 +28,6 @@ public class TrapSummon : Trap {
 
 	// TODO:Run rename
 	public override IEnumerator RunAnimation(CharacterBase sender, MainSystem sys) {
-		var src = sender.Loc;
-		yield return Anim.Par(sys, Foo(src, sys));
+		yield return Anim.Par(sys, Summon(sender.Loc, sys));
 	}
 }
