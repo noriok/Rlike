@@ -1,4 +1,4 @@
-﻿// using UnityEngine;
+﻿using UnityEngine;
 using System.Collections;
 
 public abstract class Act {
@@ -6,7 +6,7 @@ public abstract class Act {
     public bool Finished { get; private set; }
 
     private bool _started;
-    private bool _animationFinished;
+    protected bool _animationFinished;
 
     private IEnumerator StartAnimation(MainSystem sys) {
         yield return RunAnimation(sys);
@@ -29,10 +29,17 @@ public abstract class Act {
         return false;
     }
 
+    public virtual bool IsManualUpdate() {
+        return false;
+    }
+
     public Act(CharacterBase actor) {
         Actor = actor;
         _started = false;
         Finished = false;
+    }
+
+    public virtual void Update(MainSystem sy) {
     }
 
     public void UpdateAct(MainSystem sys) {
@@ -40,12 +47,19 @@ public abstract class Act {
 
         if (!_started) {
             _started = true;
-            sys.StartCoroutine(StartAnimation(sys));
-            return;
+            if (!IsManualUpdate()) {
+                sys.StartCoroutine(StartAnimation(sys));
+            }
+        }
+
+        if (IsManualUpdate()) {
+            Update(sys);
         }
 
         //if (AnimationFinished) {
         if (_animationFinished) {
+            Debug.Log("_animationFinished " + Time.time);
+
             // TODO:RunEffectで効果を実行。コールはサブクラスで行う
             Apply(sys);
             Actor.ActCount--;

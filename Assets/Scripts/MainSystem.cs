@@ -47,6 +47,13 @@ public class MainSystem : MonoBehaviour {
         if (b) {
             _enemies.Add(EnemyFactory.CreateEnemy(1, 4, enemyLayer));
             _enemies.Add(EnemyFactory.CreateEnemy(2, 2, enemyLayer));
+
+            _enemies.Add(EnemyFactory.CreateEnemy(1, 5, enemyLayer));
+            _enemies.Add(EnemyFactory.CreateEnemy(1, 6, enemyLayer));
+            _enemies.Add(EnemyFactory.CreateEnemy(1, 7, enemyLayer));
+            _enemies.Add(EnemyFactory.CreateEnemy(1, 8, enemyLayer));
+            _enemies.Add(EnemyFactory.CreateEnemy(1, 9, enemyLayer));
+
             foreach (var e in _enemies) e.AddStatus(Status.Sleep);
         }
 
@@ -204,17 +211,17 @@ public class MainSystem : MonoBehaviour {
 
         switch (nextGameState) {
         case GameState.Act:
-            Debug.Log("### Act");
+            Debug.Log("### Act " + Time.time);
             UpdateAct();
             break;
 
         case GameState.InputWait:
-            Debug.Log("### Input Wait");
+            Debug.Log("### Input Wait " + Time.time);
             CheckInput();
             break;
 
         case GameState.TurnStart:
-            Debug.Log("### Turn Start");
+            Debug.Log("### Turn Start " + Time.time);
             SysTurnStart();
 
             _player.HideDirection();
@@ -223,7 +230,7 @@ public class MainSystem : MonoBehaviour {
             break;
 
         case GameState.TurnEnd:
-            Debug.Log("### Turn Finish");
+            Debug.Log("### Turn Finish " + Time.time);
             SysTurnEnd();
 
             ChangeGameState(GameState.TurnStart);

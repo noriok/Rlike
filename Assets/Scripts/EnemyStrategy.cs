@@ -57,7 +57,7 @@ public static class EnemyStrategy {
 
             if (enemies[i].IsSleep()) {
                 used[i] = true;
-                q.Add(new ActEnemyWait(enemies[i]));
+                // q.Add(new ActEnemyWait(enemies[i]));
             }
         }
 
@@ -101,7 +101,7 @@ public static class EnemyStrategy {
         // 移動も行動も出来ないキャラは待機
         for (int i = 0; i < enemies.Count; i++) {
             if (used[i]) continue;
-            q.Add(new ActEnemyWait(enemies[i]));
+            // q.Add(new ActEnemyWait(enemies[i]));
             used[i] = true;
         }
 

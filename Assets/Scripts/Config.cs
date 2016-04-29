@@ -6,5 +6,7 @@
 
     // フロアに配置可能な敵の最大数
     public const int EnemyMaxCount = 25;
+
+    public const float WalkDuration = 0.35f;
 }
 
