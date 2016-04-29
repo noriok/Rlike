@@ -12,7 +12,7 @@ enum GameState {
     Act,       // 行動中
 
     TurnStart,  // ターン開始
-    TurnFinish, // ターン終了
+    TurnEnd, // ターン終了
 }
 
 public class MainSystem : MonoBehaviour {
@@ -30,13 +30,15 @@ public class MainSystem : MonoBehaviour {
 
     private KeyPad _keyPad;
     private FloorBanner _banner;
+    private GameManager _gm;
 
     void Start() {
         _keyPad = new KeyPad();
         _dialog = new Dialog();
         _banner = new FloorBanner();
+        _gm = new GameManager();
 
-        _player = CreatePlayer(1, 1);
+        _player = _gm.CreatePlayer(1, 1);
 
         bool b = true;
         if (b) {
@@ -127,6 +129,10 @@ public class MainSystem : MonoBehaviour {
             ExecutePlayerAttack();
             return;
         }
+        else if (_keyPad.IsFireTrap()) {
+            ExecutePlayerFireTrap();
+            return;
+        }
 
         if (Input.GetKey(KeyCode.A)) { // 回復アイテム使う
             ExecutePlayerUseItem();
@@ -137,13 +143,14 @@ public class MainSystem : MonoBehaviour {
         else if (Input.GetKey(KeyCode.Period)) { // 何もせずターン終了
             ExecutePlayerWait();
         }
+
     }
 
     private IEnumerator NextFloor() {
         yield return _banner.FadeInAnimation("ダンジョン名", 1);
 
         // TODO:次のフロア生成
-        yield return new WaitForSeconds(1.8f);
+        yield return new WaitForSeconds(1.6f);
 
         yield return _banner.FadeOutAnimation();
     }
@@ -189,12 +196,6 @@ public class MainSystem : MonoBehaviour {
         return CameraZoom(delta);
     }
 
-    private Player CreatePlayer(int row, int col) {
-        // var obj = Resources.Load("Prefabs/Animations/kabocha_0");
-        var obj = Resources.Load("Prefabs/Animations/majo_0");
-        var gobj = (GameObject)GameObject.Instantiate(obj, Vector3.zero, Quaternion.identity);
-        return new Player(row, col, gobj);
-    }
 
     private void ChangeGameState(GameState nextGameState) {
         _gameState = nextGameState;
@@ -219,7 +220,7 @@ public class MainSystem : MonoBehaviour {
             ChangeGameState(GameState.InputWait);
             break;
 
-        case GameState.TurnFinish:
+        case GameState.TurnEnd:
             Debug.Log("### Turn Finish");
             SysTurnEnd();
 
@@ -260,7 +261,6 @@ public class MainSystem : MonoBehaviour {
 
         if (!moveFinished) return; // 移動タスクが完了するまで待機
 
-        // TODO:トラップイベントの処理
         bool trapFinished = true;
         foreach (var act in _acts) {
             if (act.IsTrapAct() && !act.Finished) {
@@ -287,7 +287,7 @@ public class MainSystem : MonoBehaviour {
             // 行動していないキャラの Act を取得
             var acts = DetectEnemyAct(_player.Loc);
             if (acts.Count == 0) { // 全てのキャラの行動が終了した
-                ChangeGameState(GameState.TurnFinish);
+                ChangeGameState(GameState.TurnEnd);
             }
             else {
                 _acts.AddRange(acts); // Act を追加
@@ -404,6 +404,19 @@ public class MainSystem : MonoBehaviour {
         ChangeGameState(GameState.Act);
     }
 
+    private void ExecutePlayerFireTrap() {
+        Assert.IsTrue(_acts.Count == 0);
+
+        Trap trap = _map.FindTrap(_player.Loc);
+        if (trap == null) {
+            ExecutePlayerWait();
+        }
+        else {
+            _acts.Add(new ActTrap(_player, trap));
+            ChangeGameState(GameState.Act);
+        }
+    }
+
     private List<Act> DetectEnemyAct(Loc playerNextLoc) {
         return EnemyStrategy.Detect(_enemies, _player, playerNextLoc, _map);
     }
@@ -422,7 +435,6 @@ public class MainSystem : MonoBehaviour {
     }
 
     public IEnumerator Summon(Loc loc) {
-        Debug.Log("summon loc:" + loc);
         // TODO: assert(loc に敵がいない)
         var e = EnemyFactory.CreateEnemy(loc.Row, loc.Col);
         _enemies.Add(e);

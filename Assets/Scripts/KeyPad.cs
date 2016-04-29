@@ -40,6 +40,11 @@ public class KeyPad {
 		return false;
 	}
 
+	public bool IsFireTrap() {
+		if (Input.GetKey(KeyCode.X)) return true;
+		return false;
+	}
+
 	public bool IsMove(out Dir dir) {
 		bool buttonPressed = true;
 		dir = Dir.N;
