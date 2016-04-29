@@ -38,8 +38,7 @@ public class MainSystem : MonoBehaviour {
         _banner = new FloorBanner();
         _gm = new GameManager();
 
-
-        _player = _gm.CreatePlayer(1, 1);
+        _player = _gm.CreatePlayer(2, 5);
 
         var enemyLayer = new GameObject(LayerName.Enemy);
 
@@ -81,6 +80,8 @@ public class MainSystem : MonoBehaviour {
                 ExecutePlayerUseSkill();
             }
         });
+
+        _player.SyncCameraPosition();
     }
 
     void Update() {
@@ -211,17 +212,16 @@ public class MainSystem : MonoBehaviour {
 
         switch (nextGameState) {
         case GameState.Act:
-            Debug.Log("### Act " + Time.time);
-            UpdateAct();
+            Debug.Log("### Act ");
             break;
 
         case GameState.InputWait:
-            Debug.Log("### Input Wait " + Time.time);
+            Debug.Log("### Input Wait ");
             CheckInput();
             break;
 
         case GameState.TurnStart:
-            Debug.Log("### Turn Start " + Time.time);
+            Debug.Log("### Turn Start ");
             SysTurnStart();
 
             _player.HideDirection();
@@ -230,7 +230,7 @@ public class MainSystem : MonoBehaviour {
             break;
 
         case GameState.TurnEnd:
-            Debug.Log("### Turn Finish " + Time.time);
+            Debug.Log("### Turn Finish ");
             SysTurnEnd();
 
             ChangeGameState(GameState.TurnStart);

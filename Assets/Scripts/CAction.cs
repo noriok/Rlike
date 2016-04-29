@@ -5,7 +5,7 @@ using System.Collections;
 public static class CAction {
 	public static IEnumerator Walk(CharacterBase target, int drow, int dcol, Action<float, float> updateCallback) {
 		var src = target.Position;
-	    float duration = 0.4f;
+	    float duration = Config.WalkDuration;
         float elapsed = 0;
         float dx = dcol * Config.ChipSize;
         float dy = drow * Config.ChipSize;

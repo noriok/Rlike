@@ -9,7 +9,6 @@ public class ActEnemyMove : Act {
     private Vector3 _srcPos;
     private Vector3 _dstPos;
     private float _elapsed;
-    private float _duration = Config.WalkDuration;
     private bool _isFirst = true;
 
     // nextLoc = 移動後の位置
@@ -49,17 +48,17 @@ public class ActEnemyMove : Act {
             _isFirst = false;
         }
 
-        float t = _elapsed / _duration;
+        _elapsed += Time.deltaTime;
+        float t = _elapsed / Config.WalkDuration;
         float x = Mathf.Lerp(_srcPos.x, _dstPos.x, t);
         float y = Mathf.Lerp(_srcPos.y, _dstPos.y, t);
         Actor.Position = new Vector3(x, y, 0);
 
-        if (_elapsed >= _duration) {
+        if (_elapsed >= Config.WalkDuration) {
             _animationFinished = true;
 
             // 位置ずれ防止
             Actor.Position = _dstPos;
         }
-        _elapsed += Time.deltaTime;
     }
 }

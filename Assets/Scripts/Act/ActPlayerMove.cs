@@ -11,13 +11,14 @@ public class ActPlayerMove : Act {
     private float _elapsed;
     private Vector3 _srcPos;
     private Vector3 _dstPos;
-    private float _duration = Config.WalkDuration;
 
     private bool _isFirst = true;
+    private Player _player;
 
     public ActPlayerMove(Player player, int drow, int dcol) : base(player) {
         _drow = drow;
         _dcol = dcol;
+        _player = player;
 
         _camera = GameObject.Find("Main Camera").GetComponent<Camera>();
         _cameraZ = _camera.transform.position.z;
@@ -38,20 +39,8 @@ public class ActPlayerMove : Act {
         // TODO: 一歩一歩が連続していないので矢印が点滅してしまう
         //Actor.ShowDirection(Utils.ToDir(_drow, _dcol));
 
-        var camera = GameObject.Find("Main Camera").GetComponent<Camera>();
-        float cameraZ = camera.transform.position.z;
-        var minimap = GameObject.Find("Minimap Layer");
         yield return CAction.Walk(Actor, _drow, _dcol, (x, y) => {
-            var pos = camera.transform.position;
-
-            // カメラの位置も合わせる
-            camera.transform.position = new Vector3(x, y + Config.CameraOffsetY, cameraZ);
-
-            // ミニマップの位置
-            float dx = camera.transform.position.x - pos.x;
-            float dy = camera.transform.position.y - pos.y;
-            var t = minimap.transform.position;
-            minimap.transform.position = new Vector3(t.x + dx, t.y + dy, t.z);
+            _player.SyncCameraPosition();
         });
 
         // Actor.HideDirection();
@@ -73,33 +62,18 @@ public class ActPlayerMove : Act {
             _isFirst = false;
         }
 
-        float x = Mathf.Lerp(_srcPos.x, _dstPos.x, _elapsed / _duration);
-        float y = Mathf.Lerp(_srcPos.y, _dstPos.y, _elapsed / _duration);
+        _elapsed += Time.deltaTime;
+        float t = _elapsed / Config.WalkDuration;
+        float x = Mathf.Lerp(_srcPos.x, _dstPos.x, t);
+        float y = Mathf.Lerp(_srcPos.y, _dstPos.y, t);
         Actor.Position = new Vector3(x, y, 0);
 
-        Vector3 cameraPos = _camera.transform.position;
-        // カメラの位置をプレイヤーの位置に合わせる
-        float cameraX = x;
-        float cameraY = y + Config.CameraOffsetY;
-        _camera.transform.position = new Vector3(cameraX, cameraY, _cameraZ);
-
-
-        float dx = _camera.transform.position.x - cameraPos.x;
-        float dy = _camera.transform.position.y - cameraPos.y;
-        var t = _minimapLayer.transform.position;
-        _minimapLayer.transform.position = new Vector3(t.x + dx, t.y + dy, t.z);
-
-        if (_elapsed >= _duration) {
+        _player.SyncCameraPosition();
+        if (_elapsed >= Config.WalkDuration) {
             _animationFinished = true;
-
             // 位置ずれ防止
             Actor.Position = _dstPos;
-            _camera.transform.position = new Vector3(_dstPos.x, _dstPos.y + Config.CameraOffsetY, _cameraZ);
-            // TODO:ミニマップの位置
-
-
-            Debug.Log("walk end " + Time.time);
+            _player.SyncCameraPosition();
         }
-        _elapsed += Time.deltaTime;
     }
 }

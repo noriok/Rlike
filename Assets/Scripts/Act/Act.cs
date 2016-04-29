@@ -58,8 +58,6 @@ public abstract class Act {
 
         //if (AnimationFinished) {
         if (_animationFinished) {
-            Debug.Log("_animationFinished " + Time.time);
-
             // TODO:RunEffectで効果を実行。コールはサブクラスで行う
             Apply(sys);
             Actor.ActCount--;

@@ -9,8 +9,6 @@ public class Player : CharacterBase {
     private Dictionary<Dir, GameObject> _dirs = new Dictionary<Dir, GameObject>();
 
     public Player(int row, int col, GameObject gobj) : base(row, col, gobj) {
-        SyncCameraPosition();
-
         Hp = MaxHp = 255;
         var textHp = GameObject.Find("Canvas/Header/Text_HP_Value").GetComponent<Text>();
         textHp.text = string.Format("{0}/{1}", Hp, MaxHp);
@@ -40,12 +38,16 @@ public class Player : CharacterBase {
         }
     }
 
-    private void SyncCameraPosition() {
+    public void SyncCameraPosition() {
         var camera = GameObject.Find("Main Camera").GetComponent<Camera>();
+        var minimapLayer = GameObject.Find(LayerName.Minimap);
+
         float cameraZ = camera.transform.position.z;
         float x = Position.x;
         float y = Position.y;
-        camera.transform.position = new Vector3(x, y, cameraZ);
+        camera.transform.position = new Vector3(x, y + Config.CameraOffsetY, cameraZ);
+
+        minimapLayer.transform.position = new Vector3(x + Config.MinimapOffsetX, y + Config.MinimapOffsetY, 0);
     }
 
     public override void ShowDirection(Dir dir) {
