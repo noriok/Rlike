@@ -4,6 +4,16 @@ using System.Collections.Generic;
 using UnityEngine.Assertions;
 
 public static class Utils {
+    private static readonly Random _rand = new Random();
+
+    public static void Shuffle<T>(List<T> xs) {
+        for (int i = 0; i < xs.Count; i++) {
+            int p = _rand.Next(xs.Count);
+            var t = xs[i];
+            xs[i] = xs[p];
+            xs[p] = t;
+        }
+    }
 
     public static Dir ToDir(int drow, int dcol) {
         if (drow == -1) {
