@@ -13,19 +13,14 @@ public class Minimap {
 
 	private float _elapsed;
 
-	public Minimap(char[,] map, List<FieldObject> fieldObjects, Loc playerLoc, List<Enemy> enemies) {
-		if (enemies.Count > Config.EnemyMaxCount) {
-			Debug.LogError("敵の出現数が最大値を超えています。");
-			Assert.IsTrue(false);
-		}
-
-		_layer = new GameObject("Minimap Layer");
+	public Minimap(char[,] map, List<FieldObject> fieldObjects, Loc stairsLoc) {
+		_layer = new GameObject(LayerName.Minimap);
 
 		int rows = map.GetLength(0);
 		int cols = map.GetLength(1);
 		for (int i = 0; i < rows; i++) {
 			for (int j = 0; j < cols; j++) {
-				if (map[i, j] == MapChar.Floor || map[i, j] == MapChar.Passage) {
+				if (map[i, j] == MapChar.Room || map[i, j] == MapChar.Passage) {
 					CreateFloor(i, j, _layer);
 				}
 			}
@@ -38,20 +33,22 @@ public class Minimap {
 			}
 		}
 
-		_playerIcon = CreatePlayer(playerLoc.Row, playerLoc.Col, _layer);
+		// 階段 TODO:階段の位置を引数で受け取る
+		CreateStairs(stairsLoc.Row, stairsLoc.Col, _layer);
+
+		_playerIcon = CreatePlayer(0, 0, _layer);
 		for (int i = 0; i < Config.EnemyMaxCount; i++) {
 			_enemyIcons.Add(CreateEnemy(0, 0, _layer));
 		}
-		UpdateIcon(playerLoc, enemies);
+		// UpdateIcon(playerLoc, enemies);
 
-		for (int i = 0; i < enemies.Count; i++) {
-			_enemyIcons[i].transform.position = ToPosition(enemies[i].Loc);
-			_enemyIcons[i].SetActive(true);
-		}
+		// for (int i = 0; i < enemies.Count; i++) {
+		// 	_enemyIcons[i].transform.position = ToPosition(enemies[i].Loc);
+		// 	_enemyIcons[i].SetActive(true);
+		// }
 
 		_layer.transform.localScale = new Vector3(0.1f, 0.1f, 1.0f);
 		_layer.transform.position = new Vector3(-0.8f, 0.3f, 0);
-
 	}
 
 	public void UpdateIcon(Loc playerLoc, List<Enemy> enemies) {
@@ -119,5 +116,7 @@ public class Minimap {
 		return Create("Prefabs/Minimap/minimap-enemy", row, col, layer);
 	}
 
-
+	private GameObject CreateStairs(int row, int col, GameObject layer) {
+		return Create("Prefabs/Minimap/minimap-stairs", row, col, layer);
+	}
 }

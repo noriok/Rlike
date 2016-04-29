@@ -16,7 +16,7 @@ public static class GenMaze {
                     maze[i, j] = MapChar.Wall;
                 }
                 else {
-                    maze[i, j] = MapChar.Floor;
+                    maze[i, j] = MapChar.Room;
                 }
             }
         }
@@ -34,7 +34,7 @@ public static class GenMaze {
             foreach (var d in ds) {
                 int r = 1 + d[0];
                 int c = i + d[1];
-                if (maze[r, c] == MapChar.Floor) {
+                if (maze[r, c] == MapChar.Room) {
                     maze[r, c] = MapChar.Wall;
                     break;
                 }
@@ -51,7 +51,7 @@ public static class GenMaze {
                 foreach (var d in ds) {
                     int r = i + d[0];
                     int c = j + d[1];
-                    if (maze[r, c] == MapChar.Floor) {
+                    if (maze[r, c] == MapChar.Room) {
                         maze[r, c] = MapChar.Wall;
                         break;
                     }

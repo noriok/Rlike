@@ -23,15 +23,15 @@ public static class EnemyStrategy {
         return locs;
     }
 
-    private static bool CanDirectAttack(Loc fm, Loc to, Map map) {
+    private static bool CanDirectAttack(Loc fm, Loc to, Floor floor) {
         if (fm.IsNeighbor(to)) {
             Dir dir = fm.Toward(to);
-            return map.CanAdvance(fm, dir);
+            return floor.CanAdvance(fm, dir);
         }
         return false;
     }
 
-    public static List<Act> Detect(List<Enemy> enemies, Player player, Loc playerNextLoc, Map map) {
+    public static List<Act> Detect(List<Enemy> enemies, Player player, Loc playerNextLoc, Floor floor) {
         // 敵をプレイヤーに近い距離順にソートする
         enemies.Sort((a, b) => {
             var x = a.Loc.SquareDistance(playerNextLoc);
@@ -71,13 +71,13 @@ public static class EnemyStrategy {
                 var enemy = enemies[i];
                 Assert.IsTrue(locs[enemy.Loc.Row, enemy.Loc.Col]);
 
-                if (CanDirectAttack(enemy.Loc, playerNextLoc, map)) continue;
+                if (CanDirectAttack(enemy.Loc, playerNextLoc, floor)) continue;
 
                 // プレイヤーに近づく
                 foreach (var loc in Approach(enemy.Loc, playerNextLoc)) {
                     Dir dir = enemy.Loc.Toward(loc);
                     // Debug.LogFormat("チェック: {0} : {1}", loc, enemy);
-                    if (!locs[loc.Row, loc.Col] && map.CanAdvance(enemy.Loc, dir)) {
+                    if (!locs[loc.Row, loc.Col] && floor.CanAdvance(enemy.Loc, dir)) {
                         q.Add(new ActEnemyMove(enemy, loc));
                         locs[loc.Row, loc.Col] = true;
                         locs[enemy.Row, enemy.Col] = false;
@@ -92,7 +92,7 @@ public static class EnemyStrategy {
         // 攻撃(移動以外)するキャラ
         for (int i = 0; i < enemies.Count; i++) {
             if (used[i]) continue;
-            if (CanDirectAttack(enemies[i].Loc, playerNextLoc, map)) {
+            if (CanDirectAttack(enemies[i].Loc, playerNextLoc, floor)) {
                 q.Add(new ActEnemyAttack(enemies[i], player));
                 used[i] = true;
             }

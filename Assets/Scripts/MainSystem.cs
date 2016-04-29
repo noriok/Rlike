@@ -25,12 +25,12 @@ public class MainSystem : MonoBehaviour {
 
     private Dialog _dialog;
 
-    private Map _map;
     private int _turnCount = 0;
 
     private KeyPad _keyPad;
     private FloorBanner _banner;
     private GameManager _gm;
+    private Floor _floor;
 
     void Start() {
         _keyPad = new KeyPad();
@@ -38,12 +38,15 @@ public class MainSystem : MonoBehaviour {
         _banner = new FloorBanner();
         _gm = new GameManager();
 
+
         _player = _gm.CreatePlayer(1, 1);
+
+        var enemyLayer = new GameObject(LayerName.Enemy);
 
         bool b = true;
         if (b) {
-            _enemies.Add(EnemyFactory.CreateEnemy(1, 4));
-            _enemies.Add(EnemyFactory.CreateEnemy(2, 2));
+            _enemies.Add(EnemyFactory.CreateEnemy(1, 4, enemyLayer));
+            _enemies.Add(EnemyFactory.CreateEnemy(2, 2, enemyLayer));
             foreach (var e in _enemies) e.AddStatus(Status.Sleep);
         }
 
@@ -54,7 +57,7 @@ public class MainSystem : MonoBehaviour {
         float z = camera.transform.position.z;
         camera.transform.position = new Vector3(pos.x, pos.y + Config.CameraOffsetY, z);
 
-        _map = new Map(_player.Loc, _enemies);
+        _floor = FloorCreator.CreateFloor(1);
         ChangeGameState(GameState.TurnStart);
 
         // Zoom ボタンのクリックイベント
@@ -74,7 +77,7 @@ public class MainSystem : MonoBehaviour {
     }
 
     void Update() {
-        _map.UpdateMinimapPlayerIconBlink();
+        _floor.UpdateMinimapPlayerIconBlink();
 
         if (_gameState == GameState.Act) {
             UpdateAct();
@@ -85,6 +88,7 @@ public class MainSystem : MonoBehaviour {
 
         CheckInput();
     }
+
 
     void OnGUI() {
         // Func<string, bool> button = (caption) => {
@@ -302,7 +306,7 @@ public class MainSystem : MonoBehaviour {
         _turnCount++;
         DLog.D("ターン: {0}", _turnCount);
 
-        _map.UpdateMinimap(_player.Loc, _enemies);
+        _floor.UpdateMinimap(_player.Loc, _enemies);
 
 
         _player.OnTurnStart();
@@ -332,12 +336,12 @@ public class MainSystem : MonoBehaviour {
 
         Dir dir = Utils.ToDir(drow, dcol);
         Loc to = _player.Loc.Forward(dir);
-        if (_map.CanAdvance(_player.Loc, dir) && !ExistsEnemy(to)) {
+        if (_floor.CanAdvance(_player.Loc, dir) && !ExistsEnemy(to)) {
             _player.ShowDirection(dir);
             _acts.Add(new ActPlayerMove(_player, drow, dcol));
 
             // TODO:移動先にトラップがあるなら、トラップイベントを発生させる
-            Trap trap = _map.FindTrap(to);
+            Trap trap = _floor.FindTrap(to);
             if (trap != null) {
                 _acts.Add(new ActTrap(_player, trap));
             }
@@ -365,14 +369,14 @@ public class MainSystem : MonoBehaviour {
         Loc loc = _player.Loc.Forward(dir);
 
         Enemy enemy = FindEnemy(loc);
-        if (enemy != null && _map.CanAdvance(_player.Loc, dir)) {
+        if (enemy != null && _floor.CanAdvance(_player.Loc, dir)) {
             // 敵へ攻撃する
             _acts.Add(new ActPlayerAttack(_player, enemy));
             ChangeGameState(GameState.Act);
             return;
         }
 
-        Treasure treasure = _map.FindTreasure(loc);
+        Treasure treasure = _floor.FindTreasure(loc);
         if (treasure != null) {
             // 宝箱を開ける
             _acts.Add(new ActPlayerOpenTreasure(_player, treasure));
@@ -380,7 +384,7 @@ public class MainSystem : MonoBehaviour {
             return;
         }
 
-        NoticeBoard noticeBoard = _map.FindNoticeBoard(loc);
+        NoticeBoard noticeBoard = _floor.FindNoticeBoard(loc);
         if (noticeBoard != null) {
             // 立て札を読む場合はターンを消費しない
             ShowDialog(noticeBoard.Msg);
@@ -407,7 +411,7 @@ public class MainSystem : MonoBehaviour {
     private void ExecutePlayerFireTrap() {
         Assert.IsTrue(_acts.Count == 0);
 
-        Trap trap = _map.FindTrap(_player.Loc);
+        Trap trap = _floor.FindTrap(_player.Loc);
         if (trap == null) {
             ExecutePlayerWait();
         }
@@ -418,7 +422,7 @@ public class MainSystem : MonoBehaviour {
     }
 
     private List<Act> DetectEnemyAct(Loc playerNextLoc) {
-        return EnemyStrategy.Detect(_enemies, _player, playerNextLoc, _map);
+        return EnemyStrategy.Detect(_enemies, _player, playerNextLoc, _floor);
     }
 
     private Enemy FindEnemy(Loc loc) {
@@ -435,21 +439,24 @@ public class MainSystem : MonoBehaviour {
     }
 
     public IEnumerator Summon(Loc loc) {
-        // TODO: assert(loc に敵がいない)
-        var e = EnemyFactory.CreateEnemy(loc.Row, loc.Col);
-        _enemies.Add(e);
+        Assert.IsTrue(false);
+        yield break;
 
-        yield return Anim.Par(this,
-                              () => e.FadeIn(),
-                              () => EffectAnim.Aura2(e.Position));
+        // TODO: assert(loc に敵がいない)
+        // var e = EnemyFactory.CreateEnemy(loc.Row, loc.Col);
+        // _enemies.Add(e);
+
+        // yield return Anim.Par(this,
+        //                       () => e.FadeIn(),
+        //                       () => EffectAnim.Aura2(e.Position));
     }
 
     public void ShowMinimap() {
-        _map.ShowMinimap();
+        _floor.ShowMinimap();
     }
 
     public void HideMinimap()  {
-        _map.HideMinimap();
+        _floor.HideMinimap();
     }
 
     public void ShowDialog(string message) {

@@ -66,7 +66,7 @@ public class ActPlayerUseSkill : Act {
 							  () => MaskFade(mask, 0, 0.5f));
 
 		yield return Anim.Par(sys,
-		                      () => CAction.Quake(GameObject.Find("MapLayer"), 1.4f),
+		                      () => CAction.Quake(GameObject.Find(LayerName.Map), 1.4f),
 							  () => EffectAnim.Skill(Actor.Position));
 		yield return new WaitForSeconds(0.3f);
 
