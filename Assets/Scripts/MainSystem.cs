@@ -85,10 +85,8 @@ public class MainSystem : MonoBehaviour {
         }
 
         Assert.IsTrue(_gameState == GameState.InputWait);
-
         CheckInput();
     }
-
 
     void OnGUI() {
         // Func<string, bool> button = (caption) => {
@@ -307,7 +305,6 @@ public class MainSystem : MonoBehaviour {
         DLog.D("ターン: {0}", _turnCount);
 
         _floor.UpdateMinimap(_player.Loc, _enemies);
-
 
         _player.OnTurnStart();
         foreach (var e in _enemies) {

@@ -68,10 +68,9 @@ public static class FloorCreator {
 
 		// 階段生成
 		Loc stairsLoc = new Loc(1, 7);
+		FieldObjectFactory.CreateStairs(stairsLoc, fieldObjectLayer);
 
-		// ワナ生成
-
-        // ワナ
+        // ワナ生成
         fieldObjects.Add(FieldObjectFactory.CreateTrapHeal(new Loc(3, 5), trapLayer));
         fieldObjects.Add(FieldObjectFactory.CreateTrapWarp(new Loc(3, 6), trapLayer));
         fieldObjects.Add(FieldObjectFactory.CreateTrapDamage(new Loc(3, 7), trapLayer));
@@ -80,7 +79,7 @@ public static class FloorCreator {
 		// ミニマップ生成
 		Minimap minimap = new Minimap(mapData, fieldObjects, stairsLoc);
 
-		var floor = new Floor(map, minimap, fieldObjects);
+		var floor = new Floor(map, minimap, fieldObjects, stairsLoc);
 		return floor;
 	}
 }

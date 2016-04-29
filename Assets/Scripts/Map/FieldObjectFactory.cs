@@ -27,6 +27,10 @@ public static class FieldObjectFactory {
 		return new NoticeBoard(loc, obj, msg);
 	}
 
+	public static void CreateStairs(Loc loc, GameObject layer) {
+		Create("Prefabs/MapChip/mapchip-stairs", loc.ToPosition(), layer);
+	}
+
 	// trap
 
 	public static Trap CreateTrapHeal(Loc loc, GameObject layer) {

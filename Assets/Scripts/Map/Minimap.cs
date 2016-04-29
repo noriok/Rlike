@@ -40,12 +40,6 @@ public class Minimap {
 		for (int i = 0; i < Config.EnemyMaxCount; i++) {
 			_enemyIcons.Add(CreateEnemy(0, 0, _layer));
 		}
-		// UpdateIcon(playerLoc, enemies);
-
-		// for (int i = 0; i < enemies.Count; i++) {
-		// 	_enemyIcons[i].transform.position = ToPosition(enemies[i].Loc);
-		// 	_enemyIcons[i].SetActive(true);
-		// }
 
 		_layer.transform.localScale = new Vector3(0.1f, 0.1f, 1.0f);
 		_layer.transform.position = new Vector3(-0.8f, 0.3f, 0);
