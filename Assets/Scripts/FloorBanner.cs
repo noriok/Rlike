@@ -23,6 +23,8 @@ public class FloorBanner {
 		// マスク、フェードイン
 		yield return image.Fade(0, 1, 0.4f);
 
+		yield return new WaitForSeconds(0.2f);
+
 		// バナー、フェードイン
 		yield return text.Fade(0, 1, 0.6f);
 	}
@@ -32,7 +34,7 @@ public class FloorBanner {
 		var text = GameObject.Find("Canvas/FloorBanner/Text").GetComponent<Text>();
 
 		// マスク、フェードアウト
-		yield return image.Fade(1, 0, 0.4f);
+		yield return image.Fade(1, 0, 0.7f);
 
 		// バナー、フェードアウト
 		yield return text.Fade(1, 0, 0.2f);

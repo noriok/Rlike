@@ -5,20 +5,24 @@ using System.Linq;
 
 public class Map {
     private const string TestMap = @"
-#######################
+#
 #.....................#
 #.....................#
+#.....................#################################
 #.....................#
-#.....................#
-#####.#################
-    #.#
-    #.#    ##############
-    #.#    #............#
-    #.######............#
-    #...................#
-    ########............#
-           #............#
-           ##############
+#####+
+    #+
+     +
+     ++++
+
+
+
+
+
+
+####
+..
+#####
 ";
     private char[,] _map;
 
@@ -43,7 +47,15 @@ public class Map {
                 _map[i, j] = MapChar.Wall;
             }
             for (int j = 0; j < lines[i].Length; j++) {
+                if (lines[i][j] == MapChar.None) continue;
                 _map[i, j] = lines[i][j];
+            }
+        }
+
+        var mazeRomm = GenMaze.GenMazeRoom(9, 5);
+        for (int i = 0; i < mazeRomm.GetLength(0); i++) {
+            for (int j = 0; j < mazeRomm.GetLength(1); j++) {
+                _map[i+7, j+9] = mazeRomm[i, j];
             }
         }
 
@@ -144,7 +156,7 @@ public class Map {
 
     public bool IsFloor(int row, int col) {
         if (OutOfMap(row, col)) return false;
-        return _map[row, col] == MapChar.Floor;
+        return _map[row, col] == MapChar.Floor || _map[row, col] == MapChar.Passage;
     }
 
     // FieldObject かつ Obstacle なオブジェクト

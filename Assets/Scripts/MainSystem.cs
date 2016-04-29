@@ -42,7 +42,7 @@ public class MainSystem : MonoBehaviour {
         if (b) {
             _enemies.Add(EnemyFactory.CreateEnemy(1, 4));
             _enemies.Add(EnemyFactory.CreateEnemy(2, 2));
-            _enemies.Last().AddStatus(Status.Sleep);
+            foreach (var e in _enemies) e.AddStatus(Status.Sleep);
         }
 
         // カメラズーム
@@ -89,16 +89,11 @@ public class MainSystem : MonoBehaviour {
         //     return GUILayout.Button(caption, GUILayout.Width(110), GUILayout.Height(50));
         // };
 
-        // if (button("Test 1")) {
-        // }
-
         int x = 300;
         if (GUI.Button(new Rect(x, 0, 100, 40), "test")) {
-            StartCoroutine(_banner.FadeInAnimation("hoge", 1));
+            StartCoroutine(NextFloor());
         }
         else if (GUI.Button(new Rect(x, 40*1, 100, 40), "test2")) {
-            StartCoroutine(_banner.FadeOutAnimation());
-
         }
         else if (GUI.Button(new Rect(x, 40*2, 100, 40), "zoom in")) {
             ZoomIn();
@@ -142,6 +137,15 @@ public class MainSystem : MonoBehaviour {
         else if (Input.GetKey(KeyCode.Period)) { // 何もせずターン終了
             ExecutePlayerWait();
         }
+    }
+
+    private IEnumerator NextFloor() {
+        yield return _banner.FadeInAnimation("ダンジョン名", 1);
+
+        // TODO:次のフロア生成
+        yield return new WaitForSeconds(1.8f);
+
+        yield return _banner.FadeOutAnimation();
     }
 
     private void ZoomIn() {

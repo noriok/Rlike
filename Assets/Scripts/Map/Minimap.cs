@@ -25,7 +25,7 @@ public class Minimap {
 		int cols = map.GetLength(1);
 		for (int i = 0; i < rows; i++) {
 			for (int j = 0; j < cols; j++) {
-				if (map[i, j] == MapChar.Floor) {
+				if (map[i, j] == MapChar.Floor || map[i, j] == MapChar.Passage) {
 					CreateFloor(i, j, _layer);
 				}
 			}

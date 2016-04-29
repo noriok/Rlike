@@ -5,8 +5,8 @@ using UnityEngine.Assertions;
 
 public static class GenMaze {
 
-    static char[,] GenMazeRoom(int rows, int cols) {
-		Assert.IsTrue(rows % 2 == 0 && cols % 2 == 0);
+    public static char[,] GenMazeRoom(int rows, int cols) {
+		Assert.IsTrue(rows % 2 == 1 && cols % 2 == 1);
         if (!(rows % 2 == 1 && cols % 2 == 1)) throw new ArgumentException();
 
         var maze = new char[rows, cols];
