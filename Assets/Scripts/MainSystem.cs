@@ -153,7 +153,6 @@ public class MainSystem : MonoBehaviour {
         else if (Input.GetKey(KeyCode.Period)) { // 何もせずターン終了
             ExecutePlayerWait();
         }
-
     }
 
     private IEnumerator NextFloor() {
@@ -205,7 +204,6 @@ public class MainSystem : MonoBehaviour {
     public IEnumerator CameraZoomOut(float delta) {
         return CameraZoom(delta);
     }
-
 
     private void ChangeGameState(GameState nextGameState) {
         _gameState = nextGameState;

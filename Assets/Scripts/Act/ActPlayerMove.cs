@@ -5,9 +5,6 @@ public class ActPlayerMove : Act {
     private int _drow;
     private int _dcol;
 
-    private Camera _camera;
-    private float _cameraZ;
-    private GameObject _minimapLayer;
     private float _elapsed;
     private Vector3 _srcPos;
     private Vector3 _dstPos;
@@ -19,10 +16,6 @@ public class ActPlayerMove : Act {
         _drow = drow;
         _dcol = dcol;
         _player = player;
-
-        _camera = GameObject.Find("Main Camera").GetComponent<Camera>();
-        _cameraZ = _camera.transform.position.z;
-        _minimapLayer = GameObject.Find(LayerName.Minimap);
 
         _elapsed = 0;
         _srcPos = player.Loc.ToPosition();

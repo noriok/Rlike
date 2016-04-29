@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
+using System;
 // using System.Collections;
-// using System.Collections.Generic;
+using System.Collections.Generic;
 // using System.Linq;
 
 public class Map {
@@ -10,6 +11,8 @@ public class Map {
     public int Cols { get { return _mapData.GetLength(1); } }
 
     private GameObject _mapLayer;
+
+    private List<Room> _rooms;
 
     public Map(char[,] mapData) {
         _mapData = mapData;
@@ -67,5 +70,62 @@ public class Map {
     public bool IsFloor(int row, int col) {
         if (OutOfMap(row, col)) return false;
         return _mapData[row, col] == MapChar.Room || _mapData[row, col] == MapChar.Passage;
+    }
+
+    public Room[] GetRooms() {
+        if (_rooms != null) return _rooms.ToArray();
+
+        _rooms = new List<Room>();
+        var used = new bool[Rows, Cols];
+        var delta = new List<int[]> {
+            new[] { -1,  0 },
+            new[] {  1,  0 },
+            new[] {  0, -1 },
+            new[] {  0,  1 },
+        };
+
+        for (int i = 0; i < Rows; i++) {
+            for (int j = 0; j < Cols; j++) {
+                if (used[i, j]) continue;
+
+                if (_mapData[i, j] == MapChar.Room) {
+                    int minR = i, maxR = i;
+                    int minC = j, maxC = j;
+                    var entrances = new List<Loc>();
+
+                    var q = new Queue<Loc>();
+                    q.Enqueue(new Loc(i, j));
+                    while (q.Count > 0) {
+                        Loc loc = q.Dequeue();
+
+                        if (OutOfMap(loc)) continue;
+                        if (used[loc.Row, loc.Col]) continue;
+                        used[loc.Row, loc.Col] = true;
+
+                        minR = Math.Min(minR, loc.Row);
+                        maxR = Math.Max(maxR, loc.Row);
+                        minC = Math.Min(minC, loc.Col);
+                        maxC = Math.Max(maxC, loc.Col);
+
+                        foreach (var d in delta) {
+                            int r = loc.Row + d[0];
+                            int c = loc.Col + d[1];
+                            if (OutOfMap(r, c) || used[r, c]) continue;
+                            if (_mapData[r, c] == MapChar.Room) {
+                                q.Enqueue(new Loc(r, c));
+                            }
+                            else if (_mapData[r, c] == MapChar.Passage) {
+                                entrances.Add(new Loc(r, c));
+                            }
+                        }
+                    }
+
+                    var room = new Room(minR, minC, maxR-minR+1, maxC-minC+1, entrances);
+                    _rooms.Add(room);
+                }
+
+            }
+        }
+        return _rooms.ToArray();
     }
 }

@@ -6,15 +6,15 @@ using System.Linq;
 public static class FloorCreator {
     private const string TestMap = @"
 #
-#.....................#
-#.....................#
-#.....................#################################
-#.....................#
-#####+
-    #+
-     +
-     ++++
-
+#...............#      ..........
+#...............+++++++..........
+#...............#      ..........
+#...............#      ..........
+#####+                 ..........
+    #+                 ..........
+     +   .......           +
+     ++++.......++++++++++++
+         .......
 
 
 
@@ -39,13 +39,6 @@ public static class FloorCreator {
                 map[i, j] = lines[i][j];
             }
         }
-
-        var mazeRomm = GenMaze.GenMazeRoom(9, 5);
-        for (int i = 0; i < mazeRomm.GetLength(0); i++) {
-            for (int j = 0; j < mazeRomm.GetLength(1); j++) {
-                map[i+7, j+9] = mazeRomm[i, j];
-            }
-        }
 		return map;
 	}
 
@@ -64,7 +57,6 @@ public static class FloorCreator {
       	fieldObjects.Add(FieldObjectFactory.CreateBonfire(new Loc(3, 3), fieldObjectLayer));
         fieldObjects.Add(FieldObjectFactory.CreateTreasure(new Loc(4, 4), fieldObjectLayer));
         fieldObjects.Add(FieldObjectFactory.CreateNoticeBoard(new Loc(1, 2), fieldObjectLayer, "立て札のメッセージ"));
-        fieldObjects.Add(FieldObjectFactory.CreateNoticeBoard(new Loc(1, 6), fieldObjectLayer, "→階段"));
 
 		// 階段生成
 		Loc stairsLoc = new Loc(1, 7);

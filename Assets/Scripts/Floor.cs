@@ -80,6 +80,8 @@ public class Floor {
         return false;
     }
 
-	// TODO: GetRooms()
+    public Room[] GetRooms() {
+        return _map.GetRooms();
+    }
 
 }
