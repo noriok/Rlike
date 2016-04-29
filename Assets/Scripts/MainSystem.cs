@@ -221,7 +221,7 @@ public class MainSystem : MonoBehaviour {
 
         case GameState.TurnFinish:
             Debug.Log("### Turn Finish");
-            SysTurnFinish();
+            SysTurnEnd();
 
             ChangeGameState(GameState.TurnStart);
             break;
@@ -304,24 +304,25 @@ public class MainSystem : MonoBehaviour {
 
         _map.UpdateMinimap(_player.Loc, _enemies);
 
-        // 行動回数の復帰
+
+        _player.OnTurnStart();
         foreach (var e in _enemies) {
-            // if (e.IsSleep()) { // 寝ているならこのターンは行動できない
-            //     e.ActCount = 0;
-            // }
-            // else {
-                e.ActCount = 1;
-            // }
+            e.OnTurnStart();
         }
     }
 
     // ターン終了後
-    private void SysTurnFinish() {
+    private void SysTurnEnd() {
         _acts.Clear();
 
         var text = GameObject.Find("Canvas/Text").GetComponent<Text>();
         text.text = DLog.ToText();
         DLog.Clear();
+
+        _player.OnTurnEnd();
+        foreach (var e in _enemies) {
+            e.OnTurnEnd();
+        }
     }
 
     // プレイヤーの行動

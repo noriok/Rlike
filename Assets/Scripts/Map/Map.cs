@@ -21,7 +21,6 @@ public class Map {
 
 
 ####
-..
 #####
 ";
     private char[,] _map;

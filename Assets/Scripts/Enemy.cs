@@ -57,4 +57,12 @@ public class Enemy : CharacterBase {
     public override string ToString() {
         return string.Format("E:{0}", Loc);
     }
+
+    public override void OnTurnStart() {
+        ActCount = 1;
+    }
+
+    public override void OnTurnEnd() {
+    }
+
 }

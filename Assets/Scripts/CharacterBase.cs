@@ -3,7 +3,7 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
-public class CharacterBase {
+public abstract class CharacterBase {
     public int Row { get { return _loc.Row; } }
     public int Col { get { return _loc.Col; } }
     public Loc Loc { get { return _loc; } }
@@ -145,4 +145,7 @@ public class CharacterBase {
 
     public virtual void HideDirection() {
     }
+
+    public abstract void OnTurnStart();
+    public abstract void OnTurnEnd();
 }

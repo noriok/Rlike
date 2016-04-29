@@ -115,4 +115,20 @@ public class Player : CharacterBase {
     public override string ToString() {
         return string.Format("P: Loc:{0}", Loc);
     }
+
+    public override void OnTurnStart() {
+        ActCount = 1;
+    }
+
+    public override void OnTurnEnd() {
+        // HP を回復
+        float toHp = Utils.Clamp(Hp + 1, 0, MaxHp);
+
+        var imageFg = GameObject.Find("Canvas/Header/Image_HP_FG").GetComponent<Image>();
+        var textHp = GameObject.Find("Canvas/Header/Text_HP_Value").GetComponent<Text>();
+        textHp.text = string.Format("{0}/{1}", toHp, MaxHp);
+        imageFg.fillAmount = toHp / MaxHp;
+        HealHp(1);
+    }
+
 }
