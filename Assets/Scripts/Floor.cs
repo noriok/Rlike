@@ -6,16 +6,16 @@ public class Floor {
 	private Map _map;
 	private Minimap _minimap;
 	private List<FieldObject> _fieldObjects;
-	private Loc _stairsLoc;
 
     public int Rows { get { return _map.Rows; } }
     public int Cols { get { return _map.Cols; } }
+    public Loc StairsLoc { get; private set; }
 
 	public Floor(Map map, Minimap minimap, List<FieldObject> fieldObjects, Loc stairsLoc) {
 		_map = map;
 		_minimap = minimap;
 		_fieldObjects = fieldObjects;
-		_stairsLoc = stairsLoc;
+        StairsLoc = stairsLoc;
 	}
 
     public void UpdateMinimap(Loc playerLoc, List<Enemy> enemies) {

@@ -13,6 +13,9 @@ enum GameState {
 
     TurnStart,  // ターン開始
     TurnEnd, // ターン終了
+
+    ConfirmStairsDialog, // 階段を降りますかダイアログ
+    NextFloorTransition,
 }
 
 public class MainSystem : MonoBehaviour {
@@ -88,7 +91,20 @@ public class MainSystem : MonoBehaviour {
     void Update() {
         _floor.UpdateMinimapPlayerIconBlink();
 
-        if (_gameState == GameState.Act) {
+        if (_gameState == GameState.NextFloorTransition) {
+            return;
+        }
+        else if (_gameState == GameState.ConfirmStairsDialog) {
+            if (_yesNoDialog.IsYesPressed) {
+                ChangeGameState(GameState.NextFloorTransition);
+                StartCoroutine(NextFloor());
+            }
+            else if (_yesNoDialog.IsNoPressed) {
+                ChangeGameState(GameState.TurnStart);
+            }
+            return;
+        }
+        else if (_gameState == GameState.Act) {
             UpdateAct();
             return;
         }
@@ -107,12 +123,6 @@ public class MainSystem : MonoBehaviour {
             StartCoroutine(NextFloor());
         }
         else if (GUI.Button(new Rect(x, 40*1, 100, 40), "test2")) {
-        }
-        else if (GUI.Button(new Rect(x, 40*2, 100, 40), "zoom in")) {
-            ZoomIn();
-        }
-        else if (GUI.Button(new Rect(x, 40*3, 100, 40), "zoom out")) {
-            ZoomOut();
         }
     }
 
@@ -250,7 +260,20 @@ public class MainSystem : MonoBehaviour {
             Debug.Log("### Turn Finish ");
             SysTurnEnd();
 
-            ChangeGameState(GameState.TurnStart);
+            // 階段の上ならダイアログ表示
+            if (_player.Loc == _floor.StairsLoc) {
+                ChangeGameState(GameState.ConfirmStairsDialog);
+            }
+            else {
+                ChangeGameState(GameState.TurnStart);
+            }
+            break;
+
+        case GameState.ConfirmStairsDialog:
+            _yesNoDialog.Show("階段を降りますか？");
+            break;
+
+        case GameState.NextFloorTransition:
             break;
 
         default:
