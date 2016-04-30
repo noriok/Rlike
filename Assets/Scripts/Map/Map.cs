@@ -116,6 +116,15 @@ public class Map {
         return false;
     }
 
+    public bool IsEntrance(Loc loc) {
+        for (int i = 0; i < _rooms.Length; i++) {
+            if (Array.IndexOf(_rooms[i].Entrances, loc) >= 0) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public Room FindRoom(Loc loc) {
         int no = _roomMap[loc.Row, loc.Col];
         Debug.LogFormat("FindRoom {0} no = {1}", loc, no);

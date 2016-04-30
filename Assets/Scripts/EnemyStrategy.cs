@@ -74,7 +74,7 @@ public static class EnemyStrategy {
             if (enemies[i].ActCount <= 0) { // 行動済み
                 used[i] = true; // 行動済み
             }
-            else if (enemies[i].IsSleep()) { // 睡眠
+            else if (enemies[i].IsBehavioralIncapacitation()) {
                 used[i] = true;
             }
             Loc loc = enemies[i].Loc;
@@ -95,7 +95,14 @@ public static class EnemyStrategy {
 
                 // 移動先を決める
                 if (floor.InSight(enemy.Loc, playerNextLoc)) { // プレイヤーが視界内
-                    enemy.CancelTarget();
+
+                    // 敵が部屋にいて、プレイヤーが部屋の入り口にいるならターゲットとして追尾
+                    if (floor.IsRoom(enemy.Loc) && floor.IsEntrance(playerNextLoc)) {
+                        enemy.LockOn(playerNextLoc);
+                    }
+                    else {
+                        enemy.CancelTarget();
+                    }
 
                     // プレイヤーに近づく
                     foreach (var loc in Approach(enemy.Loc, playerNextLoc)) {

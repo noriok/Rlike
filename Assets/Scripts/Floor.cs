@@ -112,4 +112,8 @@ public class Floor {
     public bool IsPassage(Loc loc) {
         return _map.IsPassage(loc);
     }
+
+    public bool IsEntrance(Loc loc) {
+        return _map.IsEntrance(loc);
+    }
 }

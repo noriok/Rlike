@@ -80,4 +80,10 @@ public class Enemy : CharacterBase {
     public void CancelTarget() {
         IsLockedOn = false;
     }
+
+    // 行動できないなら true
+    public bool IsBehavioralIncapacitation() {
+        if (IsSleep()) return true;
+        return false;
+    }
 }
