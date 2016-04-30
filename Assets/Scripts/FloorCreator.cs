@@ -33,8 +33,17 @@ public static class FloorCreator {
   ..........
 ";
 
+    private const string Map3 = @"
+######
+ ........
+ ........
+ ........
+ ........
+";
+
 	private static char[,] CreateMap(int floorNumber) {
         string mapData = floorNumber == 1 ? TestMap : Map2;
+        mapData = Map3;
         var lines = mapData.Trim().Split(new[] { '\n' });
 
         int rows = lines.Length;

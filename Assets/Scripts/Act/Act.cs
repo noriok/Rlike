@@ -20,6 +20,12 @@ public abstract class Act {
     public virtual void Apply(MainSystem sys) {
     }
 
+    // 他の Act の結果により、無効となった Act かどうか
+    // たとえばワープで行動決定時とは異なる位置に移動した場合など。
+    public virtual bool IsInvalid() {
+        return false;
+    }
+
     // このタスクがキャラクターを移動させるタスクかどうか
     public virtual bool IsMoveAct() {
         return false;

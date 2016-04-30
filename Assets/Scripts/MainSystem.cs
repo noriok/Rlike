@@ -46,6 +46,8 @@ public class MainSystem : MonoBehaviour {
 
         if (!DebugConfig.NoEnemy) {
             _enemies.Add(EnemyFactory.CreateEnemy(1, 4, enemyLayer));
+            _enemies.Add(EnemyFactory.CreateEnemy(1, 5, enemyLayer));
+
             // _enemies.Add(EnemyFactory.CreateEnemy(2, 2, enemyLayer));
 
 //            _enemies.Add(EnemyFactory.CreateEnemy(1, 5, enemyLayer));
@@ -54,9 +56,9 @@ public class MainSystem : MonoBehaviour {
             // _enemies.Add(EnemyFactory.CreateEnemy(1, 8, enemyLayer));
             // _enemies.Add(EnemyFactory.CreateEnemy(1, 9, enemyLayer));
 
-            foreach (var e in _enemies) e.AddStatus(Status.Sleep);
+            // foreach (var e in _enemies) e.AddStatus(Status.Sleep);
 
-            _enemies.Add(EnemyFactory.CreateEnemy(3, 30, enemyLayer));
+            // _enemies.Add(EnemyFactory.CreateEnemy(3, 30, enemyLayer));
         }
 
         var camera = GameObject.Find("Main Camera");
@@ -298,7 +300,7 @@ public class MainSystem : MonoBehaviour {
         // 移動タスク、トラップタスクが完了したら、それ以外の行動を一つずつ実行していく
         bool actFinished = true;
         foreach (var act in _acts) {
-            if (act.Actor.Hp <= 0) continue;
+            if (act.Actor.Hp <= 0 || act.IsInvalid()) continue;
             if (act.Finished || act.IsMoveAct()) continue;
 
             act.UpdateAct(this);

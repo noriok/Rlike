@@ -1,14 +1,24 @@
 ﻿// using System;
 using System.Collections;
-// using UnityEngine;
+using UnityEngine;
 using UnityEngine.Assertions;
 
 public class ActEnemyAttack : Act {
     private CharacterBase _target;
+    private Loc _targetLoc; // 攻撃する前にターゲットが移動する可能性があるので位置を保存
 
-    public ActEnemyAttack(Enemy enemy, CharacterBase target) : base(enemy) {
+    public ActEnemyAttack(Enemy enemy, CharacterBase target, Loc targetLoc) : base(enemy) {
         Assert.IsTrue(target is Player);
         _target = target;
+        _targetLoc = targetLoc;
+    }
+
+    public override bool IsInvalid() {
+        if (_targetLoc != _target.Loc) {
+            Debug.LogFormat("位置が変わりました {0} -> {1}", _targetLoc, _target.Loc);
+            return true;
+        }
+        return false;
     }
 
     protected override IEnumerator RunAnimation(MainSystem sys) {

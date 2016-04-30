@@ -179,7 +179,7 @@ public static class EnemyStrategy {
         for (int i = 0; i < enemies.Count; i++) {
             if (used[i]) continue;
             if (CanDirectAttack(enemies[i].Loc, playerNextLoc, floor)) {
-                q.Add(new ActEnemyAttack(enemies[i], player));
+                q.Add(new ActEnemyAttack(enemies[i], player, playerNextLoc));
                 used[i] = true;
             }
         }
