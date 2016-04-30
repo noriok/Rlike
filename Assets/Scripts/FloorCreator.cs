@@ -23,8 +23,19 @@ public static class FloorCreator {
 ####
 #####
 ";
-	private static char[,] CreateMap() {
-        var lines = TestMap.Trim().Split(new[] { '\n' });
+
+    private const string Map2 = @"
+##################
+  ..........
+  ..........       ...
+  ..........+++++++...
+  ..........       ...
+  ..........
+";
+
+	private static char[,] CreateMap(int floorNumber) {
+        string mapData = floorNumber == 1 ? TestMap : Map2;
+        var lines = mapData.Trim().Split(new[] { '\n' });
 
         int rows = lines.Length;
         int cols = lines.Select(s => s.Length).Max();
@@ -49,7 +60,7 @@ public static class FloorCreator {
 		var trapLayer = new GameObject(LayerName.Trap);
 
 		// マップ生成
-		var mapData = CreateMap();
+		var mapData = CreateMap(floorNumber);
 		Map map = new Map(mapData);
 
 		// マップ上のフィールドオブジェクト作成

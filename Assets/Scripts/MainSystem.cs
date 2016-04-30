@@ -24,6 +24,7 @@ public class MainSystem : MonoBehaviour {
     private List<Act> _acts = new List<Act>();
 
     private Dialog _dialog;
+    private YesNoDialog _yesNoDialog;
 
     private int _turnCount = 0;
 
@@ -35,6 +36,7 @@ public class MainSystem : MonoBehaviour {
     void Start() {
         _keyPad = new KeyPad();
         _dialog = new Dialog();
+        _yesNoDialog = new YesNoDialog();
         _banner = new FloorBanner();
         _gm = new GameManager();
 
@@ -156,9 +158,27 @@ public class MainSystem : MonoBehaviour {
         yield return _banner.FadeInAnimation("ダンジョン名", 1);
 
         // TODO:次のフロア生成
-        yield return new WaitForSeconds(1.6f);
+        _enemies.Clear();
 
+        Destroy(GameObject.Find(LayerName.Enemy));
+        Destroy(GameObject.Find(LayerName.FieldObject));
+        Destroy(GameObject.Find(LayerName.Trap));
+        Destroy(GameObject.Find(LayerName.Map));
+        Destroy(GameObject.Find(LayerName.Minimap));
+
+        var enemyLayer = new GameObject(LayerName.Enemy);
+        _enemies.Add(EnemyFactory.CreateEnemy(2, 3, enemyLayer));
+
+        _floor = FloorCreator.CreateFloor(2);
+
+        _player.UpdateLoc(new Loc(2, 5));
+        _player.ChangeDir(Dir.S);
+        _player.SyncCameraPosition();
+
+        yield return new WaitForSeconds(1.6f);
         yield return _banner.FadeOutAnimation();
+
+        ChangeGameState(GameState.TurnStart);
     }
 
     private void ZoomIn() {
