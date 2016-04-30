@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-// using UnityEngine;
+using System.Linq;
+using UnityEngine;
 using UnityEngine.Assertions;
 
 public static class EnemyStrategy {
+    // to に近づく
     private static Loc[] Approach(Loc fm, Loc to) {
         Dir dir = fm.Toward(to);
 
@@ -23,6 +25,20 @@ public static class EnemyStrategy {
         return locs;
     }
 
+    // 前進する場合の移動先の候補を返す。進めない場合は後退する。
+    private static Loc[] Advance(Loc fm, Dir dir) {
+        var locs = new[] {
+            fm.Forward(dir),
+            fm.Forward(dir.Clockwise()),
+            fm.Forward(dir.Anticlockwise()),
+            fm.Forward(dir.Clockwise().Clockwise()),
+            fm.Forward(dir.Anticlockwise().Anticlockwise()),
+            fm.Backward(dir),
+        };
+        return locs;
+    }
+
+
     private static bool CanDirectAttack(Loc fm, Loc to, Floor floor) {
         if (fm.IsNeighbor(to)) {
             Dir dir = fm.Toward(to);
@@ -31,8 +47,19 @@ public static class EnemyStrategy {
         return false;
     }
 
+    // private static Loc Move(Enemy enemy, Loc[] candidates, Floor floor, bool[,] locs) {
+    //     foreach (var loc in candidates) {
+    //         Dir dir = enemy.Loc.Toward(loc);
+    //         if (!locs[loc.Row, loc.Col] && floor.CanAdvance(enemy.Loc, dir)) {
+    //             return loc;
+    //         }
+    //     }
+    //     return false;
+    // }
+
     public static List<Act> Detect(List<Enemy> enemies, Player player, Loc playerNextLoc, Floor floor) {
         // 敵をプレイヤーに近い距離順にソートする
+        // TODO:プレイヤーから逃げる行動をとる場合は、プレイヤーから遠い順に行動を決める
         enemies.Sort((a, b) => {
             var x = a.Loc.SquareDistance(playerNextLoc);
             var y = b.Loc.SquareDistance(playerNextLoc);
@@ -41,24 +68,17 @@ public static class EnemyStrategy {
 
         var q = new List<Act>();
 
-        var locs = new bool[200, 200]; // モンスターの位置
+        var locs = new bool[floor.Rows, floor.Cols]; // モンスターの位置
         var used = new bool[enemies.Count];
         for (int i = 0; i < enemies.Count; i++) {
-            if (enemies[i].ActCount <= 0) {
+            if (enemies[i].ActCount <= 0) { // 行動済み
                 used[i] = true; // 行動済み
+            }
+            else if (enemies[i].IsSleep()) { // 睡眠
+                used[i] = true;
             }
             Loc loc = enemies[i].Loc;
             locs[loc.Row, loc.Col] = true;
-        }
-
-        // 行動できない敵
-        for (int i = 0; i < enemies.Count; i++) {
-            if (used[i]) continue;
-
-            if (enemies[i].IsSleep()) {
-                used[i] = true;
-                // q.Add(new ActEnemyWait(enemies[i]));
-            }
         }
 
         // 移動するキャラ
@@ -73,17 +93,77 @@ public static class EnemyStrategy {
 
                 if (CanDirectAttack(enemy.Loc, playerNextLoc, floor)) continue;
 
-                // プレイヤーに近づく
-                foreach (var loc in Approach(enemy.Loc, playerNextLoc)) {
-                    Dir dir = enemy.Loc.Toward(loc);
-                    // Debug.LogFormat("チェック: {0} : {1}", loc, enemy);
-                    if (!locs[loc.Row, loc.Col] && floor.CanAdvance(enemy.Loc, dir)) {
-                        q.Add(new ActEnemyMove(enemy, loc));
-                        locs[loc.Row, loc.Col] = true;
-                        locs[enemy.Row, enemy.Col] = false;
-                        updated = true;
-                        used[i] = true;
-                        break;
+                // 移動先を決める
+                if (floor.InSight(enemy.Loc, playerNextLoc)) { // プレイヤーが視界内
+                    enemy.CancelTarget();
+
+                    // プレイヤーに近づく
+                    foreach (var loc in Approach(enemy.Loc, playerNextLoc)) {
+                        Dir dir = enemy.Loc.Toward(loc);
+                        if (!locs[loc.Row, loc.Col] && floor.CanAdvance(enemy.Loc, dir)) {
+                            q.Add(new ActEnemyMove(enemy, loc));
+                            locs[loc.Row, loc.Col] = true;
+                            locs[enemy.Row, enemy.Col] = false;
+                            updated = true;
+                            used[i] = true;
+                            break;
+                        }
+                    }
+                }
+                else { // プレイヤーが視界にいない
+                    // 巡回モード
+
+                    if (enemy.IsLockedOn) {
+                         foreach (var loc in Approach(enemy.Loc, enemy.Target)) {
+                            Dir dir = enemy.Loc.Toward(loc);
+                            if (!locs[loc.Row, loc.Col] && floor.CanAdvance(enemy.Loc, dir)) {
+                                q.Add(new ActEnemyMove(enemy, loc));
+                                locs[loc.Row, loc.Col] = true;
+                                locs[enemy.Row, enemy.Col] = false;
+                                updated = true;
+                                used[i] = true;
+                                break;
+                            }
+                        }
+                    }
+                    else if (floor.IsPassage(enemy.Loc)) { // 通路にいるなら前進する
+                        enemy.CancelTarget();
+
+                        foreach (var loc in Advance(enemy.Loc, enemy.Dir)) {
+                            Dir dir = enemy.Loc.Toward(loc);
+                            if (!locs[loc.Row, loc.Col] && floor.CanAdvance(enemy.Loc, dir)) {
+                                q.Add(new ActEnemyMove(enemy, loc));
+                                locs[loc.Row, loc.Col] = true;
+                                locs[enemy.Row, enemy.Col] = false;
+                                updated = true;
+                                used[i] = true;
+                                break;
+                            }
+                        }
+                    }
+                    else if (floor.IsRoom(enemy.Loc)) { // 部屋にいるなら入り口に向かう
+                        Room room = floor.FindRoom(enemy.Loc);
+                        Assert.IsTrue(room != null && room.Entrances.Length > 0);
+
+                        Loc[] entrances = room.Entrances;
+                        if (entrances.Length > 1) {
+                            // 隣接する入り口には向かわない(通路から部屋に入って、また通路に戻るパターン)
+                            entrances = entrances.Where(e => !e.IsNeighbor(enemy.Loc)).ToArray();
+                        }
+
+                        Loc target = Utils.Choice(entrances);
+                        enemy.LockOn(target);
+                        foreach (var loc in Approach(enemy.Loc, enemy.Target)) {
+                            Dir dir = enemy.Loc.Toward(loc);
+                            if (!locs[loc.Row, loc.Col] && floor.CanAdvance(enemy.Loc, dir)) {
+                                q.Add(new ActEnemyMove(enemy, loc));
+                                locs[loc.Row, loc.Col] = true;
+                                locs[enemy.Row, enemy.Col] = false;
+                                updated = true;
+                                used[i] = true;
+                                break;
+                            }
+                        }
                     }
                 }
             }

@@ -1,25 +1,28 @@
 ﻿using UnityEngine;
-using System.Collections;
+using System;
 using System.Collections.Generic;
 
 public class Room {
-	private List<Loc> _entrances;
-	private int _row;
-	private int _col;
-	private int _width;
-	private int _height;
+	public int Row { get; private set; }
+	public int Col { get; private set; }
+	public int Width { get; private set; }
+	public int Height { get; private set; }
+	public Loc[] Entrances { get; private set; }
 
 	public Room(int row, int col, int width, int height, List<Loc> entrances) {
-		_row = row;
-		_col = col;
-		_width = width;
-		_height = height;
+		Row = row;
+		Col = col;
+		Width = width;
+		Height = height;
+		Entrances = entrances.ToArray();
 
-		_entrances = entrances;
-
-		Debug.LogFormat("row:{0} col:{1} width:{2} height:{3}", _row, _col, _width, _height);
-		foreach (var e in _entrances) {
+		Debug.LogFormat("row:{0} col:{1} width:{2} height:{3}", row, col, width, height);
+		foreach (var e in Entrances) {
 			Debug.Log("entrance: " + e);
 		}
+	}
+
+	public bool IsEntrance(Loc loc) {
+		return Array.IndexOf(Entrances, loc) >= 0;
 	}
 }

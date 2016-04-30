@@ -5,6 +5,7 @@ using System.Collections.Generic;
 // using System.Linq;
 
 public class Map {
+    private const int NoRoom = -1;
     private char[,] _mapData;
 
     public int Rows { get { return _mapData.GetLength(0); } }
@@ -12,12 +13,29 @@ public class Map {
 
     private GameObject _mapLayer;
 
-    private List<Room> _rooms;
+    private Room[] _rooms;
+    private int[,] _roomMap;
 
     public Map(char[,] mapData) {
         _mapData = mapData;
         int rows = _mapData.GetLength(0);
         int cols = _mapData.GetLength(1);
+
+        _rooms = GetRooms();
+        _roomMap = new int[rows, cols];
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < cols; j++) {
+                _roomMap[i, j] = NoRoom;
+            }
+        }
+        for (int i = 0; i < _rooms.Length; i++) {
+            Room room = _rooms[i];
+            for (int r = 0; r < room.Height; r++) {
+                for (int c = 0; c < room.Width; c++) {
+                    _roomMap[room.Row + r, room.Col + c] = i;
+                }
+            }
+        }
 
         _mapLayer = new GameObject(LayerName.Map);
 
@@ -46,6 +64,11 @@ public class Map {
         return gobj;
     }
 
+    private char GetMapChar(int row, int col) {
+        if (OutOfMap(row, col)) return MapChar.Wall; // マップ外は壁扱い
+        return _mapData[row, col];
+    }
+
     public bool OutOfMap(Loc loc) {
         return OutOfMap(loc.Row, loc.Col);
     }
@@ -59,23 +82,53 @@ public class Map {
     }
 
     public bool IsWall(int row, int col) {
-        if (OutOfMap(row, col)) return true; // マップ外は壁扱い
-        return _mapData[row, col] == MapChar.Wall;
+        return GetMapChar(row, col) == MapChar.Wall;
     }
 
-    public bool IsFloor(Loc loc) {
-        return IsFloor(loc.Row, loc.Col);
+    public bool IsRoomOrPassage(Loc loc) {
+        return IsRoomOrPassage(loc.Row, loc.Col);
     }
 
-    public bool IsFloor(int row, int col) {
-        if (OutOfMap(row, col)) return false;
-        return _mapData[row, col] == MapChar.Room || _mapData[row, col] == MapChar.Passage;
+    public bool IsRoomOrPassage(int row, int col) {
+        return IsRoom(row, col) || IsPassage(row, col);
+    }
+
+    public bool IsRoom(Loc loc) {
+        return IsRoom(loc.Row, loc.Col);
+    }
+
+    public bool IsRoom(int row, int col) {
+        return GetMapChar(row, col) == MapChar.Room;
+    }
+
+    public bool IsPassage(Loc loc) {
+        return IsPassage(loc.Row, loc.Col);
+    }
+
+    public bool IsPassage(int row, int col) {
+        return GetMapChar(row, col) == MapChar.Passage;
+    }
+
+    public bool IsSameRoom(Loc a, Loc b) {
+        if (IsRoom(a) && IsRoom(b)) {
+            return _roomMap[a.Row, a.Col] == _roomMap[b.Row, b.Col];
+        }
+        return false;
+    }
+
+    public Room FindRoom(Loc loc) {
+        int no = _roomMap[loc.Row, loc.Col];
+        Debug.LogFormat("FindRoom {0} no = {1}", loc, no);
+        if (no != NoRoom) {
+            return _rooms[no];
+        }
+        return null;
     }
 
     public Room[] GetRooms() {
-        if (_rooms != null) return _rooms.ToArray();
+        if (_rooms != null) return _rooms;
 
-        _rooms = new List<Room>();
+        var rooms = new List<Room>();
         var used = new bool[Rows, Cols];
         var delta = new List<int[]> {
             new[] { -1,  0 },
@@ -120,12 +173,16 @@ public class Map {
                         }
                     }
 
-                    var room = new Room(minR, minC, maxR-minR+1, maxC-minC+1, entrances);
-                    _rooms.Add(room);
+                    int width = maxC - minC + 1;
+                    int height = maxR - minR + 1;
+                    var room = new Room(minR, minC, width, height, entrances);
+                    rooms.Add(room);
                 }
 
             }
         }
-        return _rooms.ToArray();
+
+        _rooms = rooms.ToArray();
+        return _rooms;
     }
 }

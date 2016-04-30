@@ -15,6 +15,11 @@ public static class Utils {
         }
     }
 
+    public static T Choice<T>(T[] xs) {
+        Assert.IsTrue(xs.Length > 0);
+        return xs[_rand.Next(xs.Length)];
+    }
+
     public static Dir ToDir(int drow, int dcol) {
         if (drow == -1) {
             switch (dcol) {

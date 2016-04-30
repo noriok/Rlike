@@ -6,8 +6,10 @@ public class Enemy : CharacterBase {
     private GameObject _barGreen;
     private GameObject _barYellow;
 
-    public Enemy(int row, int col, GameObject gobj) : base(row, col, gobj) {
+    public bool IsLockedOn { get; private set; }
+    public Loc Target { get; private set; }
 
+    public Enemy(int row, int col, GameObject gobj) : base(row, col, gobj) {
         // HP バー
         var barRed = (GameObject)GameObject.Instantiate(Resources.Load("Prefabs/HpBar/bar-red"), Vector3.zero, Quaternion.identity);
         barRed.transform.SetParent(gobj.transform);
@@ -63,6 +65,19 @@ public class Enemy : CharacterBase {
     }
 
     public override void OnTurnEnd() {
+        if (IsLockedOn) {
+            if (Loc == Target) {
+                CancelTarget();
+            }
+        }
     }
 
+    public void LockOn(Loc target) {
+        IsLockedOn = true;
+        Target = target;
+    }
+
+    public void CancelTarget() {
+        IsLockedOn = false;
+    }
 }

@@ -4,5 +4,5 @@
 public enum EnemyThinkMode {
 	LockOn,
 	LoseSightOf,
-	Free,
+	Patrol,
 }

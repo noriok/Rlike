@@ -44,16 +44,18 @@ public class MainSystem : MonoBehaviour {
 
         bool b = true;
         if (b) {
-            _enemies.Add(EnemyFactory.CreateEnemy(1, 4, enemyLayer));
-            _enemies.Add(EnemyFactory.CreateEnemy(2, 2, enemyLayer));
+//            _enemies.Add(EnemyFactory.CreateEnemy(1, 4, enemyLayer));
+//            _enemies.Add(EnemyFactory.CreateEnemy(2, 2, enemyLayer));
 
-            _enemies.Add(EnemyFactory.CreateEnemy(1, 5, enemyLayer));
-            _enemies.Add(EnemyFactory.CreateEnemy(1, 6, enemyLayer));
-            _enemies.Add(EnemyFactory.CreateEnemy(1, 7, enemyLayer));
-            _enemies.Add(EnemyFactory.CreateEnemy(1, 8, enemyLayer));
-            _enemies.Add(EnemyFactory.CreateEnemy(1, 9, enemyLayer));
+//            _enemies.Add(EnemyFactory.CreateEnemy(1, 5, enemyLayer));
+//            _enemies.Add(EnemyFactory.CreateEnemy(1, 6, enemyLayer));
+            // _enemies.Add(EnemyFactory.CreateEnemy(1, 7, enemyLayer));
+            // _enemies.Add(EnemyFactory.CreateEnemy(1, 8, enemyLayer));
+            // _enemies.Add(EnemyFactory.CreateEnemy(1, 9, enemyLayer));
 
             foreach (var e in _enemies) e.AddStatus(Status.Sleep);
+
+            _enemies.Add(EnemyFactory.CreateEnemy(3, 30, enemyLayer));
         }
 
         // カメラズーム
