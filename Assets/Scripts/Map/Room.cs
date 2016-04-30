@@ -16,10 +16,10 @@ public class Room {
 		Height = height;
 		Entrances = entrances.ToArray();
 
-		Debug.LogFormat("row:{0} col:{1} width:{2} height:{3}", row, col, width, height);
-		foreach (var e in Entrances) {
-			Debug.Log("entrance: " + e);
-		}
+		// Debug.LogFormat("row:{0} col:{1} width:{2} height:{3}", row, col, width, height);
+		// foreach (var e in Entrances) {
+		// 	Debug.Log("entrance: " + e);
+		// }
 	}
 
 	public bool IsEntrance(Loc loc) {

@@ -2,10 +2,10 @@
 using UnityEngine.Assertions;
 using UnityEngine.UI;
 
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-// using System;
 
 enum GameState {
     InputWait, // 入力待ち
@@ -42,10 +42,9 @@ public class MainSystem : MonoBehaviour {
 
         var enemyLayer = new GameObject(LayerName.Enemy);
 
-        bool b = true;
-        if (b) {
-//            _enemies.Add(EnemyFactory.CreateEnemy(1, 4, enemyLayer));
-//            _enemies.Add(EnemyFactory.CreateEnemy(2, 2, enemyLayer));
+        if (!DebugConfig.NoEnemy) {
+            _enemies.Add(EnemyFactory.CreateEnemy(1, 4, enemyLayer));
+            // _enemies.Add(EnemyFactory.CreateEnemy(2, 2, enemyLayer));
 
 //            _enemies.Add(EnemyFactory.CreateEnemy(1, 5, enemyLayer));
 //            _enemies.Add(EnemyFactory.CreateEnemy(1, 6, enemyLayer));
@@ -58,12 +57,8 @@ public class MainSystem : MonoBehaviour {
             _enemies.Add(EnemyFactory.CreateEnemy(3, 30, enemyLayer));
         }
 
-        // カメラズーム
         var camera = GameObject.Find("Main Camera");
         camera.GetComponent<Camera>().orthographicSize = _cameraManager.CurrentSize;
-        var pos = _player.Position;
-        float z = camera.transform.position.z;
-        camera.transform.position = new Vector3(pos.x, pos.y + Config.CameraOffsetY, z);
 
         _floor = FloorCreator.CreateFloor(1);
         ChangeGameState(GameState.TurnStart);
@@ -465,5 +460,21 @@ public class MainSystem : MonoBehaviour {
 
     public void ShowDialog(string message) {
         _dialog.Show(message);
+    }
+
+    public Loc RandomRoomLoc(Loc defaultLoc) {
+        var rand = new System.Random();
+        const int retryCount = 20;
+        for (int i = 0; i < retryCount; i++) {
+            var room = Utils.Choice(_floor.GetRooms());
+
+            int r = rand.Next(room.Row, room.Row + room.Height);
+            int c = rand.Next(room.Col, room.Col + room.Width);
+            var loc = new Loc(r, c);
+            if (!_enemies.Any(e => e.Loc == loc)) {
+                return loc;
+            }
+        }
+        return defaultLoc;
     }
 }

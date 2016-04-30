@@ -57,6 +57,7 @@ public abstract class CharacterBase {
 
     public void UpdateLoc(Loc loc) {
         _loc = loc;
+        Position = loc.ToPosition();
     }
 
     public void AddStatus(Status status) {

@@ -9,13 +9,13 @@ public class Button2 : Button {
 
 	public override void OnPointerDown(PointerEventData eventData) {
 		base.OnPointerDown(eventData);
-		Debug.Log("OnPointerDown");
+		// Debug.Log("OnPointerDown");
 		Pressed = true;
 	}
 
 	public override void OnPointerUp(PointerEventData eventData) {
 		base.OnPointerUp(eventData);
-		Debug.Log("OnPointerUp");
+		// Debug.Log("OnPointerUp");
 		Pressed = false;
 	}
 
@@ -27,7 +27,7 @@ public class Button2 : Button {
 
 	public override void OnPointerExit(PointerEventData eventData) {
 		base.OnPointerExit(eventData);
-		Debug.Log("OnPointerExit");
+		// Debug.Log("OnPointerExit");
 		Pressed = false;
 	}
 }

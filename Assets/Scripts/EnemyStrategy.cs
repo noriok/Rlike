@@ -38,7 +38,6 @@ public static class EnemyStrategy {
         return locs;
     }
 
-
     private static bool CanDirectAttack(Loc fm, Loc to, Floor floor) {
         if (fm.IsNeighbor(to)) {
             Dir dir = fm.Toward(to);

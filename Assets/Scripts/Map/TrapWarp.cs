@@ -21,8 +21,13 @@ public class TrapWarp : Trap {
 		yield return new WaitForSeconds(0.36f);
 
 		// TODO:ワープ後の位置
-		sender.Position = src;
+		var loc = sys.RandomRoomLoc(sender.Loc);
+		sender.Position = loc.ToPosition();
 		sender.ChangeDir(Dir.S);
+		sender.UpdateLoc(loc);
+		if (sender is Player) {
+			((Player)sender).SyncCameraPosition();
+		}
 		yield return new WaitForSeconds(0.4f);
 	}
 

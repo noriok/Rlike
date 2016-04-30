@@ -127,7 +127,6 @@ public class Map {
 
     public Room FindRoom(Loc loc) {
         int no = _roomMap[loc.Row, loc.Col];
-        Debug.LogFormat("FindRoom {0} no = {1}", loc, no);
         if (no != NoRoom) {
             return _rooms[no];
         }
