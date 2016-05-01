@@ -9,7 +9,7 @@ public class Enemy : CharacterBase {
     public bool IsLockedOn { get; private set; }
     public Loc Target { get; private set; }
 
-    public Enemy(int row, int col, GameObject gobj) : base(row, col, gobj) {
+    public Enemy(Loc loc, GameObject gobj) : base(loc, gobj) {
         // HP バー
         var barRed = (GameObject)GameObject.Instantiate(Resources.Load("Prefabs/HpBar/bar-red"), Vector3.zero, Quaternion.identity);
         barRed.transform.SetParent(gobj.transform);

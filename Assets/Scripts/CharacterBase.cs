@@ -28,13 +28,11 @@ public abstract class CharacterBase {
 
     private Dictionary<Status, GameObject> _status = new Dictionary<Status, GameObject>();
 
-    public CharacterBase(int row, int col, GameObject gobj) {
+    public CharacterBase(Loc loc, GameObject gobj) {
         ActCount = 0;
-        _loc = new Loc(row, col);
+        _loc = loc;
         _gobj = gobj;
-        float x =  Config.ChipSize * col;
-        float y = -Config.ChipSize * row;
-        _gobj.transform.position = new Vector3(x, y, 0);
+        _gobj.transform.position = loc.ToPosition();
 
         Hp = MaxHp = 40;
     }

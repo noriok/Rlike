@@ -46,4 +46,23 @@ public static class DirExtensions {
     public static Dir Opposite(this Dir dir) {
         return dir.Clockwise().Clockwise().Clockwise().Clockwise();
     }
+
+    public static Loc Delta(this Dir dir) {
+        int drow = 0;
+        int dcol = 0;
+        switch (dir) {
+        case Dir.N:  drow = -1; dcol =  0; break;
+        case Dir.NE: drow = -1; dcol =  1; break;
+        case Dir.E:  drow =  0; dcol =  1; break;
+        case Dir.SE: drow =  1; dcol =  1; break;
+        case Dir.S:  drow =  1; dcol =  0; break;
+        case Dir.SW: drow =  1; dcol = -1; break;
+        case Dir.W:  drow =  0; dcol = -1; break;
+        case Dir.NW: drow = -1; dcol = -1; break;
+        default:
+            Assert.IsTrue(false);
+            break;
+        }
+        return new Loc(drow, dcol);
+    }
 }

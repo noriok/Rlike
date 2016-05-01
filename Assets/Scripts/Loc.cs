@@ -73,19 +73,8 @@ public struct Loc : IEquatable<Loc> {
 
     // dir 方向へ 1 歩進んだ位置
     public Loc Forward(Dir dir) {
-        int drow = 0;
-        int dcol = 0;
-        switch (dir) {
-        case Dir.N:  drow = -1; dcol =  0; break;
-        case Dir.NE: drow = -1; dcol =  1; break;
-        case Dir.E:  drow =  0; dcol =  1; break;
-        case Dir.SE: drow =  1; dcol =  1; break;
-        case Dir.S:  drow =  1; dcol =  0; break;
-        case Dir.SW: drow =  1; dcol = -1; break;
-        case Dir.W:  drow =  0; dcol = -1; break;
-        case Dir.NW: drow = -1; dcol = -1; break;
-        }
-        return new Loc(Row + drow, Col + dcol);
+        var delta = dir.Delta();
+        return new Loc(Row + delta.Row, Col + delta.Col);
     }
 
     // dir 方向へ(なるべく)前進する Loc を返す。

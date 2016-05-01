@@ -43,7 +43,7 @@ public class MainSystem : MonoBehaviour {
         _banner = new FloorBanner();
         _gm = new GameManager();
 
-        _player = _gm.CreatePlayer(2, 5);
+        _player = _gm.CreatePlayer(new Loc(2, 5));
         _floor = FloorCreator.CreateFloor(1);
 
         var enemyLayer = new GameObject(LayerName.Enemy);
@@ -135,19 +135,8 @@ public class MainSystem : MonoBehaviour {
 
         Dir dir;
         if (_keyPad.IsMove(out dir)) {
-            int drow = 0;
-            int dcol = 0;
-            switch (dir) {
-            case Dir.N:  drow = -1; dcol =  0; break;
-            case Dir.NE: drow = -1; dcol =  1; break;
-            case Dir.E:  drow =  0; dcol =  1; break;
-            case Dir.SE: drow =  1; dcol =  1; break;
-            case Dir.S:  drow =  1; dcol =  0; break;
-            case Dir.SW: drow =  1; dcol = -1; break;
-            case Dir.W:  drow =  0; dcol = -1; break;
-            case Dir.NW: drow = -1; dcol = -1; break;
-            }
-            ExecutePlayerMove(drow, dcol);
+            var delta = dir.Delta();
+            ExecutePlayerMove(delta.Row, delta.Col);
             return;
         }
         else if (_keyPad.IsAttack()) {
@@ -182,6 +171,7 @@ public class MainSystem : MonoBehaviour {
         Destroy(GameObject.Find(LayerName.Map));
         Destroy(GameObject.Find(LayerName.Minimap));
 
+        // TODO:レイヤー管理
         var enemyLayer = new GameObject(LayerName.Enemy);
         DeployEnemy(3, enemyLayer);
 

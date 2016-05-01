@@ -8,7 +8,7 @@ public class Player : CharacterBase {
 
     private Dictionary<Dir, GameObject> _dirs = new Dictionary<Dir, GameObject>();
 
-    public Player(int row, int col, GameObject gobj) : base(row, col, gobj) {
+    public Player(Loc loc, GameObject gobj) : base(loc, gobj) {
         Hp = MaxHp = 255;
         var textHp = GameObject.Find("Canvas/Header/Text_HP_Value").GetComponent<Text>();
         textHp.text = string.Format("{0}/{1}", Hp, MaxHp);
