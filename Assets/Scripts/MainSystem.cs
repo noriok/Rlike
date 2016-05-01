@@ -93,12 +93,11 @@ public class MainSystem : MonoBehaviour {
     }
 
     void Update() {
+        if (_gameState == GameState.NextFloorTransition) return;
+
         _floor.UpdateMinimapPlayerIconBlink();
 
-        if (_gameState == GameState.NextFloorTransition) {
-            return;
-        }
-        else if (_gameState == GameState.ConfirmStairsDialog) {
+        if (_gameState == GameState.ConfirmStairsDialog) {
             if (_yesNoDialog.IsYesPressed) {
                 ChangeGameState(GameState.NextFloorTransition);
                 StartCoroutine(NextFloor());
@@ -171,15 +170,16 @@ public class MainSystem : MonoBehaviour {
         Destroy(GameObject.Find(LayerName.Map));
         Destroy(GameObject.Find(LayerName.Minimap));
 
-        // TODO:レイヤー管理
-        var enemyLayer = new GameObject(LayerName.Enemy);
-        DeployEnemy(3, enemyLayer);
-
         _floor = FloorCreator.CreateFloor(2);
 
-        _player.UpdateLoc(new Loc(2, 5));
+        // TODO:レイヤー管理
+        var enemyLayer = new GameObject(LayerName.Enemy);
+        //DeployEnemy(3, enemyLayer);
+
+        _player.UpdateLoc(new Loc(2, 8));
         _player.ChangeDir(Dir.S);
-        _player.SyncCameraPosition();
+        yield return null; // TODO:yield return null を入れるとミニマップの位置が更新される
+        _player.SyncCameraPosition(); // TODO:ミニマップの位置が更新されない
 
         yield return new WaitForSeconds(1.6f);
         yield return _banner.FadeOutAnimation();

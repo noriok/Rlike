@@ -81,7 +81,9 @@ public static class Utils {
 
     public static GameObject Instantiate(string path, Vector3 pos) {
         var obj = Resources.Load(path);
-        var gobj = (GameObject)GameObject.Instantiate(obj, pos, Quaternion.identity);
+        // 回転させているプレハブもあるので、引数には obj のみ渡す
+        var gobj = (GameObject)GameObject.Instantiate(obj);
+        gobj.transform.position = pos;
         return gobj;
     }
 }

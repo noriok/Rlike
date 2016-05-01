@@ -17,12 +17,12 @@ public class Player : CharacterBase {
         float d = Config.ChipSize / 2;
         var n  = Utils.Instantiate("Prefabs/Dir/dir-N", new Vector3(pos.x, pos.y + d + d/3, pos.z));
         var ne = Utils.Instantiate("Prefabs/Dir/dir-NE", new Vector3(pos.x + d, pos.y + d, pos.z));
-        var e  = Utils.Instantiate("Prefabs/Dir/dir-e", new Vector3(pos.x + d, pos.y, pos.z));
-        var se = Utils.Instantiate("Prefabs/Dir/dir-se", new Vector3(pos.x + d, pos.y - d, pos.z));
-        var s  = Utils.Instantiate("Prefabs/Dir/dir-s", new Vector3(pos.x, pos.y - d - d/3, pos.z));
-        var sw = Utils.Instantiate("Prefabs/Dir/dir-sw", new Vector3(pos.x - d, pos.y - d, pos.z));
-        var w  = Utils.Instantiate("Prefabs/Dir/dir-w", new Vector3(pos.x - d, pos.y, pos.z));
-        var nw = Utils.Instantiate("Prefabs/Dir/dir-nw", new Vector3(pos.x - d, pos.y + d, pos.z));
+        var e  = Utils.Instantiate("Prefabs/Dir/dir-E", new Vector3(pos.x + d, pos.y, pos.z));
+        var se = Utils.Instantiate("Prefabs/Dir/dir-SE", new Vector3(pos.x + d, pos.y - d, pos.z));
+        var s  = Utils.Instantiate("Prefabs/Dir/dir-S", new Vector3(pos.x, pos.y - d - d/3, pos.z));
+        var sw = Utils.Instantiate("Prefabs/Dir/dir-SW", new Vector3(pos.x - d, pos.y - d, pos.z));
+        var w  = Utils.Instantiate("Prefabs/Dir/dir-W", new Vector3(pos.x - d, pos.y, pos.z));
+        var nw = Utils.Instantiate("Prefabs/Dir/dir-NW", new Vector3(pos.x - d, pos.y + d, pos.z));
 
         _dirs.Add(Dir.N, n);
         _dirs.Add(Dir.NE, ne);
@@ -47,7 +47,8 @@ public class Player : CharacterBase {
         float y = Position.y;
         camera.transform.position = new Vector3(x, y + Config.CameraOffsetY, cameraZ);
 
-        minimapLayer.transform.position = new Vector3(x + Config.MinimapOffsetX, y + Config.MinimapOffsetY, 0);
+        minimapLayer.transform.localPosition = new Vector3(x + Config.MinimapOffsetX, y + Config.MinimapOffsetY, 0);
+        Debug.Log("minimap = " + minimapLayer.transform.position);
     }
 
     public override void ShowDirection(Dir dir) {
@@ -132,5 +133,4 @@ public class Player : CharacterBase {
         imageFg.fillAmount = toHp / MaxHp;
         HealHp(1);
     }
-
 }
