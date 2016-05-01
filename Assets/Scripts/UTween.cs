@@ -72,6 +72,8 @@ public static class UTween {
 
     // t: 0 - 1.0
     public static float Ease(EaseType easeType, float beginVal, float endVal, float t) {
+		if (t < 0) t = 0;
+		else if (t > 1) t = 1;
         var easeFn = GetEaseFn(easeType);
         float duration = 1f;
         return easeFn(t, beginVal, endVal - beginVal, duration);
