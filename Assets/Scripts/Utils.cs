@@ -20,6 +20,12 @@ public static class Utils {
         return xs[_rand.Next(xs.Length)];
     }
 
+    public static Loc RandomRoomLoc(Room room) {
+        int r = room.Row + _rand.Next(room.Height);
+        int c = room.Col + _rand.Next(room.Width);
+        return new Loc(r, c);
+    }
+
     public static Dir ToDir(int drow, int dcol) {
         if (drow == -1) {
             switch (dcol) {

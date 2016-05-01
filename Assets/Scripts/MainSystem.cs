@@ -44,31 +44,14 @@ public class MainSystem : MonoBehaviour {
         _gm = new GameManager();
 
         _player = _gm.CreatePlayer(2, 5);
+        _floor = FloorCreator.CreateFloor(1);
 
         var enemyLayer = new GameObject(LayerName.Enemy);
-
-        if (!DebugConfig.NoEnemy) {
-            _enemies.Add(EnemyFactory.CreateEnemy(1, 4, enemyLayer));
-            _enemies.Add(EnemyFactory.CreateEnemy(1, 5, enemyLayer));
-
-            // _enemies.Add(EnemyFactory.CreateEnemy(2, 2, enemyLayer));
-
-//            _enemies.Add(EnemyFactory.CreateEnemy(1, 5, enemyLayer));
-//            _enemies.Add(EnemyFactory.CreateEnemy(1, 6, enemyLayer));
-            // _enemies.Add(EnemyFactory.CreateEnemy(1, 7, enemyLayer));
-            // _enemies.Add(EnemyFactory.CreateEnemy(1, 8, enemyLayer));
-            // _enemies.Add(EnemyFactory.CreateEnemy(1, 9, enemyLayer));
-
-            // foreach (var e in _enemies) e.AddStatus(Status.Sleep);
-
-            // _enemies.Add(EnemyFactory.CreateEnemy(3, 30, enemyLayer));
-        }
+        DeployEnemy(3, enemyLayer);
 
         var camera = GameObject.Find("Main Camera");
         camera.GetComponent<Camera>().orthographicSize = _cameraManager.CurrentSize;
 
-        _floor = FloorCreator.CreateFloor(1);
-        ChangeGameState(GameState.TurnStart);
 
         // Zoom ボタンのクリックイベント
         var btn = GameObject.Find("Button_Zoom").GetComponent<Button>();
@@ -86,6 +69,27 @@ public class MainSystem : MonoBehaviour {
         });
 
         _player.SyncCameraPosition();
+        ChangeGameState(GameState.TurnStart);
+    }
+
+    private void DeployEnemy(int n, GameObject layer) {
+        Assert.IsTrue(_enemies.Count == 0);
+        // if (DebugConfig.NoEnemy) return;
+
+        Room[] rooms = _floor.GetRooms();
+        for (int i = 0; i < n; i++) {
+            const int tryCount = 10;
+            for (int j = 0; j < tryCount; j++) {
+                var loc = Utils.RandomRoomLoc(Utils.Choice(rooms));
+
+                if (_floor.ExistsObstacleFieldObject(loc)) continue;
+                if (_enemies.Any(e => e.Loc == loc)) continue;
+                if (_player.Loc == loc) continue;
+
+                _enemies.Add(EnemyFactory.CreateEnemy(loc, layer));
+                break;
+            }
+        }
     }
 
     void Update() {
@@ -179,7 +183,7 @@ public class MainSystem : MonoBehaviour {
         Destroy(GameObject.Find(LayerName.Minimap));
 
         var enemyLayer = new GameObject(LayerName.Enemy);
-        _enemies.Add(EnemyFactory.CreateEnemy(2, 3, enemyLayer));
+        DeployEnemy(3, enemyLayer);
 
         _floor = FloorCreator.CreateFloor(2);
 
