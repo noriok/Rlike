@@ -47,12 +47,24 @@ public class Floor {
         return FindFieldObject<Treasure>(loc);
     }
 
+    public bool ExistsTreasure(Loc loc) {
+        return FindTreasure(loc) != null;
+    }
+
     public NoticeBoard FindNoticeBoard(Loc loc) {
         return FindFieldObject<NoticeBoard>(loc);
     }
 
+    public bool ExistsNoticeBoard(Loc loc) {
+        return FindNoticeBoard(loc) != null;
+    }
+
     public Trap FindTrap(Loc loc) {
         return FindFieldObject<Trap>(loc);
+    }
+
+    public bool ExistsTrap(Loc loc) {
+        return FindTrap(loc) != null;
     }
 
 	public bool CanAdvance(Loc fm, Dir dir) {
@@ -90,6 +102,7 @@ public class Floor {
         return _map.GetRooms();
     }
 
+    // fm から to が見えるか
     public bool InSight(Loc fm, Loc to) {
         if (fm.IsNeighbor(to)) return true;
 

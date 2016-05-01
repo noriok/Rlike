@@ -5,8 +5,9 @@ using UnityEngine.Assertions;
 
 public class ActEnemyAttack : Act {
     private CharacterBase _target;
-    private Loc _targetLoc; // 攻撃する前にターゲットが移動する可能性があるので位置を保存
-
+    // プレイヤー移動直後にワープした場合、攻撃対象が既にいない可能性がある。
+    // 攻撃前にプレイヤーの座標が変わっていないかチェックして、もしいないなら行動を決定し直す
+    private Loc _targetLoc;
     public ActEnemyAttack(Enemy enemy, CharacterBase target, Loc targetLoc) : base(enemy) {
         Assert.IsTrue(target is Player);
         _target = target;

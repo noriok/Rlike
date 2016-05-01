@@ -67,7 +67,6 @@ public struct Loc : IEquatable<Loc> {
 
         if (drow != 0) drow /= Math.Abs(drow);
         if (dcol != 0) dcol /= Math.Abs(dcol);
-
         return Utils.ToDir(drow, dcol);
     }
 
