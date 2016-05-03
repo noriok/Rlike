@@ -126,6 +126,7 @@ public class MainSystem : MonoBehaviour {
             StartCoroutine(NextFloor());
         }
         else if (GUI.Button(new Rect(x, 40*1, 100, 40), "test2")) {
+            StartCoroutine(Test());
         }
     }
 
@@ -134,8 +135,7 @@ public class MainSystem : MonoBehaviour {
 
         Dir dir;
         if (_keyPad.IsMove(out dir)) {
-            var delta = dir.Delta();
-            ExecutePlayerMove(delta.Row, delta.Col);
+            ExecutePlayerMove(dir);
             return;
         }
         else if (_keyPad.IsAttack()) {
@@ -185,6 +185,74 @@ public class MainSystem : MonoBehaviour {
         yield return _banner.FadeOutAnimation();
 
         ChangeGameState(GameState.TurnStart);
+    }
+
+    private List<GameObject> D(int n) {
+        string pathPrefix = "Prefabs/Digits/digits_green_";
+
+        var pos = _player.Position;
+        float fontWidth = 0.14f;
+        var digits = new List<GameObject>();
+        var ds = Utils.Digits(n);
+        float x = pos.x - fontWidth * ds.Length / 2.0f + fontWidth / 2;
+        foreach (var d in ds) {
+            var obj = Resources.Load(pathPrefix + d);
+            var gobj = (GameObject)GameObject.Instantiate(obj, new Vector3(x, pos.y, pos.z), Quaternion.identity);
+            digits.Add(gobj);
+            x += fontWidth;
+        }
+        return digits;
+    }
+
+    private IEnumerator Test() {
+
+        int fm = 0;
+        int to = 35;
+
+        List<GameObject> digits = null;
+
+        float duration = 0.33f;
+        float elapsed = 0;
+        // カウントアップ
+        while (elapsed <= duration) {
+            elapsed += Time.deltaTime;
+            int x = (int)UTween.Ease(EaseType.OutQuad, fm, to, elapsed / duration);
+            if (digits != null) {
+                foreach (var d in digits) Destroy(d);
+            }
+            digits = D(x);
+            yield return null;
+        }
+        yield return new WaitForSeconds(0.4f);
+
+        elapsed = 0;
+        duration = 0.32f;
+
+        var src = _player.Position;
+        var dst = _player.Position + new Vector3(0, 0.23f, 0);
+
+        var srcA = 1.0f;
+        var dstA = 0.0f;
+        while (elapsed <= duration) {
+            elapsed += Time.deltaTime;
+            float y = Mathf.Lerp(src.y, dst.y, elapsed / duration);
+            foreach (var d in digits) {
+                var p = d.transform.position;
+                d.transform.position = new Vector3(p.x, y, p.z);
+
+                var renderer = d.GetComponent<SpriteRenderer>();
+                var color = renderer.color;
+                var a = UTween.Ease(EaseType.InQuint, 1.0f, 0, elapsed / duration);
+                color.a = a;
+                renderer.color = color;
+
+            }
+            yield return null;
+        }
+
+        foreach (var d in digits) {
+            Destroy(d);
+        }
     }
 
     private void ZoomIn() {
@@ -368,17 +436,15 @@ public class MainSystem : MonoBehaviour {
     }
 
     // プレイヤーの行動
-    // TODO: 引数を Dir に変更
-    private void ExecutePlayerMove(int drow, int dcol) {
+    private void ExecutePlayerMove(Dir dir) {
         Assert.IsTrue(_acts.Count == 0);
 
-        Dir dir = Utils.ToDir(drow, dcol);
         Loc to = _player.Loc.Forward(dir);
         if (_floor.CanAdvance(_player.Loc, dir) && !ExistsEnemy(to)) {
             _player.ShowDirection(dir);
-            _acts.Add(new ActPlayerMove(_player, drow, dcol));
+            _acts.Add(new ActPlayerMove(_player, dir));
 
-            // TODO:移動先にトラップがあるなら、トラップイベントを発生させる
+            // 移動先にトラップがあるなら、トラップイベントを発生させる
             Trap trap = _floor.FindTrap(to);
             if (trap != null) {
                 _acts.Add(new ActTrap(_player, trap));

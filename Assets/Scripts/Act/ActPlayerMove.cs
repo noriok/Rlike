@@ -2,8 +2,9 @@
 using System.Collections;
 
 public class ActPlayerMove : Act {
-    private int _drow;
-    private int _dcol;
+    // private int _drow;
+    // private int _dcol;
+    private Dir _dir;
 
     private float _elapsed;
     private Vector3 _srcPos;
@@ -12,35 +13,36 @@ public class ActPlayerMove : Act {
     private bool _isFirst = true;
     private Player _player;
 
-    public ActPlayerMove(Player player, int drow, int dcol) : base(player) {
-        _drow = drow;
-        _dcol = dcol;
+    public ActPlayerMove(Player player, Dir dir) : base(player) {
+        // _drow = drow;
+        // _dcol = dcol;
+        _dir = dir;
         _player = player;
 
         _elapsed = 0;
         _srcPos = player.Loc.ToPosition();
-        _dstPos = (player.Loc + new Loc(drow, dcol)).ToPosition();
+        _dstPos = player.Loc.Forward(dir).ToPosition();
     }
 
     public override bool IsMoveAct() {
         return true;
     }
 
-    protected override IEnumerator RunAnimation(MainSystem sys) {
-        Actor.ChangeDir(Utils.ToDir(_drow, _dcol));
+    // protected override IEnumerator RunAnimation(MainSystem sys) {
+    //     Actor.ChangeDir(Utils.ToDir(_drow, _dcol));
 
-        // TODO: 一歩一歩が連続していないので矢印が点滅してしまう
-        //Actor.ShowDirection(Utils.ToDir(_drow, _dcol));
+    //     // TODO: 一歩一歩が連続していないので矢印が点滅してしまう
+    //     //Actor.ShowDirection(Utils.ToDir(_drow, _dcol));
 
-        yield return CAction.Walk(Actor, _drow, _dcol, (x, y) => {
-            _player.SyncCameraPosition();
-        });
+    //     yield return CAction.Walk(Actor, _drow, _dcol, (x, y) => {
+    //         _player.SyncCameraPosition();
+    //     });
 
-        // Actor.HideDirection();
-    }
+    //     // Actor.HideDirection();
+    // }
 
     public override void Apply(MainSystem sys) {
-        var nextLoc = Actor.Loc + new Loc(_drow, _dcol);
+        var nextLoc = Actor.Loc.Forward(_dir);
         DLog.D("{0} move {1} -> {2}", Actor, Actor.Loc, nextLoc);
         Actor.UpdateLoc(nextLoc);
     }
@@ -51,7 +53,7 @@ public class ActPlayerMove : Act {
 
     public override void Update(MainSystem sys) {
         if (_isFirst) {
-            Actor.ChangeDir(Utils.ToDir(_drow, _dcol));
+            Actor.ChangeDir(_dir);
             _isFirst = false;
         }
 

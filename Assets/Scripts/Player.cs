@@ -48,7 +48,6 @@ public class Player : CharacterBase {
         camera.transform.position = new Vector3(x, y + Config.CameraOffsetY, cameraZ);
 
         minimapLayer.transform.localPosition = new Vector3(x + Config.MinimapOffsetX, y + Config.MinimapOffsetY, 0);
-        Debug.Log("minimap = " + minimapLayer.transform.position);
     }
 
     public override void ShowDirection(Dir dir) {
