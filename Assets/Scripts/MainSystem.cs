@@ -23,7 +23,7 @@ public class MainSystem : MonoBehaviour {
     private GameState _gameState;
     private Player _player;
     private List<Enemy> _enemies = new List<Enemy>();
-    private List<FieldItem> _items = new List<FieldItem>();
+    private List<FieldItem> _fieldItems = new List<FieldItem>();
 
     private List<Act> _acts = new List<Act>();
 
@@ -97,7 +97,7 @@ public class MainSystem : MonoBehaviour {
     }
 
     private void SetupFloorItem(int n, GameObject layer) {
-        Assert.IsTrue(_items.Count == 0);
+        Assert.IsTrue(_fieldItems.Count == 0);
 
         Room[] rooms = _floor.GetRooms();
         for (int i = 0; i < n; i++) {
@@ -106,7 +106,7 @@ public class MainSystem : MonoBehaviour {
                 var loc = Utils.RandomRoomLoc(Utils.Choice(rooms));
 
                 if (_floor.CanPutItem(loc)) {
-                    _items.Add(ItemFactory.CreateFieldItem(loc, layer));
+                    _fieldItems.Add(ItemFactory.CreateFieldItem(loc, layer));
                     break;
                 }
             }
@@ -184,8 +184,10 @@ public class MainSystem : MonoBehaviour {
 
         // TODO:次のフロア生成
         _enemies.Clear();
+        _fieldItems.Clear();
 
         Destroy(GameObject.Find(LayerName.Enemy));
+        Destroy(GameObject.Find(LayerName.Item));
         Destroy(GameObject.Find(LayerName.FieldObject));
         Destroy(GameObject.Find(LayerName.Trap));
         Destroy(GameObject.Find(LayerName.Map));
@@ -433,7 +435,7 @@ public class MainSystem : MonoBehaviour {
         _turnCount++;
         DLog.D("ターン: {0}", _turnCount);
 
-        _floor.UpdateMinimap(_player.Loc, _enemies, _items);
+        _floor.UpdateMinimap(_player.Loc, _enemies, _fieldItems);
 
         _player.OnTurnStart();
         foreach (var e in _enemies) {
@@ -462,7 +464,7 @@ public class MainSystem : MonoBehaviour {
         Loc to = _player.Loc.Forward(dir);
         if (_floor.CanAdvance(_player.Loc, dir) && !ExistsEnemy(to)) {
             _player.ShowDirection(dir);
-            _acts.Add(new ActPlayerMove(_player, dir));
+            _acts.Add(new ActPlayerMove(_player, dir, FindFieldItem(to)));
 
             // 移動先にトラップがあるなら、トラップイベントを発生させる
             Trap trap = _floor.FindTrap(to);
@@ -560,6 +562,27 @@ public class MainSystem : MonoBehaviour {
 
     public bool ExistsEnemy(Loc loc) {
         return FindEnemy(loc) != null;
+    }
+
+    private FieldItem FindFieldItem(Loc loc) {
+        for (int i = 0; i < _fieldItems.Count; i++) {
+            if (_fieldItems[i].Loc == loc) {
+                return _fieldItems[i];
+            }
+        }
+        return null;
+    }
+
+    public bool RemoveFieldItem(FieldItem fieldItem) {
+        for (int i = 0; i < _fieldItems.Count; i++) {
+            if (_fieldItems[i].Loc == fieldItem.Loc) {
+                Assert.IsTrue(System.Object.ReferenceEquals(_fieldItems[i], fieldItem));
+                fieldItem.Destroy();
+                _fieldItems.RemoveAt(i);
+                return true;
+            }
+        }
+        return false;
     }
 
     public IEnumerator Summon(Loc loc) {

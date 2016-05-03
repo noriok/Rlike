@@ -10,10 +10,12 @@ public class ActPlayerMove : Act {
 
     private bool _isFirst = true;
     private Player _player;
+    private FieldItem _fieldItem; // 移動先に落ちているアイテム
 
-    public ActPlayerMove(Player player, Dir dir) : base(player) {
+    public ActPlayerMove(Player player, Dir dir, FieldItem fieldItem) : base(player) {
         _dir = dir;
         _player = player;
+        _fieldItem = fieldItem;
 
         _elapsed = 0;
         _srcPos = player.Loc.ToPosition();
@@ -41,6 +43,13 @@ public class ActPlayerMove : Act {
         var nextLoc = Actor.Loc.Forward(_dir);
         DLog.D("{0} move {1} -> {2}", Actor, Actor.Loc, nextLoc);
         Actor.UpdateLoc(nextLoc);
+
+        if (_fieldItem != null) {
+            Debug.Log("アイテムを拾った");
+
+            // TODO:持ち物がいっぱいなら拾えない
+            sys.RemoveFieldItem(_fieldItem);
+        }
     }
 
     public override bool IsManualUpdate() {

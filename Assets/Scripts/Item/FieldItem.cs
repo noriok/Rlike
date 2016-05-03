@@ -10,4 +10,8 @@ public class FieldItem {
 		_gobj = gobj;
 		_gobj.transform.position = loc.ToPosition();
 	}
+
+	public void Destroy() {
+		GameObject.Destroy(_gobj);
+	}
 }
