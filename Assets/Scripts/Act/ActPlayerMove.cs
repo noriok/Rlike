@@ -1,9 +1,7 @@
 ﻿using UnityEngine;
-using System.Collections;
+// using System.Collections;
 
 public class ActPlayerMove : Act {
-    // private int _drow;
-    // private int _dcol;
     private Dir _dir;
 
     private float _elapsed;
@@ -14,8 +12,6 @@ public class ActPlayerMove : Act {
     private Player _player;
 
     public ActPlayerMove(Player player, Dir dir) : base(player) {
-        // _drow = drow;
-        // _dcol = dcol;
         _dir = dir;
         _player = player;
 

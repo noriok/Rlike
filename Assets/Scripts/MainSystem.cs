@@ -23,6 +23,7 @@ public class MainSystem : MonoBehaviour {
     private GameState _gameState;
     private Player _player;
     private List<Enemy> _enemies = new List<Enemy>();
+    private List<FieldItem> _items = new List<FieldItem>();
 
     private List<Act> _acts = new List<Act>();
 
@@ -47,7 +48,10 @@ public class MainSystem : MonoBehaviour {
         _floor = FloorCreator.CreateFloor(1);
 
         var enemyLayer = new GameObject(LayerName.Enemy);
-        DeployEnemy(3, enemyLayer);
+        SetupFloorEnemy(3, enemyLayer);
+
+        var itemLayer = new GameObject(LayerName.Item);
+        SetupFloorItem(5, itemLayer);
 
         var camera = GameObject.Find("Main Camera");
         camera.GetComponent<Camera>().orthographicSize = _cameraManager.CurrentSize;
@@ -72,7 +76,7 @@ public class MainSystem : MonoBehaviour {
         ChangeGameState(GameState.TurnStart);
     }
 
-    private void DeployEnemy(int n, GameObject layer) {
+    private void SetupFloorEnemy(int n, GameObject layer) {
         Assert.IsTrue(_enemies.Count == 0);
         // if (DebugConfig.NoEnemy) return;
 
@@ -88,6 +92,23 @@ public class MainSystem : MonoBehaviour {
 
                 _enemies.Add(EnemyFactory.CreateEnemy(loc, layer));
                 break;
+            }
+        }
+    }
+
+    private void SetupFloorItem(int n, GameObject layer) {
+        Assert.IsTrue(_items.Count == 0);
+
+        Room[] rooms = _floor.GetRooms();
+        for (int i = 0; i < n; i++) {
+            const int tryCount = 10;
+            for (int j = 0; j < tryCount; j++) {
+                var loc = Utils.RandomRoomLoc(Utils.Choice(rooms));
+
+                if (_floor.CanPutItem(loc)) {
+                    _items.Add(ItemFactory.CreateFieldItem(loc, layer));
+                    break;
+                }
             }
         }
     }
@@ -205,7 +226,6 @@ public class MainSystem : MonoBehaviour {
     }
 
     private IEnumerator Test() {
-
         int fm = 0;
         int to = 35;
 
@@ -231,8 +251,6 @@ public class MainSystem : MonoBehaviour {
         var src = _player.Position;
         var dst = _player.Position + new Vector3(0, 0.23f, 0);
 
-        var srcA = 1.0f;
-        var dstA = 0.0f;
         while (elapsed <= duration) {
             elapsed += Time.deltaTime;
             float y = Mathf.Lerp(src.y, dst.y, elapsed / duration);
@@ -255,15 +273,15 @@ public class MainSystem : MonoBehaviour {
         }
     }
 
-    private void ZoomIn() {
-        var camera = GameObject.Find("Main Camera");
-        camera.GetComponent<Camera>().orthographicSize -= 0.1f;
-    }
+    // private void ZoomIn() {
+    //     var camera = GameObject.Find("Main Camera");
+    //     camera.GetComponent<Camera>().orthographicSize -= 0.1f;
+    // }
 
-    private void ZoomOut() {
-        var camera = GameObject.Find("Main Camera");
-        camera.GetComponent<Camera>().orthographicSize += 0.1f;
-    }
+    // private void ZoomOut() {
+    //     var camera = GameObject.Find("Main Camera");
+    //     camera.GetComponent<Camera>().orthographicSize += 0.1f;
+    // }
 
     public float OrthographicSize {
         get {
@@ -383,6 +401,8 @@ public class MainSystem : MonoBehaviour {
         if (!trapFinished) return; // トラップタスクが完了するまで待機
 
         // 移動タスク、トラップタスクが完了したら、それ以外の行動を一つずつ実行していく
+        // TODO: act.IsInvalid() で無効になったキャラがいるなら、
+        //       ただちに Detect で行動順を決めないと、攻撃の後に移動処理がくることになるはず。
         bool actFinished = true;
         foreach (var act in _acts) {
             if (act.Actor.Hp <= 0 || act.IsInvalid()) continue;
@@ -413,7 +433,7 @@ public class MainSystem : MonoBehaviour {
         _turnCount++;
         DLog.D("ターン: {0}", _turnCount);
 
-        _floor.UpdateMinimap(_player.Loc, _enemies);
+        _floor.UpdateMinimap(_player.Loc, _enemies, _items);
 
         _player.OnTurnStart();
         foreach (var e in _enemies) {

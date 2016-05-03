@@ -18,8 +18,8 @@ public class Floor {
         StairsLoc = stairsLoc;
 	}
 
-    public void UpdateMinimap(Loc playerLoc, List<Enemy> enemies) {
-        _minimap.UpdateIcon(playerLoc, enemies);
+    public void UpdateMinimap(Loc playerLoc, List<Enemy> enemies, List<FieldItem> items) {
+        _minimap.UpdateIcon(playerLoc, enemies, items);
     }
 
     public void UpdateMinimapPlayerIconBlink() {
@@ -128,5 +128,22 @@ public class Floor {
 
     public bool IsEntrance(Loc loc) {
         return _map.IsEntrance(loc);
+    }
+
+    public bool IsRoomOrPassage(Loc loc) {
+        return _map.IsRoomOrPassage(loc);
+    }
+
+    public bool CanPutItem(Loc loc) {
+        if (!IsRoomOrPassage(loc)) return false;
+
+        // ワナが配置してあるなら置けない
+        if (ExistsTrap(loc)) return false;
+        // 宝箱が配置してあるなら置けない
+        if (ExistsTreasure(loc)) return false;
+
+        // TODO:水の上なら置けない
+
+        return true;
     }
 }

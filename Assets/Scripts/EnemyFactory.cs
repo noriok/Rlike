@@ -7,7 +7,7 @@ public static class EnemyFactory {
         var name = names[new System.Random().Next(names.Length)];
 
         var obj = Resources.Load("Prefabs/Animations/" + name);
-        var gobj = (GameObject)GameObject.Instantiate(obj, new Vector3(0, 1, 0), Quaternion.identity);
+        var gobj = (GameObject)GameObject.Instantiate(obj);
         gobj.transform.SetParent(layer.transform);
         return new Enemy(loc, gobj);
     }

@@ -10,6 +10,7 @@ public class Minimap {
 
 	private GameObject _playerIcon;
 	private List<GameObject> _enemyIcons = new List<GameObject>();
+	private List<GameObject> _itemIcons = new List<GameObject>();
 
 	private float _elapsed;
 
@@ -29,32 +30,53 @@ public class Minimap {
 		// trap
 		foreach (var fo in fieldObjects) {
 			if (fo is Trap) {
-				CreateTrap(fo.Loc.Row, fo.Loc.Col, _layer);
+				CreateTrapIcon(fo.Loc.Row, fo.Loc.Col, _layer);
 			}
 		}
 
-		// 階段 TODO:階段の位置を引数で受け取る
-		CreateStairs(stairsLoc.Row, stairsLoc.Col, _layer);
+		// 階段
+		CreateStairsIcon(stairsLoc.Row, stairsLoc.Col, _layer);
 
-		_playerIcon = CreatePlayer(0, 0, _layer);
-		for (int i = 0; i < Config.EnemyMaxCount; i++) {
-			_enemyIcons.Add(CreateEnemy(0, 0, _layer));
-		}
+		// プレイヤー
+		_playerIcon = CreatePlayerIcon(0, 0, _layer);
 
 		_layer.transform.localScale = new Vector3(0.1f, 0.1f, 1.0f);
 		_layer.transform.position = new Vector3(-0.8f, 0.3f, 0);
 	}
 
-	public void UpdateIcon(Loc playerLoc, List<Enemy> enemies) {
-		_playerIcon.transform.localPosition = ToPosition(playerLoc);
+	public void UpdateIcon(Loc playerLoc, List<Enemy> enemies, List<FieldItem> items) {
+		_playerIcon.transform.localPosition = ToMinimapPosition(playerLoc);
 
+		// いったん敵アイコンを全てオフにする
 		for (int i = 0; i < _enemyIcons.Count; i++) {
-			if (i < enemies.Count) {
-				_enemyIcons[i].SetActive(true);
-				_enemyIcons[i].transform.localPosition = ToPosition(enemies[i].Loc);
+			_enemyIcons[i].SetActive(false);
+		}
+		// いったんアイテムアイコンを全てオフにする
+		for (int i = 0; i < _itemIcons.Count; i++) {
+			_itemIcons[i].SetActive(false);
+		}
+
+		// 敵アイコンの更新
+		for (int i = 0; i < enemies.Count; i++) {
+			if (i >= _enemyIcons.Count) { // 追加
+				var loc = enemies[i].Loc;
+				_enemyIcons.Add(CreateEnemyIcon(loc.Row, loc.Col, _layer));
 			}
 			else {
-				_enemyIcons[i].SetActive(false);
+				_enemyIcons[i].SetActive(true);
+				_enemyIcons[i].transform.localPosition = ToMinimapPosition(enemies[i].Loc);
+			}
+		}
+
+		// アイテムアイコンの更新
+		for (int i = 0; i < items.Count; i++) {
+			if (i >= _itemIcons.Count) { // 追加
+				var loc = items[i].Loc;
+				_itemIcons.Add(CreateItemIcon(loc.Row, loc.Col, _layer));
+			}
+			else {
+				_itemIcons[i].SetActive(true);
+				_itemIcons[i].transform.localPosition = ToMinimapPosition(items[i].Loc);
 			}
 		}
 	}
@@ -77,20 +99,20 @@ public class Minimap {
 		_layer.SetActive(false);
 	}
 
-	private Vector3 ToPosition(Loc loc) {
+	private Vector3 ToMinimapPosition(Loc loc) {
 		return new Vector3(loc.Col * Size, -loc.Row * Size, 0);
 	}
 
-	private GameObject Create(string path, int row, int col, GameObject layer) {
+	private GameObject CreateIcon(string path, int row, int col, GameObject layer) {
 		var obj = Resources.Load(path);
-		var pos = ToPosition(new Loc(row, col));
+		var pos = ToMinimapPosition(new Loc(row, col));
 		var gobj = (GameObject)GameObject.Instantiate(obj, pos, Quaternion.identity);
-		gobj.transform.SetParent(layer.transform);
+		gobj.transform.SetParent(layer.transform, false);
 		return gobj;
 	}
 
 	private GameObject CreateFloor(int row, int col, GameObject layer) {
-		var gobj = Create("Prefabs/Minimap/minimap-floor", row, col, layer);
+		var gobj = CreateIcon("Prefabs/Minimap/minimap-floor", row, col, layer);
 		var renderer = gobj.GetComponent<SpriteRenderer>();
 		var color = renderer.color;
 		color.a = 140f / 255f;
@@ -98,19 +120,23 @@ public class Minimap {
 		return gobj;
 	}
 
-	private GameObject CreateTrap(int row, int col, GameObject layer) {
-		return Create("Prefabs/Minimap/minimap-trap", row, col, layer);
+	private GameObject CreateTrapIcon(int row, int col, GameObject layer) {
+		return CreateIcon("Prefabs/Minimap/minimap-trap", row, col, layer);
 	}
 
-	private GameObject CreatePlayer(int row, int col, GameObject layer) {
-		return Create("Prefabs/Minimap/minimap-player", row, col, layer);
+	private GameObject CreatePlayerIcon(int row, int col, GameObject layer) {
+		return CreateIcon("Prefabs/Minimap/minimap-player", row, col, layer);
 	}
 
-	private GameObject CreateEnemy(int row, int col, GameObject layer) {
-		return Create("Prefabs/Minimap/minimap-enemy", row, col, layer);
+	private GameObject CreateEnemyIcon(int row, int col, GameObject layer) {
+		return CreateIcon("Prefabs/Minimap/minimap-enemy", row, col, layer);
 	}
 
-	private GameObject CreateStairs(int row, int col, GameObject layer) {
-		return Create("Prefabs/Minimap/minimap-stairs", row, col, layer);
+	private GameObject CreateItemIcon(int row, int col, GameObject layer) {
+		return CreateIcon("Prefabs/Minimap/minimap-item", row, col, layer);
+	}
+
+	private GameObject CreateStairsIcon(int row, int col, GameObject layer) {
+		return CreateIcon("Prefabs/Minimap/minimap-stairs", row, col, layer);
 	}
 }
