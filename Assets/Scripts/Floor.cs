@@ -141,6 +141,8 @@ public class Floor {
         if (ExistsTrap(loc)) return false;
         // 宝箱が配置してあるなら置けない
         if (ExistsTreasure(loc)) return false;
+        // 立て札が配置してあるなら置けない
+        if (ExistsNoticeBoard(loc)) return false;
 
         // TODO:水の上なら置けない
 

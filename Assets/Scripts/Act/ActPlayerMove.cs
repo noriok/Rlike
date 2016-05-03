@@ -49,6 +49,14 @@ public class ActPlayerMove : Act {
 
             // TODO:持ち物がいっぱいなら拾えない
             sys.RemoveFieldItem(_fieldItem);
+
+            Item item = _fieldItem.Item;
+            if (item is ItemGold) {
+                ItemGold itemGold = (ItemGold)item;
+                Debug.LogFormat("{0} G 手に入れた", itemGold.Value);
+                sys.IncGold(itemGold.Value);
+
+            }
         }
     }
 

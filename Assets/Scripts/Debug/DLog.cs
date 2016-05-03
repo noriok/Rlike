@@ -4,6 +4,8 @@
 using System.Collections.Generic;
 
 public static class DLog {
+    public static bool Enable { get; set; }
+
     private static List<string> _log = new List<string>();
 
     public static void Clear() {
@@ -11,6 +13,8 @@ public static class DLog {
     }
 
     public static void D(string format, params object[] args) {
+        if (!Enable) return;
+
         _log.Add(string.Format(format, args));
     }
 

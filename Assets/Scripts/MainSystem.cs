@@ -37,7 +37,10 @@ public class MainSystem : MonoBehaviour {
     private GameManager _gm;
     private Floor _floor;
 
+    private int _gold;
+
     void Start() {
+        DLog.Enable = false;
         _keyPad = new KeyPad();
         _dialog = new Dialog();
         _yesNoDialog = new YesNoDialog();
@@ -105,8 +108,11 @@ public class MainSystem : MonoBehaviour {
             for (int j = 0; j < tryCount; j++) {
                 var loc = Utils.RandomRoomLoc(Utils.Choice(rooms));
 
+                // 既にアイテム配置済みなら置けない
+                if (_fieldItems.Where(e => e.Loc == loc).Any()) continue;
+
                 if (_floor.CanPutItem(loc)) {
-                    _fieldItems.Add(ItemFactory.CreateFieldItem(loc, layer));
+                    _fieldItems.Add(ItemFactory.CreateGold(loc, layer));
                     break;
                 }
             }
@@ -342,6 +348,7 @@ public class MainSystem : MonoBehaviour {
             Debug.Log("### Turn Finish ");
             SysTurnEnd();
 
+            // TODO:直前の行動が移動のみ階段ダイアログを表示する
             // 階段の上ならダイアログ表示
             if (_player.Loc == _floor.StairsLoc) {
                 ChangeGameState(GameState.ConfirmStairsDialog);
@@ -624,5 +631,12 @@ public class MainSystem : MonoBehaviour {
             }
         }
         return defaultLoc;
+    }
+
+    public void IncGold(int gold) {
+        _gold += gold;
+
+        var text = GameObject.Find("Canvas/Header/Text_G_Value").GetComponent<Text>();
+        text.text = _gold.ToString();
     }
 }

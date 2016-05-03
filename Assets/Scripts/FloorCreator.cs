@@ -74,7 +74,7 @@ public static class FloorCreator {
 
 		// マップ上のフィールドオブジェクト作成
 		var fieldObjects = new List<FieldObject>();
-      	fieldObjects.Add(FieldObjectFactory.CreateBonfire(new Loc(3, 3), fieldObjectLayer));
+      	// fieldObjects.Add(FieldObjectFactory.CreateBonfire(new Loc(3, 3), fieldObjectLayer));
         fieldObjects.Add(FieldObjectFactory.CreateTreasure(new Loc(4, 4), fieldObjectLayer));
         fieldObjects.Add(FieldObjectFactory.CreateNoticeBoard(new Loc(1, 2), fieldObjectLayer, "立て札のメッセージ"));
 
