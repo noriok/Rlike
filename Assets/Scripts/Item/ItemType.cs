@@ -2,8 +2,8 @@
 using System.Collections;
 
 public enum ItemType {
-	Gold,
-	Stone,
-	Magic,
-	Herb,
+    Gold,
+    Stone,
+    Magic,
+    Herb,
 }

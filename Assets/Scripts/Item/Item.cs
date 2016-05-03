@@ -9,5 +9,4 @@ public abstract class Item {
         Type = type;
         Name = name;
     }
-
 }
