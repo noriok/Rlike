@@ -4,6 +4,10 @@ using System.Collections;
 using System.Collections.Generic;
 
 public class Player : CharacterBase {
+    public List<Item> Items { get { return _items; } }
+
+    private List<Item> _items = new List<Item>();
+
     private Loc _nextLoc; // 次のターンでの位置
 
     private Dictionary<Dir, GameObject> _dirs = new Dictionary<Dir, GameObject>();

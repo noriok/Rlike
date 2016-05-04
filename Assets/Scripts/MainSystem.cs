@@ -18,7 +18,6 @@ enum GameState {
     NextFloorTransition,
 
     DisplayItemWindow,
-    DisplayItemCommandWindow,
 }
 
 public class MainSystem : MonoBehaviour {
@@ -58,12 +57,15 @@ public class MainSystem : MonoBehaviour {
             _itemWindow.SetActive(true);
 
             var sc = GameObject.Find("Canvas/ScrollView/Panel/Content").GetComponent<ScrollController>();
+            /*
             var items = new[] {
-                new Item(ItemType.Herb, "薬草", 1),
-                new Item(ItemType.Magic, "かなしばりの書", 5),
-                new Item(ItemType.Stone, "石", 3),
+                ItemFactory.CreateHerb(),
+                ItemFactory.CreateStone(),
+                ItemFactory.CreateMagic(),
             };
             sc.Init(items.ToList());
+            */
+            sc.Init(_player.Items);
 
             sc.SetCloseCallback(() => {
                 ChangeGameState(GameState.InputWait);
@@ -95,19 +97,11 @@ public class MainSystem : MonoBehaviour {
         var camera = GameObject.Find("Main Camera");
         camera.GetComponent<Camera>().orthographicSize = _cameraManager.CurrentSize;
 
-
         // Zoom ボタンのクリックイベント
         var btn = GameObject.Find("Button_Zoom").GetComponent<Button>();
         btn.onClick.AddListener(() => {
             if (_gameState == GameState.InputWait) {
                 camera.GetComponent<Camera>().orthographicSize = _cameraManager.NextSize();
-            }
-        });
-
-        var btn2 = GameObject.Find("Canvas/Button_Skill").GetComponent<Button>();
-        btn2.onClick.AddListener(() => {
-            if (_gameState == GameState.InputWait) {
-                ExecutePlayerUseSkill();
             }
         });
 
@@ -148,7 +142,7 @@ public class MainSystem : MonoBehaviour {
                 if (_fieldItems.Where(e => e.Loc == loc).Any()) continue;
 
                 if (_floor.CanPutItem(loc)) {
-                    _fieldItems.Add(ItemFactory.CreateGold(loc, layer));
+                    _fieldItems.Add(FieldItemFactory.CreateGold(loc, layer));
                     break;
                 }
             }
@@ -161,7 +155,6 @@ public class MainSystem : MonoBehaviour {
         _floor.UpdateMinimapPlayerIconBlink();
 
         if (_gameState == GameState.DisplayItemWindow) return;
-        if (_gameState == GameState.DisplayItemCommandWindow) return;
 
         if (_gameState == GameState.ConfirmStairsDialog) {
             if (_yesNoDialog.IsYesPressed) {
@@ -193,18 +186,6 @@ public class MainSystem : MonoBehaviour {
         }
         else if (GUI.Button(new Rect(x, 40*1, 100, 40), "test2")) {
             // StartCoroutine(Test());
-
-            var o = Resources.Load("Prefabs/ItemWindow/Node");
-            Debug.Log(o);
-
-            var sc = GameObject.Find("Canvas/ScrollView/Panel/Content").GetComponent<ScrollController>();
-            sc.Add(new Item(ItemType.Herb, "薬草", 1));
-            sc.Add(new Item(ItemType.Magic, "かなしばりの書", 5));
-            sc.Add(new Item(ItemType.Stone, "石", 3));
-
-
-
-
         }
     }
 
@@ -417,9 +398,6 @@ public class MainSystem : MonoBehaviour {
             break;
 
         case GameState.DisplayItemWindow:
-            break;
-
-        case GameState.DisplayItemCommandWindow:
             break;
 
         default:

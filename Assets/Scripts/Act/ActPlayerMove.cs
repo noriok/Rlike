@@ -51,11 +51,9 @@ public class ActPlayerMove : Act {
             sys.RemoveFieldItem(_fieldItem);
 
             Item item = _fieldItem.Item;
-            if (item is ItemGold) {
-                ItemGold itemGold = (ItemGold)item;
-                Debug.LogFormat("{0} G 手に入れた", itemGold.Value);
-                sys.IncGold(itemGold.Value);
-
+            if (item.Type == ItemType.Gold) {
+                Debug.LogFormat("{0} G 手に入れた", 100);
+                sys.IncGold(100);
             }
         }
     }
