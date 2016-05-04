@@ -57,15 +57,15 @@ public class MainSystem : MonoBehaviour {
             _itemWindow.SetActive(true);
 
             var sc = GameObject.Find("Canvas/ScrollView/Panel/Content").GetComponent<ScrollController>();
-            /*
+
             var items = new[] {
                 ItemFactory.CreateHerb(),
                 ItemFactory.CreateStone(),
                 ItemFactory.CreateMagic(),
             };
             sc.Init(items.ToList());
-            */
-            sc.Init(_player.Items);
+
+//            sc.Init(_player.Items);
 
             sc.SetCloseCallback(() => {
                 ChangeGameState(GameState.InputWait);

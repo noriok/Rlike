@@ -10,10 +10,14 @@ public class ActPlayerUseItem : Act {
 	}
 
 	protected override IEnumerator RunAnimation(MainSystem sys) {
+        /*
 		yield return EffectAnim.Heal(Actor.Position);
 
 		var healHp = new System.Random().Next(29) + 1;
 		yield return EffectAnim.PopupGreenDigits(Actor, healHp);
+        */
+
+        yield return _item.Use(Actor, sys);
 	}
 
 	public override void Apply(MainSystem sys) {
