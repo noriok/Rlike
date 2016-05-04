@@ -57,15 +57,16 @@ public class MainSystem : MonoBehaviour {
             _itemWindow.SetActive(true);
 
             var sc = GameObject.Find("Canvas/ScrollView/Panel/Content").GetComponent<ScrollController>();
-
+/*
             var items = new[] {
                 ItemFactory.CreateHerb(),
                 ItemFactory.CreateStone(),
                 ItemFactory.CreateMagic(),
             };
             sc.Init(items.ToList());
+            */
 
-//            sc.Init(_player.Items);
+            sc.Init(_player.Items);
 
             sc.SetCloseCallback(() => {
                 ChangeGameState(GameState.InputWait);
@@ -142,11 +143,16 @@ public class MainSystem : MonoBehaviour {
                 if (_fieldItems.Where(e => e.Loc == loc).Any()) continue;
 
                 if (_floor.CanPutItem(loc)) {
-                    _fieldItems.Add(FieldItemFactory.CreateGold(loc, layer));
+                    // _fieldItems.Add(FieldItemFactory.CreateGold(loc, layer));
+                    _fieldItems.Add(FieldItemFactory.CreateHerb(loc, layer));
                     break;
                 }
             }
         }
+    }
+
+    public void AddFieldItem(FieldItem fieldItem) {
+        _fieldItems.Add(fieldItem);
     }
 
     void Update() {
@@ -573,6 +579,12 @@ public class MainSystem : MonoBehaviour {
         case ItemActionType.Throw:
             // ExecutePlayer
             break;
+        case ItemActionType.Put:
+            ExecutePlayerPutItem(item);
+            break;
+        default:
+            Assert.IsTrue(false);
+            break;
         }
 
     }
@@ -583,6 +595,28 @@ public class MainSystem : MonoBehaviour {
 
         _acts.Add(new ActPlayerUseItem(_player, item));
         ChangeGameState(GameState.Act);
+    }
+
+    private void ExecutePlayerPutItem(Item item) {
+        Debug.Log("--- Put Item");
+        Assert.IsTrue(_acts.Count == 0);
+
+        bool ok = true;
+        if (!_floor.CanPutItem(_player.Loc)) {
+            ok = false;
+        }
+        // 足下に既にアイテムがある
+        if (_fieldItems.Where(e => e.Loc == _player.Loc).Any()) {
+            ok = false;
+        }
+
+        if (ok) {
+            _acts.Add(new ActPlayerPutItem(_player, item));
+            ChangeGameState(GameState.Act);
+        }
+        else {
+            Debug.Log("ここにアイテムは置けません");
+        }
     }
 
     private void ExecutePlayerUseSkill() {

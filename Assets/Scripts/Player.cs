@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Assertions;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -135,5 +136,33 @@ public class Player : CharacterBase {
         textHp.text = string.Format("{0}/{1}", toHp, MaxHp);
         imageFg.fillAmount = toHp / MaxHp;
         HealHp(1);
+    }
+
+    public void AddItem(Item item) {
+        // 石はまとまる
+        if (item.Type == ItemType.Stone) {
+            for (int i = 0; i < _items.Count; i++) {
+                if (_items[i].Type == ItemType.Stone) {
+                    _items[i].Inc(item.Count);
+                    return;
+                }
+            }
+        }
+        _items.Add(item);
+    }
+
+    public Item RemoveItem(Item item) {
+        for (int i = 0; i < _items.Count; i++) {
+            if (_items[i].Name == item.Name) {
+                Assert.IsTrue(object.ReferenceEquals(_items[i], item));
+                Assert.IsTrue(item.Count > 0);
+
+                _items.RemoveAt(i);
+                return item;
+            }
+        }
+
+        Assert.IsTrue(false);
+        return null;
     }
 }

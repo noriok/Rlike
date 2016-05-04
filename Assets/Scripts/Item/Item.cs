@@ -1,4 +1,5 @@
 ﻿//using UnityEngine;
+using UnityEngine.Assertions;
 
 using System;
 using System.Collections;
@@ -6,7 +7,7 @@ using System.Collections;
 public class Item {
     public ItemType Type { get; private set; }
     public string Name { get; private set; }
-    public int Count { get; private set; }
+    public int Count { get; private set; } // 石はまとまる
     public string Desc { get; private set; }
     public Skill Skill { get; private set; }
 
@@ -22,5 +23,19 @@ public class Item {
         return Skill.Use(sender, sys);
     }
 
+    public void Inc(int n) {
+        Count += n;
+    }
+
+    public void Dec(int n) {
+        Count -= n;
+        Assert.IsTrue(Count > 0);
+    }
+
+    public Item RemoveOne() {
+        Dec(1);
+        var item = new Item(Type, Name, Desc, Skill);
+        return item;
+    }
 
 }
