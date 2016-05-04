@@ -1,10 +1,12 @@
-﻿// using UnityEngine;
+﻿using UnityEngine;
 // using UnityEngine.Assertions;
 using System.Collections;
 
 public class ActPlayerUseItem : Act {
+    private Item _item;
 
-	public ActPlayerUseItem(Player player) : base(player) {
+	public ActPlayerUseItem(Player player, Item item) : base(player) {
+        _item = item;
 	}
 
 	protected override IEnumerator RunAnimation(MainSystem sys) {
@@ -16,5 +18,7 @@ public class ActPlayerUseItem : Act {
 
 	public override void Apply(MainSystem sys) {
 		DLog.D("{0} item", Actor);
+
+        Debug.LogFormat("item:{0} を使いました", _item);
 	}
 }

@@ -16,9 +16,18 @@ enum GameState {
 
     ConfirmStairsDialog, // 階段を降りますかダイアログ
     NextFloorTransition,
+
+    DisplayItemWindow,
+    DisplayItemCommandWindow,
 }
 
 public class MainSystem : MonoBehaviour {
+    [SerializeField]
+    Button _btnItem;
+
+    [SerializeField]
+    GameObject _itemWindow;
+
     private CameraManager _cameraManager = new CameraManager();
     private GameState _gameState;
     private Player _player;
@@ -40,6 +49,33 @@ public class MainSystem : MonoBehaviour {
     private int _gold;
 
     void Start() {
+        _itemWindow.SetActive(false);
+        _btnItem.onClick.AddListener(() => {
+            if (_gameState != GameState.InputWait) return;
+
+            ChangeGameState(GameState.DisplayItemWindow);
+
+            _itemWindow.SetActive(true);
+
+            var sc = GameObject.Find("Canvas/ScrollView/Panel/Content").GetComponent<ScrollController>();
+            var items = new[] {
+                new Item(ItemType.Herb, "薬草", 1),
+                new Item(ItemType.Magic, "かなしばりの書", 5),
+                new Item(ItemType.Stone, "石", 3),
+            };
+            sc.Init(items.ToList());
+
+            sc.SetCloseCallback(() => {
+                ChangeGameState(GameState.InputWait);
+            });
+            sc.SetItemActionCallback((ItemActionType actionType, Item item) => {
+                Debug.Log("callback = " + actionType);
+                Debug.Log("item = " + item);
+
+                ExecutePlayerItemAction(actionType, item);
+            });
+        });
+
         DLog.Enable = false;
         _keyPad = new KeyPad();
         _dialog = new Dialog();
@@ -124,6 +160,9 @@ public class MainSystem : MonoBehaviour {
 
         _floor.UpdateMinimapPlayerIconBlink();
 
+        if (_gameState == GameState.DisplayItemWindow) return;
+        if (_gameState == GameState.DisplayItemCommandWindow) return;
+
         if (_gameState == GameState.ConfirmStairsDialog) {
             if (_yesNoDialog.IsYesPressed) {
                 ChangeGameState(GameState.NextFloorTransition);
@@ -153,7 +192,19 @@ public class MainSystem : MonoBehaviour {
             StartCoroutine(NextFloor());
         }
         else if (GUI.Button(new Rect(x, 40*1, 100, 40), "test2")) {
-            StartCoroutine(Test());
+            // StartCoroutine(Test());
+
+            var o = Resources.Load("Prefabs/ItemWindow/Node");
+            Debug.Log(o);
+
+            var sc = GameObject.Find("Canvas/ScrollView/Panel/Content").GetComponent<ScrollController>();
+            sc.Add(new Item(ItemType.Herb, "薬草", 1));
+            sc.Add(new Item(ItemType.Magic, "かなしばりの書", 5));
+            sc.Add(new Item(ItemType.Stone, "石", 3));
+
+
+
+
         }
     }
 
@@ -175,7 +226,7 @@ public class MainSystem : MonoBehaviour {
         }
 
         if (Input.GetKey(KeyCode.A)) { // 回復アイテム使う
-            ExecutePlayerUseItem();
+            // ExecutePlayerUseItem();
         }
         else if (Input.GetKey(KeyCode.S)) { // スキル使う
             ExecutePlayerUseSkill();
@@ -365,6 +416,12 @@ public class MainSystem : MonoBehaviour {
         case GameState.NextFloorTransition:
             break;
 
+        case GameState.DisplayItemWindow:
+            break;
+
+        case GameState.DisplayItemCommandWindow:
+            break;
+
         default:
             Assert.IsTrue(false);
             break;
@@ -527,10 +584,26 @@ public class MainSystem : MonoBehaviour {
         ExecutePlayerWait();
     }
 
-    private void ExecutePlayerUseItem() {
+    private void ExecutePlayerItemAction(ItemActionType actionType, Item item) {
+        Debug.Log("Count = " + _acts.Count);
         Assert.IsTrue(_acts.Count == 0);
 
-        _acts.Add(new ActPlayerUseItem(_player));
+        switch (actionType) {
+        case ItemActionType.Use:
+            ExecutePlayerUseItem(item);
+            break;
+        case ItemActionType.Throw:
+            // ExecutePlayer
+            break;
+        }
+
+    }
+
+    private void ExecutePlayerUseItem(Item item) {
+        Debug.Log("---- Use Item");
+        Assert.IsTrue(_acts.Count == 0);
+
+        _acts.Add(new ActPlayerUseItem(_player, item));
         ChangeGameState(GameState.Act);
     }
 
