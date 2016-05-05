@@ -155,6 +155,7 @@ public class MainSystem : MonoBehaviour {
     }
 
     public void FallItemToFloor(Loc fallLoc, FieldItem fieldItem) {
+        // TODO:投げたアイテムが落ちる場所は、プレイヤーに近い位置から優先的に決める
         var locs = new List<Loc>();
         int n = 3;
         for (int i = -n; i <= n; i++) {
@@ -670,7 +671,7 @@ public class MainSystem : MonoBehaviour {
             update = false;
 
             var forwardLoc = loc.Forward(_player.Dir);
-            if (_floor.IsRoomOrPassage(forwardLoc) && !_floor.ExistsObstacleFieldObject(loc)) {
+            if (_floor.IsRoomOrPassage(forwardLoc) && !_floor.ExistsObstacleFieldObject(forwardLoc)) {
                 update = true;
                 loc = forwardLoc;
             }
