@@ -153,8 +153,7 @@ public class Player : CharacterBase {
 
     public Item RemoveItem(Item item) {
         for (int i = 0; i < _items.Count; i++) {
-            if (_items[i].Name == item.Name) {
-                Assert.IsTrue(object.ReferenceEquals(_items[i], item));
+            if (object.ReferenceEquals(_items[i], item)) {
                 Assert.IsTrue(item.Count > 0);
 
                 _items.RemoveAt(i);

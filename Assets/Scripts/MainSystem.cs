@@ -112,7 +112,7 @@ public class MainSystem : MonoBehaviour {
 
     private void SetupFloorEnemy(int n, GameObject layer) {
         Assert.IsTrue(_enemies.Count == 0);
-        // if (DebugConfig.NoEnemy) return;
+        if (DebugConfig.NoEnemy) return;
 
         Room[] rooms = _floor.GetRooms();
         for (int i = 0; i < n; i++) {
@@ -153,6 +153,43 @@ public class MainSystem : MonoBehaviour {
 
     public void AddFieldItem(FieldItem fieldItem) {
         _fieldItems.Add(fieldItem);
+    }
+
+    public void FallItemToFloor(Loc fallLoc, FieldItem fieldItem) {
+        var locs = new List<Loc>();
+        int n = 3;
+        for (int i = -n; i <= n; i++) {
+            for (int j = -n; j <= n; j++) {
+                locs.Add(new Loc(fallLoc.Row + i, fallLoc.Col + j));
+            }
+        }
+
+        locs.Sort((a, b) => {
+            int s = a.SquareDistance(fallLoc);
+            int t = b.SquareDistance(fallLoc);
+            if (s == t) {
+                if (a.Row == b.Row) return a.Col.CompareTo(b.Col);
+                return a.Row.CompareTo(b.Row);
+            }
+            return s.CompareTo(t);
+        });
+
+        bool put = false;
+        foreach (var loc in locs) {
+            if (ExistsFieldItem(loc)) continue;
+
+            if (_floor.CanPutItem(loc)) {
+                fieldItem.UpdateLoc(loc);
+                AddFieldItem(fieldItem);
+                put = true;
+                break;
+            }
+        }
+
+        if (!put) {
+            Debug.Log("アイテムは配置できなかった");
+            fieldItem.Destroy();
+        }
     }
 
     void Update() {
@@ -248,7 +285,7 @@ public class MainSystem : MonoBehaviour {
         yield return null; // TODO:yield return null を入れるとミニマップの位置が更新される
         _player.SyncCameraPosition(); // TODO:ミニマップの位置が更新されない
 
-        yield return new WaitForSeconds(1.6f);
+        yield return new WaitForSeconds(1.1f);
         yield return _banner.FadeOutAnimation();
 
         ChangeGameState(GameState.TurnStart);
@@ -483,7 +520,7 @@ public class MainSystem : MonoBehaviour {
         _turnCount++;
         DLog.D("ターン: {0}", _turnCount);
 
-        _floor.UpdateMinimap(_player.Loc, _enemies, _fieldItems);
+        UpdateMinimap();
 
         _player.OnTurnStart();
         foreach (var e in _enemies) {
@@ -503,6 +540,10 @@ public class MainSystem : MonoBehaviour {
         foreach (var e in _enemies) {
             e.OnTurnEnd();
         }
+    }
+
+    public void UpdateMinimap() {
+        _floor.UpdateMinimap(_player.Loc, _enemies, _fieldItems);
     }
 
     // プレイヤーの行動
@@ -577,7 +618,7 @@ public class MainSystem : MonoBehaviour {
             ExecutePlayerUseItem(item);
             break;
         case ItemActionType.Throw:
-            // ExecutePlayer
+            ExecutePlayerThrowItem(item);
             break;
         case ItemActionType.Put:
             ExecutePlayerPutItem(item);
@@ -616,7 +657,33 @@ public class MainSystem : MonoBehaviour {
         }
         else {
             Debug.Log("ここにアイテムは置けません");
+            ChangeGameState(GameState.InputWait);
         }
+    }
+
+    private void ExecutePlayerThrowItem(Item item) {
+        // TODO:石を投げる場合は別処理
+        Assert.IsTrue(_acts.Count == 0);
+
+        Loc loc = _player.Loc;
+        bool update = true;
+        while (update) {
+            update = false;
+
+            var forwardLoc = loc.Forward(_player.Dir);
+            if (_floor.IsRoomOrPassage(forwardLoc) && !_floor.ExistsObstacleFieldObject(loc)) {
+                update = true;
+                loc = forwardLoc;
+            }
+            else {
+                var targetLoc = forwardLoc;
+                var fallLoc = loc;
+                CharacterBase target = null;
+                _acts.Add(new ActPlayerThrowItem(_player, item, targetLoc, fallLoc, target));
+            }
+        }
+
+        ChangeGameState(GameState.Act);
     }
 
     private void ExecutePlayerUseSkill() {
@@ -663,6 +730,10 @@ public class MainSystem : MonoBehaviour {
             }
         }
         return null;
+    }
+
+    private bool ExistsFieldItem(Loc loc) {
+        return FindFieldItem(loc) != null;
     }
 
     public bool RemoveFieldItem(FieldItem fieldItem) {

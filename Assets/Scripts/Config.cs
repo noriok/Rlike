@@ -11,4 +11,6 @@
     public const int EnemyMaxCount = 25;
 
     public const float WalkDuration = 0.35f;
+
+    public const float ThrowItemSpeed = 3.5f;
 }

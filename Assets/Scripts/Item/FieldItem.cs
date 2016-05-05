@@ -16,4 +16,27 @@ public class FieldItem {
 	public void Destroy() {
 		GameObject.Destroy(_gobj);
 	}
+
+    public void UpdatePosition(Vector3 pos) {
+        _gobj.transform.position = pos;
+    }
+
+    public void UpdateLoc(Loc loc) {
+        Loc = loc;
+        UpdatePosition(loc.ToPosition());
+    }
+
+    private void ChangeSortingLayerName(string sortingLayerName) {
+        var renderer = _gobj.GetComponent<SpriteRenderer>();
+        renderer.sortingLayerName = sortingLayerName;
+    }
+
+    public void BringToFront() {
+        ChangeSortingLayerName("Front Base");
+    }
+
+    public void ResetZOrder() {
+        ChangeSortingLayerName("Item Base");
+    }
 }
+

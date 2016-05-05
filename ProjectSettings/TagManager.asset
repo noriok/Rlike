@@ -77,7 +77,7 @@ TagManager:
   - name: Minimap Over
     uniqueID: 2704339361
     locked: 0
-  - name: Font Base
+  - name: Front Base
     uniqueID: 2493646599
     locked: 0
   - name: Test Front

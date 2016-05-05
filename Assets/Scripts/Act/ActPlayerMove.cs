@@ -59,6 +59,8 @@ public class ActPlayerMove : Act {
                 sys.RemoveFieldItem(_fieldItem);
             }
         }
+
+        sys.UpdateMinimap();
     }
 
     public override bool IsManualUpdate() {
