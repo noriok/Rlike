@@ -143,8 +143,7 @@ public class MainSystem : MonoBehaviour {
                 if (_fieldItems.Where(e => e.Loc == loc).Any()) continue;
 
                 if (_floor.CanPutItem(loc)) {
-                    // _fieldItems.Add(FieldItemFactory.CreateGold(loc, layer));
-                    _fieldItems.Add(FieldItemFactory.CreateHerb(loc, layer));
+                    AddFieldItem(FieldItemFactory.CreateHerb(loc, layer));
                     break;
                 }
             }

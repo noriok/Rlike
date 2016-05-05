@@ -47,6 +47,17 @@ public static class DirExtensions {
         return dir.Clockwise().Clockwise().Clockwise().Clockwise();
     }
 
+    public static bool IsDiagonal(this Dir dir) {
+        switch (dir) {
+        case Dir.NE:
+        case Dir.NW:
+        case Dir.SE:
+        case Dir.SW:
+            return true;
+        }
+        return false;
+    }
+
     public static Loc Delta(this Dir dir) {
         int drow = 0;
         int dcol = 0;

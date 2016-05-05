@@ -28,6 +28,10 @@ public class ActPlayerThrowItem : Act { // TODO : ActPlayer
         Vector3 src = _player.Loc.ToPosition();
         Vector3 dst = _targetLoc.ToPosition();
         float speed = Config.ThrowItemSpeed;
+
+        if (_player.Dir.IsDiagonal()) { // 斜め方向はスピードを速める
+            speed *= 1.2f;
+        }
         float duration = Vector3.Distance(src, dst) / speed;
 
         float elapsed = 0;

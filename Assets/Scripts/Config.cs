@@ -12,5 +12,5 @@
 
     public const float WalkDuration = 0.35f;
 
-    public const float ThrowItemSpeed = 3.5f;
+    public const float ThrowItemSpeed = 4.5f;
 }
