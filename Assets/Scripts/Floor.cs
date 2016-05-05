@@ -72,7 +72,7 @@ public class Floor {
         if (!(_map.IsRoomOrPassage(fm) && _map.IsRoomOrPassage(to))) return false;
 
         // 障害物が配置されているか
-        if (ExistsObstacleFieldObject(to)) return false;
+        if (ExistsObstacle(to)) return false;
 
         if (fm.Row != to.Row && fm.Col != to.Col) { // 斜め移動
             if (_map.IsRoomOrPassage(fm.Row, to.Col) && _map.IsRoomOrPassage(to.Row, fm.Col)) {
@@ -85,7 +85,7 @@ public class Floor {
 	}
 
     // FieldObject かつ Obstacle なオブジェクト
-    public bool ExistsObstacleFieldObject(Loc loc) {
+    public bool ExistsObstacle(Loc loc) {
         foreach (var obj in _fieldObjects) {
             if (loc == obj.Loc && obj.IsObstacle()) {
                 return true;

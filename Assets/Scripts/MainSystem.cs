@@ -120,7 +120,7 @@ public class MainSystem : MonoBehaviour {
             for (int j = 0; j < tryCount; j++) {
                 var loc = Utils.RandomRoomLoc(Utils.Choice(rooms));
 
-                if (_floor.ExistsObstacleFieldObject(loc)) continue;
+                if (_floor.ExistsObstacle(loc)) continue;
                 if (_enemies.Any(e => e.Loc == loc)) continue;
                 if (_player.Loc == loc) continue;
 
@@ -671,7 +671,7 @@ public class MainSystem : MonoBehaviour {
             update = false;
 
             var forwardLoc = loc.Forward(_player.Dir);
-            if (_floor.IsRoomOrPassage(forwardLoc) && !_floor.ExistsObstacleFieldObject(forwardLoc)) {
+            if (_floor.IsRoomOrPassage(forwardLoc) && !_floor.ExistsObstacle(forwardLoc)) {
                 update = true;
                 loc = forwardLoc;
             }
