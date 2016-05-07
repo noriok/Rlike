@@ -1,35 +1,119 @@
-﻿using UnityEngine;
-using System.Collections;
+﻿// using UnityEngine;
+using UnityEngine.Assertions;
+// using System.Collections;
 
 public static class ItemFactory {
-    private static Skill _skillNone = new SkillNone();
+    private static readonly Skill SkillNone = new SkillNone();
 
     public static Item CreateGold() {
-        var type = ItemType.Gold;
-        var name = "お金";
-        var desc = "お金だぞ。";
-        return new Item(type, name, desc, _skillNone);
+        var data = new ItemData(
+            type: ItemType.Gold,
+            name: "お金",
+            desc: "お金だぞ。",
+            skill: SkillNone
+        );
+        return new Item(data);
     }
 
     public static Item CreateHerb() {
-        var type = ItemType.Herb;
-        var name = "薬草";
-        var desc = "HP が少しだけ回復するぞ。";
-        return new Item(type, name, desc, new SkillHeal());
+        return new Item(Herb(1));
     }
 
     public static Item CreateStone() {
-        var type = ItemType.Stone;
-        var name = "石";
-        var desc = "投げると敵にダメージを与えるぞ。";
-        return new Item(type, name, desc, _skillNone);
+        var data = new ItemData(
+            type: ItemType.Stone,
+            name: "魔法の石",
+            desc: "投げると近くの敵に向かって飛んでいきダメージを与えるぞ。",
+            skill: SkillNone
+        );
+        return new Item(data);
     }
 
     public static Item CreateMagic() {
+        return new Item(Magic(0));
+    }
+
+    public static Item CreateWand() {
+        return new Item(Wand(0));
+    }
+
+    private static ItemData Herb(int index) {
+        ItemType type = ItemType.Herb;
+
+        switch (index) {
+        case 0:
+            return new ItemData(
+                type: type,
+                name: "薬草",
+                desc: "HP が少しだけ回復するぞ。",
+                skill: new SkillHeal()
+            );
+        case 1:
+            return new ItemData(
+                type: type,
+                name: "睡眠草",
+                desc: "睡眠状態になるぞ。",
+                skill: new SkillSleep()
+            );
+        }
+
+        Assert.IsTrue(false);
+        return null;
+    }
+
+    private static ItemData Wand(int index) {
+        var type = ItemType.Wand;
+
+        switch (index) {
+        case 0:
+            return new ItemData(
+                type: type,
+                name: "場所替えの杖",
+                desc: "敵と場所を入れ替わるぞ。",
+                skill: new SkillChange()
+            );
+        }
+
+        Assert.IsTrue(false);
+        return null;
+    }
+
+    private static ItemData Magic(int index) {
         var type = ItemType.Magic;
-        var name = "睡眠の書";
-        var desc = "敵を眠らせるぞ。";
-        return new Item(type, name, desc, _skillNone);
+
+        switch (index) {
+        case 0:
+            return new ItemData(
+                type: type,
+                name: "睡眠の書",
+                desc: "敵を眠らせるぞ。",
+                skill: SkillNone
+            );
+        case 1:
+            return new ItemData(
+                type: type,
+                name: "大地の怒りの書",
+                desc: "部屋中の敵にダメージを与えるぞ。",
+                skill: SkillNone
+            );
+        case 2:
+            return new ItemData(
+                type: type,
+                name: "地獄耳の書",
+                desc: "敵の位置が分かるぞ。",
+                skill: SkillNone
+            );
+        case 3:
+            return new ItemData(
+                type: type,
+                name: "千里眼の書",
+                desc: "アイテムの位置が分かるぞ。",
+                skill: SkillNone
+            );
+        }
+
+        Assert.IsTrue(false);
+        return null;
     }
 
 }

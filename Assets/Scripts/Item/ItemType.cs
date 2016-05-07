@@ -6,4 +6,5 @@ public enum ItemType {
     Stone,
     Magic,
     Herb,
+    Wand,
 }

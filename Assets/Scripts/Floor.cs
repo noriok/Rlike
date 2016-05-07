@@ -133,6 +133,10 @@ public class Floor {
         return _map.IsRoomOrPassage(loc);
     }
 
+    public bool IsWall(Loc loc) {
+        return _map.IsWall(loc);
+    }
+
     public bool CanPutItem(Loc loc) {
         if (!IsRoomOrPassage(loc)) return false;
 

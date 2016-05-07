@@ -2,7 +2,7 @@
 using UnityEngine.Assertions;
 using UnityEngine.UI;
 using System;
-using System.Collections;
+// using System.Collections;
 
 public class ItemCommandWindow : MonoBehaviour {
     [SerializeField]
@@ -49,6 +49,8 @@ public class ItemCommandWindow : MonoBehaviour {
             return "Images/item-coin";
         case ItemType.Stone:
             return "Images/item-stone";
+        case ItemType.Wand:
+            return "Images/item-wand";
         }
         Assert.IsTrue(false);
         return "";

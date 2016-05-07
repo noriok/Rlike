@@ -51,6 +51,8 @@ public class ScrollController : MonoBehaviour {
             return "Images/item-coin";
         case ItemType.Stone:
             return "Images/item-stone";
+        case ItemType.Wand:
+            return "Images/item-wand";
         }
         Assert.IsTrue(false);
         return "";

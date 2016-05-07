@@ -19,6 +19,7 @@ public class ActPlayerThrowItem : Act { // TODO : ActPlayer
         Debug.Log("player.Loc = " + player.Loc);
         Debug.Log("targetLoc = " + targetLoc);
         Debug.Log("fallLoc = " + fallLoc);
+        Debug.Log("target = " + target);
     }
 
     protected override IEnumerator RunAnimation(MainSystem sys) {
@@ -51,16 +52,12 @@ public class ActPlayerThrowItem : Act { // TODO : ActPlayer
         }
         else { // ターゲットにヒット
             // TODO:ヒット判定
-
-
-
+            fitem.Destroy();
+            yield return fitem.Item.Hit(_player, _target, sys);
         }
     }
 
     public override void Apply(MainSystem sys) {
         _player.RemoveItem(_item);
-
-
-
     }
 }

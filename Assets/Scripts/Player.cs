@@ -43,6 +43,11 @@ public class Player : CharacterBase {
         }
     }
 
+    public override void UpdateLoc(Loc loc) {
+        base.UpdateLoc(loc);
+        SyncCameraPosition();
+    }
+
     public void SyncCameraPosition() {
         var camera = GameObject.Find("Main Camera").GetComponent<Camera>();
         var minimapLayer = GameObject.Find(LayerName.Minimap);

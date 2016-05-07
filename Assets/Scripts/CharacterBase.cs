@@ -53,7 +53,7 @@ public abstract class CharacterBase {
         Hp = Utils.Clamp(Hp - damage, 0, MaxHp);
     }
 
-    public void UpdateLoc(Loc loc) {
+    public virtual void UpdateLoc(Loc loc) {
         _loc = loc;
         Position = loc.ToPosition();
     }

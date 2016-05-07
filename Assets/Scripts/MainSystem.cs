@@ -90,7 +90,7 @@ public class MainSystem : MonoBehaviour {
         _floor = FloorCreator.CreateFloor(1);
 
         var enemyLayer = new GameObject(LayerName.Enemy);
-        SetupFloorEnemy(3, enemyLayer);
+        SetupFloorEnemy(1, enemyLayer);
 
         var itemLayer = new GameObject(LayerName.Item);
         SetupFloorItem(5, itemLayer);
@@ -133,6 +133,7 @@ public class MainSystem : MonoBehaviour {
     private void SetupFloorItem(int n, GameObject layer) {
         Assert.IsTrue(_fieldItems.Count == 0);
 
+        var rand = new System.Random();
         Room[] rooms = _floor.GetRooms();
         for (int i = 0; i < n; i++) {
             const int tryCount = 10;
@@ -143,7 +144,15 @@ public class MainSystem : MonoBehaviour {
                 if (_fieldItems.Where(e => e.Loc == loc).Any()) continue;
 
                 if (_floor.CanPutItem(loc)) {
-                    AddFieldItem(FieldItemFactory.CreateHerb(loc, layer));
+                    if (rand.Next(2) % 2 == 0) {
+                        var item = FieldItemFactory.CreateWand(loc, layer);
+                        AddFieldItem(item);
+                    }
+                    else {
+                        var item = FieldItemFactory.CreateHerb(loc, layer);
+                        AddFieldItem(item);
+                    }
+                    // AddFieldItem(FieldItemFactory.CreateHerb(loc, layer));
                     break;
                 }
             }
@@ -670,16 +679,20 @@ public class MainSystem : MonoBehaviour {
         while (update) {
             update = false;
 
-            var forwardLoc = loc.Forward(_player.Dir);
-            if (_floor.IsRoomOrPassage(forwardLoc) && !_floor.ExistsObstacle(forwardLoc)) {
-                update = true;
-                loc = forwardLoc;
+            var next = loc.Forward(_player.Dir);
+            if (_floor.IsWall(next) || _floor.ExistsObstacle(next)) {
+                _acts.Add(new ActPlayerThrowItem(_player, item, next, loc, null));
             }
             else {
-                var targetLoc = forwardLoc;
-                var fallLoc = loc;
-                CharacterBase target = null;
-                _acts.Add(new ActPlayerThrowItem(_player, item, targetLoc, fallLoc, target));
+                int p = _enemies.FindIndex(e => e.Loc == next);
+                if (p != -1) { // 敵にヒット
+                    var target = _enemies[p];
+                    _acts.Add(new ActPlayerThrowItem(_player, item, next, next, target));
+                }
+                else {
+                    update = true;
+                    loc = next;
+                }
             }
         }
 
@@ -794,5 +807,20 @@ public class MainSystem : MonoBehaviour {
 
         var text = GameObject.Find("Canvas/Header/Text_G_Value").GetComponent<Text>();
         text.text = _gold.ToString();
+    }
+
+    // loc から front に向かって最初にヒットする CharacterBase を返す
+    public CharacterBase FindHitTarget(Loc loc, Dir front) {
+        int distance = 100; // 探索する距離
+        for (int i = 0; i < distance; i++) {
+            Loc next = loc.Forward(front);
+
+            if (_floor.IsWall(next) || _floor.ExistsObstacle(next)) break;
+
+            int p = _enemies.FindIndex(e => e.Loc == next);
+            if (p != -1) return _enemies[p];
+            loc = next;
+        }
+        return null;
     }
 }

@@ -1,26 +1,28 @@
-﻿//using UnityEngine;
+﻿// using UnityEngine;
 using UnityEngine.Assertions;
 
-using System;
+// using System;
 using System.Collections;
 
 public class Item {
-    public ItemType Type { get; private set; }
-    public string Name { get; private set; }
-    public int Count { get; private set; } // 石はまとまる
-    public string Desc { get; private set; }
-    public Skill Skill { get; private set; }
+    public ItemType Type { get { return _data.Type; } }
+    public string Name { get { return _data.Name; } }
+    public string Desc { get { return _data.Desc; } }
+    public int Count { get; private set; }
 
-    public Item(ItemType type, string name, string desc, Skill skill) {
-        Type = type;
-        Name = name;
-        Desc = desc;
-        Count = 1;
-        Skill = skill;
+    private ItemData _data;
+
+    public Item(ItemData data, int count = 1) {
+        _data = data;
+        Count = count;
     }
 
     public IEnumerator Use(CharacterBase sender, MainSystem sys) {
-        return Skill.Use(sender, sys);
+        return _data.Skill.Use(sender, sys);
+    }
+
+    public IEnumerator Hit(CharacterBase sender, CharacterBase target, MainSystem sys) {
+        return _data.Skill.Hit(sender, target, sys);
     }
 
     public void Inc(int n) {
@@ -34,8 +36,7 @@ public class Item {
 
     public Item RemoveOne() {
         Dec(1);
-        var item = new Item(Type, Name, Desc, Skill);
-        return item;
+        return new Item(_data);
     }
 
 }

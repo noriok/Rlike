@@ -16,6 +16,8 @@ public static class FieldItemFactory {
         case ItemType.Gold:  return "Prefabs/Item/item-coin";
         case ItemType.Herb:  return "Prefabs/Item/item-herb";
         case ItemType.Magic: return "Prefabs/Item/item-book";
+        case ItemType.Stone: return "Prefabs/Item/item-stone";
+        case ItemType.Wand:  return "Prefabs/Item/item-wand";
         }
 
         Assert.IsTrue(false);
@@ -29,6 +31,11 @@ public static class FieldItemFactory {
 
     public static FieldItem CreateHerb(Loc loc, GameObject layer) {
         var item = ItemFactory.CreateHerb();
+        return Create(item, loc, layer);
+    }
+
+    public static FieldItem CreateWand(Loc loc, GameObject layer) {
+        var item = ItemFactory.CreateWand();
         return Create(item, loc, layer);
     }
 
