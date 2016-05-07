@@ -90,6 +90,7 @@ public static class EffectAnim {
         }
     }
 
+    // TODO:rename
     public static IEnumerator Warp(Vector3 pos) {
 		var obj = Resources.Load("Prefabs/Animations/warp");
 		var gobj = (GameObject)GameObject.Instantiate(obj, pos, Quaternion.identity);
@@ -101,9 +102,9 @@ public static class EffectAnim {
         }
     }
 
-    public static IEnumerator Aura(CharacterBase target) {
+    public static IEnumerator Aura(Vector3 pos) {
 		var obj = Resources.Load("Prefabs/Animations/aura");
-		var gobj = (GameObject)GameObject.Instantiate(obj, target.Position, Quaternion.identity);
+		var gobj = (GameObject)GameObject.Instantiate(obj, pos, Quaternion.identity);
 		while (gobj != null) {
 			yield return null;
 		}

@@ -52,7 +52,7 @@ public class ActPlayerUseSkill : Act {
 	}
 
 	protected override IEnumerator RunAnimation(MainSystem sys) {
-		yield return EffectAnim.Aura(Actor);
+		yield return EffectAnim.Aura(Actor.Position);
 
 		sys.HideMinimap();
 

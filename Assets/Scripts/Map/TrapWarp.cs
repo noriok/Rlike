@@ -7,8 +7,6 @@ public class TrapWarp : Trap {
 	}
 
 	public override IEnumerator RunAnimation(CharacterBase sender, MainSystem sys) {
-		yield return EffectAnim.Warp(sender.Position);
-
 		var src = sender.Position;
 		float duration = 0.5f;
 		float elapsed = 0;
