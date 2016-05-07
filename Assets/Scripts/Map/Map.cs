@@ -2,7 +2,7 @@
 using System;
 // using System.Collections;
 using System.Collections.Generic;
-// using System.Linq;
+using System.Linq;
 
 public class Map {
     private const int NoRoom = -1;
@@ -13,7 +13,7 @@ public class Map {
 
     private GameObject _mapLayer;
 
-    private Room[] _rooms;
+    private Room[] _rooms; // TODOプロパティに変更
     private int[,] _roomMap;
 
     public Map(char[,] mapData) {
@@ -43,15 +43,44 @@ public class Map {
         var mountain = Resources.Load("Prefabs/MapChip/pipo-map001_at-yama2_0");
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < cols; j++) {
-                var pos = new Loc(i, j).ToPosition();
-                var floatObj = (GameObject)GameObject.Instantiate(flat, pos, Quaternion.identity);
-                floatObj.transform.SetParent(_mapLayer.transform);
 
-                switch (_mapData[i, j]) {
-                case MapChar.Wall:
-                    var mtObj = (GameObject)GameObject.Instantiate(mountain, pos, Quaternion.identity);
-                    mtObj.transform.SetParent(_mapLayer.transform);
-                    break;
+                if (_mapData[i, j] == MapChar.Sea) {
+                    var dir = Dir.N;
+                    var xs = new List<int>();
+                    var loc = new Loc(i, j);
+                    for (int k = 0; k < 8; k++) {
+                        var chip = GetMapChar(loc.Forward(dir));
+                        xs.Add(chip == MapChar.Sea ? 0 : 1);
+                        dir = dir.Clockwise();
+                    }
+                    Debug.Log(">> " + string.Join(" ", xs.Select(e => e.ToString()).ToArray()));
+
+                    var offsets = new[,] { { -1, 1, }, { 1, 1 }, { -1, -1 }, { 1, -1 } };
+                    var pathnames = MapChipUtils.GetSeaMapChipName(xs.ToArray());
+                    for (int k = 0; k < pathnames.Length; k++) {
+                        Debug.Log("pathname: " + pathnames[k]);
+                        var pos = loc.ToPosition();
+
+                        var obj = Resources.Load("Prefabs/MapChip/" + pathnames[k]);
+                        pos.x += offsets[k, 0] * Config.ChipSize / 4;
+                        pos.y += offsets[k, 1] * Config.ChipSize / 4;
+                        var gobj = (GameObject)GameObject.Instantiate(obj, pos, Quaternion.identity);
+                        gobj.transform.SetParent(_mapLayer.transform);
+                        //break;
+                    }
+
+                }
+                else {
+                    var pos = new Loc(i, j).ToPosition();
+                    var floatObj = (GameObject)GameObject.Instantiate(flat, pos, Quaternion.identity);
+                    floatObj.transform.SetParent(_mapLayer.transform);
+
+                    switch (_mapData[i, j]) {
+                    case MapChar.Wall:
+                        var mtObj = (GameObject)GameObject.Instantiate(mountain, pos, Quaternion.identity);
+                        mtObj.transform.SetParent(_mapLayer.transform);
+                        break;
+                    }
                 }
             }
         }
@@ -62,6 +91,10 @@ public class Map {
         var gobj = (GameObject)GameObject.Instantiate(obj, loc.ToPosition(), Quaternion.identity);
         gobj.transform.SetParent(layer.transform);
         return gobj;
+    }
+
+    private char GetMapChar(Loc loc) {
+        return GetMapChar(loc.Row, loc.Col);
     }
 
     private char GetMapChar(int row, int col) {

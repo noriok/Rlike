@@ -86,7 +86,7 @@ public class MainSystem : MonoBehaviour {
         _banner = new FloorBanner();
         _gm = new GameManager();
 
-        _player = _gm.CreatePlayer(new Loc(2, 5));
+        _player = _gm.CreatePlayer(new Loc(3, 5));
         _floor = FloorCreator.CreateFloor(1);
 
         var enemyLayer = new GameObject(LayerName.Enemy);
