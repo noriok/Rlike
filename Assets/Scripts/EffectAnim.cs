@@ -31,7 +31,7 @@ public static class EffectAnim {
 
         float v = -0.059f; // velocity
         float g = 0.008f; // gravity
-		g *= 2;
+        g *= 2;
         float elapsed = 0;
 
         int frame = 0;
@@ -73,18 +73,18 @@ public static class EffectAnim {
     }
 
     public static IEnumerator Dead(Vector3 pos) {
-	    var obj = Resources.Load("Prefabs/Animations/dead");
-		var gobj = (GameObject)GameObject.Instantiate(obj, pos, Quaternion.identity);
-		while (gobj != null) {
-			yield return null;
-		}
+        var obj = Resources.Load("Prefabs/Animations/dead");
+        var gobj = (GameObject)GameObject.Instantiate(obj, pos, Quaternion.identity);
+        while (gobj != null) {
+            yield return null;
+        }
     }
 
     public static IEnumerator Heal(Vector3 pos) {
         var obj = Resources.Load("Prefabs/Animations/heal_heart");
-		var gobj = (GameObject)GameObject.Instantiate(obj, pos, Quaternion.identity);
-		var p = gobj.transform.position;
-		gobj.transform.position = p;
+        var gobj = (GameObject)GameObject.Instantiate(obj, pos, Quaternion.identity);
+        var p = gobj.transform.position;
+        gobj.transform.position = p;
         while (gobj != null) {
             yield return null;
         }
@@ -92,41 +92,41 @@ public static class EffectAnim {
 
     // TODO:rename
     public static IEnumerator Warp(Vector3 pos) {
-		var obj = Resources.Load("Prefabs/Animations/warp");
-		var gobj = (GameObject)GameObject.Instantiate(obj, pos, Quaternion.identity);
-		var p = gobj.transform.position;
-		p.y += 0.15f;
-		gobj.transform.position = p;
+        var obj = Resources.Load("Prefabs/Animations/warp");
+        var gobj = (GameObject)GameObject.Instantiate(obj, pos, Quaternion.identity);
+        var p = gobj.transform.position;
+        p.y += 0.15f;
+        gobj.transform.position = p;
         while (gobj != null) {
             yield return null;
         }
     }
 
     public static IEnumerator Aura(Vector3 pos) {
-		var obj = Resources.Load("Prefabs/Animations/aura");
-		var gobj = (GameObject)GameObject.Instantiate(obj, pos, Quaternion.identity);
-		while (gobj != null) {
-			yield return null;
-		}
+        var obj = Resources.Load("Prefabs/Animations/aura");
+        var gobj = (GameObject)GameObject.Instantiate(obj, pos, Quaternion.identity);
+        while (gobj != null) {
+            yield return null;
+        }
     }
 
     public static IEnumerator Aura2(Vector3 pos) {
-		var obj = Resources.Load("Prefabs/Animations/aura2");
-		var gobj = (GameObject)GameObject.Instantiate(obj, pos, Quaternion.identity);
+        var obj = Resources.Load("Prefabs/Animations/aura2");
+        var gobj = (GameObject)GameObject.Instantiate(obj, pos, Quaternion.identity);
         var p = gobj.transform.position;
         p.y += 0.07f;
         gobj.transform.position = p;
-		while (gobj != null) {
-			yield return null;
-		}
+        while (gobj != null) {
+            yield return null;
+        }
     }
 
     public static IEnumerator Skill(Vector3 pos) {
-		var obj2 = Resources.Load("Prefabs/Animations/skill");
-		var gobj2 = (GameObject)GameObject.Instantiate(obj2, pos, Quaternion.identity);
-		while (gobj2 != null) {
-			yield return null;
-		}
+        var obj2 = Resources.Load("Prefabs/Animations/skill");
+        var gobj2 = (GameObject)GameObject.Instantiate(obj2, pos, Quaternion.identity);
+        while (gobj2 != null) {
+            yield return null;
+        }
 
     }
 }
