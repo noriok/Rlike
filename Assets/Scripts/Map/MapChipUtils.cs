@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using UnityEngine;
 using UnityEngine.Assertions;
 
 public static class MapChipUtils {
@@ -65,6 +66,7 @@ public static class MapChipUtils {
 
             // Assert.IsTrue(ok);
             if (!ok) {
+                Debug.LogWarning("マップチップが見つかりません");
                 xs.Add("pipo-map001_at-umi_19");
             }
         }

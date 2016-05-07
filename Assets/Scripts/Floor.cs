@@ -75,12 +75,11 @@ public class Floor {
         if (ExistsObstacle(to)) return false;
 
         if (fm.Row != to.Row && fm.Col != to.Col) { // 斜め移動
-            if (_map.IsRoomOrPassage(fm.Row, to.Col) && _map.IsRoomOrPassage(to.Row, fm.Col)) {
-                return true;
+            if (_map.IsWall(fm.Row, to.Col) || _map.IsWall(to.Row, fm.Col)) {
+                return false;
             }
-            return false;
+            return true;
         }
-
         return true;
 	}
 
