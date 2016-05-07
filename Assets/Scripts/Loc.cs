@@ -71,41 +71,70 @@ public struct Loc : IEquatable<Loc> {
     }
 
     // dir 方向へ 1 歩進んだ位置
-    public Loc Forward(Dir dir) {
-        var delta = dir.Delta();
+    public Loc Forward(Dir front) {
+        var delta = front.Delta();
         return new Loc(Row + delta.Row, Col + delta.Col);
+    }
+
+    public Loc[] Forwards3(Dir front) {
+      return new[] {
+            Forward(front),
+            Forward(front.Clockwise()),
+            Forward(front.Anticlockwise()),
+        };
     }
 
     // dir 方向へ(なるべく)前進する Loc を返す。
     // (前方、斜め前方、側面方向の Loc を返す)
-    public Loc[] Forwards(Dir dir) {
+    public Loc[] Forwards5(Dir front) {
         return new[] {
-            Forward(dir),
-            Forward(dir.Clockwise()),
-            Forward(dir.Anticlockwise()),
-            Forward(dir.Clockwise().Clockwise()),
-            Forward(dir.Anticlockwise().Anticlockwise()),
+            Forward(front),
+            Forward(front.Clockwise()),
+            Forward(front.Anticlockwise()),
+            Forward(front.Clockwise().Clockwise()),
+            Forward(front.Anticlockwise().Anticlockwise()),
+        };
+    }
+
+  // dir 方向へ(なるべく)前進する Loc を返す。
+    // (前方、斜め前方、側面方向の Loc を返す)
+    public Loc[] Forwards5AndBackward(Dir front) {
+        return new[] {
+            Forward(front),
+            Forward(front.Clockwise()),
+            Forward(front.Anticlockwise()),
+            Forward(front.Clockwise().Clockwise()),
+            Forward(front.Anticlockwise().Anticlockwise()),
+            Backward(front),
         };
     }
 
     // 斜め方向
-    public Loc[] ForwardsDiagonally(Dir dir) {
+    public Loc[] ForwardsDiagonally(Dir front) {
         return new[] {
-            Forward(dir.Clockwise()),
-            Forward(dir.Anticlockwise()),
+            Forward(front.Clockwise()),
+            Forward(front.Anticlockwise()),
         };
     }
 
     // 横方向
-    public Loc[] ForwardsCrossly(Dir dir) {
+    public Loc[] Sides(Dir front) {
         return new[] {
-            Forward(dir.Clockwise().Clockwise()),
-            Forward(dir.Anticlockwise().Anticlockwise()),
+            Forward(front.Clockwise().Clockwise()),
+            Forward(front.Anticlockwise().Anticlockwise()),
         };
     }
 
-    public Loc Backward(Dir dir) {
-        return Forward(dir.Opposite());
+    public Loc Backward(Dir front) {
+        return Forward(front.Opposite());
+    }
+
+    public Loc Right(Dir front) {
+        return Forward(front.Clockwise().Clockwise());
+    }
+
+    public Loc Left(Dir front) {
+        return Forward(front.Anticlockwise().Anticlockwise());
     }
 
     public Loc[] Neighbors() {
