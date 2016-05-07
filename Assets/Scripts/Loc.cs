@@ -77,7 +77,7 @@ public struct Loc : IEquatable<Loc> {
     }
 
     public Loc[] Forwards3(Dir front) {
-      return new[] {
+        return new[] {
             Forward(front),
             Forward(front.Clockwise()),
             Forward(front.Anticlockwise()),
