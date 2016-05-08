@@ -283,6 +283,9 @@ public class MainSystem : MonoBehaviour {
         Destroy(GameObject.Find(LayerName.Map));
         Destroy(GameObject.Find(LayerName.Minimap));
 
+        // TODO:フロア遷移でアイテムレイヤーが作られていない
+        // フロア遷移直後に全てのレイヤーを作成する
+
         _floor = FloorCreator.CreateFloor(2);
 
         // TODO:レイヤー管理
@@ -842,18 +845,18 @@ public class MainSystem : MonoBehaviour {
         text.text = _gold.ToString();
     }
 
-    // loc から front に向かって最初にヒットする CharacterBase を返す
-    public CharacterBase FindHitTarget(Loc loc, Dir front) {
-        int distance = 100; // 探索する距離
-        for (int i = 0; i < distance; i++) {
-            Loc next = loc.Forward(front);
+    // // loc から front に向かって最初にヒットする CharacterBase を返す
+    // public CharacterBase FindHitTarget(Loc loc, Dir front) {
+    //     int distance = 100; // 探索する距離
+    //     for (int i = 0; i < distance; i++) {
+    //         Loc next = loc.Forward(front);
 
-            if (_floor.IsWall(next) || _floor.ExistsObstacle(next)) break;
+    //         if (_floor.IsWall(next) || _floor.ExistsObstacle(next)) break;
 
-            int p = _enemies.FindIndex(e => e.Loc == next);
-            if (p != -1) return _enemies[p];
-            loc = next;
-        }
-        return null;
-    }
+    //         int p = _enemies.FindIndex(e => e.Loc == next);
+    //         if (p != -1) return _enemies[p];
+    //         loc = next;
+    //     }
+    //     return null;
+    // }
 }

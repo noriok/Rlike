@@ -34,7 +34,7 @@ public static class ItemFactory {
     }
 
     public static Item CreateWand() {
-        return new Item(Wand(0));
+        return new Item(Wand(1));
     }
 
     private static ItemData Herb(int index) {
@@ -69,8 +69,15 @@ public static class ItemFactory {
             return new ItemData(
                 type: type,
                 name: "場所替えの杖",
-                desc: "敵と場所を入れ替わるぞ。",
+                desc: "場所が入れ替わるぞ。",
                 skill: new SkillChange()
+            );
+        case 1:
+            return new ItemData(
+                type: type,
+                name: "飛びつきの杖",
+                desc: "とびつくぞ。",
+                skill: new SkillFly()
             );
         }
 

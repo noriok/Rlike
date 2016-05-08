@@ -49,6 +49,31 @@ public static class CAction {
         target.transform.position = dst;
     }
 
+    public static IEnumerator MovePlayer(Player player, Loc to) {
+        Loc fm = player.Loc;
+        var src = fm.ToPosition();
+        var dst = to.ToPosition();
+
+        float speed = Config.ThrowItemSpeed;
+        if (fm.Row != to.Row && fm.Col != to.Col) {
+            speed *= 1.2f;
+        }
+
+        float elapsed = 0;
+        float duration = Vector3.Distance(src, dst) / speed;
+        while (elapsed <= duration) {
+            elapsed += Time.deltaTime;
+
+            float x = Mathf.Lerp(src.x, dst.x, elapsed / duration);
+            float y = Mathf.Lerp(src.y, dst.y, elapsed / duration);
+
+            player.Position = new Vector3(x, y, 0);
+            player.SyncCameraPosition();
+            yield return null;
+        }
+        player.UpdateLoc(to);
+    }
+
     public static IEnumerator Quake(GameObject layer, float duration) {
         float d = 0.015f;
         var offsets = new[,] {

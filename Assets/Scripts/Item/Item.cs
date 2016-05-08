@@ -25,6 +25,10 @@ public class Item {
         return _data.Skill.Hit(sender, target, sys);
     }
 
+    public IEnumerator Hit(CharacterBase sender, Loc target, MainSystem sys) {
+        return _data.Skill.Hit(sender, target, sys);
+    }
+
     public void Inc(int n) {
         Count += n;
     }

@@ -21,7 +21,10 @@ public class ActPlayerUseWand : Act {
 
         GameObject.Destroy(gobj);
 
-        if (hitTarget != null) {
+        if (hitTarget == null) {
+            yield return _item.Hit(_player, to, sys);
+        }
+        else {
             yield return _item.Hit(_player, hitTarget, sys);
         }
     }
