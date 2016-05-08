@@ -1,0 +1,541 @@
+fileFormatVersion: 2
+guid: 24e61366040a9471ebda6387a22e43c4
+timeCreated: 1462693683
+licenseType: Free
+TextureImporter:
+  fileIDToRecycleName:
+    21300000: FSM_03-A_05_0
+    21300002: FSM_03-A_05_1
+    21300004: FSM_03-A_05_2
+    21300006: FSM_03-A_05_3
+    21300008: FSM_03-A_05_4
+    21300010: FSM_03-A_05_5
+    21300012: FSM_03-A_05_6
+    21300014: FSM_03-A_05_7
+    21300016: FSM_03-A_05_8
+    21300018: FSM_03-A_05_9
+    21300020: FSM_03-A_05_10
+    21300022: FSM_03-A_05_11
+    21300024: FSM_03-A_05_12
+    21300026: FSM_03-A_05_13
+    21300028: FSM_03-A_05_14
+    21300030: FSM_03-A_05_15
+    21300032: FSM_03-A_05_16
+    21300034: FSM_03-A_05_17
+    21300036: FSM_03-A_05_18
+    21300038: FSM_03-A_05_19
+    21300040: FSM_03-A_05_20
+    21300042: FSM_03-A_05_21
+    21300044: FSM_03-A_05_22
+    21300046: FSM_03-A_05_23
+  serializedVersion: 2
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 1
+    linearTexture: 0
+    correctGamma: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 0
+  cubemapConvolution: 0
+  cubemapConvolutionSteps: 7
+  cubemapConvolutionExponent: 1.5
+  seamlessCubemap: 0
+  textureFormat: -1
+  maxTextureSize: 2048
+  textureSettings:
+    filterMode: -1
+    aniso: 16
+    mipBias: -1
+    wrapMode: 1
+  nPOTScale: 0
+  lightmap: 0
+  rGBM: 0
+  compressionQuality: 50
+  allowsAlphaSplitting: 0
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spritePixelsToUnits: 100
+  alphaIsTransparency: 1
+  textureType: 8
+  buildTargetSettings: []
+  spriteSheet:
+    sprites:
+    - name: FSM_03-A_05_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 144
+        width: 32
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -15, y: 24}
+        - {x: -15, y: -17}
+        - {x: -14, y: -24}
+        - {x: 12, y: -24}
+        - {x: 14, y: -18}
+        - {x: 14, y: 22}
+        - {x: 8, y: 24}
+    - name: FSM_03-A_05_1
+      rect:
+        serializedVersion: 2
+        x: 32
+        y: 144
+        width: 32
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -13, y: 24}
+        - {x: -15, y: 23}
+        - {x: -15, y: -12}
+        - {x: -14, y: -24}
+        - {x: 10, y: -24}
+        - {x: 15, y: -12}
+        - {x: 15, y: 23}
+        - {x: 12, y: 24}
+    - name: FSM_03-A_05_2
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 144
+        width: 32
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -8, y: 24}
+        - {x: -15, y: 21}
+        - {x: -15, y: 0}
+        - {x: -14, y: -10}
+        - {x: -6, y: -24}
+        - {x: 14, y: -24}
+        - {x: 14, y: 22}
+        - {x: 11, y: 24}
+    - name: FSM_03-A_05_3
+      rect:
+        serializedVersion: 2
+        x: 96
+        y: 144
+        width: 32
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -14, y: 24}
+        - {x: -15, y: 23}
+        - {x: -15, y: -7}
+        - {x: -12, y: -24}
+        - {x: 11, y: -24}
+        - {x: 14, y: -16}
+        - {x: 14, y: 23}
+        - {x: 9, y: 24}
+    - name: FSM_03-A_05_4
+      rect:
+        serializedVersion: 2
+        x: 128
+        y: 144
+        width: 32
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -15, y: 24}
+        - {x: -15, y: 6}
+        - {x: -11, y: -22}
+        - {x: -6, y: -24}
+        - {x: 12, y: -24}
+        - {x: 14, y: -20}
+        - {x: 14, y: 24}
+    - name: FSM_03-A_05_5
+      rect:
+        serializedVersion: 2
+        x: 160
+        y: 144
+        width: 32
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 10, y: 24}
+        - {x: -7, y: 24}
+        - {x: -15, y: 22}
+        - {x: -15, y: 2}
+        - {x: -14, y: -3}
+        - {x: -8, y: -24}
+        - {x: 6, y: -24}
+        - {x: 14, y: -10}
+        - {x: 14, y: 17}
+    - name: FSM_03-A_05_6
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 96
+        width: 32
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -14, y: 24}
+        - {x: -14, y: -24}
+        - {x: 9, y: -24}
+        - {x: 13, y: -22}
+        - {x: 14, y: -20}
+        - {x: 14, y: 24}
+    - name: FSM_03-A_05_7
+      rect:
+        serializedVersion: 2
+        x: 32
+        y: 96
+        width: 32
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -14, y: 24}
+        - {x: -14, y: -24}
+        - {x: 9, y: -24}
+        - {x: 14, y: -9}
+        - {x: 14, y: 22}
+        - {x: 12, y: 24}
+    - name: FSM_03-A_05_8
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 96
+        width: 32
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -9, y: 24}
+        - {x: -13, y: 23}
+        - {x: -14, y: 22}
+        - {x: -14, y: -15}
+        - {x: -11, y: -24}
+        - {x: 13, y: -24}
+        - {x: 14, y: -21}
+        - {x: 14, y: 22}
+        - {x: 11, y: 24}
+    - name: FSM_03-A_05_9
+      rect:
+        serializedVersion: 2
+        x: 96
+        y: 96
+        width: 32
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -13, y: 24}
+        - {x: -13, y: -17}
+        - {x: -11, y: -24}
+        - {x: 10, y: -24}
+        - {x: 16, y: -4}
+        - {x: 16, y: 24}
+    - name: FSM_03-A_05_10
+      rect:
+        serializedVersion: 2
+        x: 128
+        y: 96
+        width: 32
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -9, y: 24}
+        - {x: -13, y: 22}
+        - {x: -13, y: 3}
+        - {x: -9, y: -23}
+        - {x: -8, y: -24}
+        - {x: 10, y: -24}
+        - {x: 15, y: -23}
+        - {x: 16, y: -13}
+        - {x: 16, y: 24}
+    - name: FSM_03-A_05_11
+      rect:
+        serializedVersion: 2
+        x: 160
+        y: 96
+        width: 32
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 16, y: 22}
+        - {x: 11, y: 24}
+        - {x: -10, y: 24}
+        - {x: -13, y: 19}
+        - {x: -13, y: -2}
+        - {x: -9, y: -21}
+        - {x: -7, y: -24}
+        - {x: 11, y: -24}
+        - {x: 13, y: -22}
+        - {x: 11, y: -8}
+        - {x: 16, y: 7}
+    - name: FSM_03-A_05_12
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 48
+        width: 32
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -8, y: 24}
+        - {x: -13, y: 18}
+        - {x: -13, y: -8}
+        - {x: -11, y: -19}
+        - {x: -4, y: -24}
+        - {x: 9, y: -24}
+        - {x: 13, y: -23}
+        - {x: 15, y: -7}
+        - {x: 15, y: 21}
+        - {x: 9, y: 24}
+    - name: FSM_03-A_05_13
+      rect:
+        serializedVersion: 2
+        x: 32
+        y: 48
+        width: 32
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -12, y: 24}
+        - {x: -13, y: 23}
+        - {x: -13, y: -17}
+        - {x: -11, y: -24}
+        - {x: 8, y: -24}
+        - {x: 15, y: 3}
+        - {x: 15, y: 24}
+    - name: FSM_03-A_05_14
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 48
+        width: 32
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 11, y: 24}
+        - {x: -11, y: 24}
+        - {x: -13, y: 21}
+        - {x: -13, y: -12}
+        - {x: -11, y: -22}
+        - {x: -9, y: -24}
+        - {x: 9, y: -24}
+        - {x: 13, y: -20}
+        - {x: 15, y: -8}
+        - {x: 15, y: 23}
+    - name: FSM_03-A_05_15
+      rect:
+        serializedVersion: 2
+        x: 96
+        y: 48
+        width: 32
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 6, y: 24}
+        - {x: -12, y: 24}
+        - {x: -15, y: 18}
+        - {x: -15, y: -6}
+        - {x: -9, y: -24}
+        - {x: 10, y: -24}
+        - {x: 14, y: -12}
+        - {x: 14, y: 17}
+        - {x: 12, y: 19}
+    - name: FSM_03-A_05_16
+      rect:
+        serializedVersion: 2
+        x: 128
+        y: 48
+        width: 32
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 10, y: 24}
+        - {x: -10, y: 24}
+        - {x: -15, y: 23}
+        - {x: -15, y: 3}
+        - {x: -10, y: -23}
+        - {x: -8, y: -24}
+        - {x: 4, y: -24}
+        - {x: 9, y: -21}
+        - {x: 14, y: 2}
+        - {x: 14, y: 19}
+    - name: FSM_03-A_05_17
+      rect:
+        serializedVersion: 2
+        x: 160
+        y: 48
+        width: 32
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -14, y: 24}
+        - {x: -15, y: 23}
+        - {x: -15, y: -23}
+        - {x: -11, y: -24}
+        - {x: 11, y: -24}
+        - {x: 14, y: -7}
+        - {x: 14, y: 22}
+        - {x: 8, y: 24}
+    - name: FSM_03-A_05_18
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 32
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -11, y: 24}
+        - {x: -13, y: 20}
+        - {x: -13, y: -20}
+        - {x: -10, y: -24}
+        - {x: 12, y: -24}
+        - {x: 16, y: -13}
+        - {x: 16, y: 22}
+        - {x: 13, y: 24}
+    - name: FSM_03-A_05_19
+      rect:
+        serializedVersion: 2
+        x: 32
+        y: 0
+        width: 32
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -10, y: 24}
+        - {x: -14, y: 20}
+        - {x: -14, y: -24}
+        - {x: 13, y: -24}
+        - {x: 16, y: -11}
+        - {x: 16, y: 21}
+        - {x: 14, y: 24}
+    - name: FSM_03-A_05_20
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 0
+        width: 32
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -12, y: 24}
+        - {x: -13, y: 22}
+        - {x: -13, y: -19}
+        - {x: -11, y: -22}
+        - {x: -7, y: -24}
+        - {x: 13, y: -24}
+        - {x: 16, y: -18}
+        - {x: 16, y: 24}
+    - name: FSM_03-A_05_21
+      rect:
+        serializedVersion: 2
+        x: 96
+        y: 0
+        width: 32
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -7, y: 24}
+        - {x: -13, y: 17}
+        - {x: -13, y: -24}
+        - {x: 14, y: -24}
+        - {x: 16, y: -16}
+        - {x: 16, y: 20}
+        - {x: 8, y: 24}
+    - name: FSM_03-A_05_22
+      rect:
+        serializedVersion: 2
+        x: 128
+        y: 0
+        width: 32
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -9, y: 24}
+        - {x: -13, y: 22}
+        - {x: -13, y: -9}
+        - {x: -7, y: -24}
+        - {x: 11, y: -24}
+        - {x: 12, y: -23}
+        - {x: 16, y: 6}
+        - {x: 16, y: 21}
+        - {x: 13, y: 24}
+    - name: FSM_03-A_05_23
+      rect:
+        serializedVersion: 2
+        x: 160
+        y: 0
+        width: 32
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 10, y: 24}
+        - {x: -7, y: 24}
+        - {x: -13, y: 17}
+        - {x: -13, y: -5}
+        - {x: -5, y: -24}
+        - {x: 8, y: -24}
+        - {x: 13, y: -15}
+        - {x: 16, y: 3}
+        - {x: 16, y: 22}
+    outline: []
+  spritePackingTag: 
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

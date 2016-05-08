@@ -20,11 +20,11 @@ public abstract class CharacterBase {
     public int ActCount { get; set; }
 
     private Loc _loc;
-    private Dir _dir = Dir.S;
+    protected Dir _dir = Dir.S;
     // 同じトリガーを繰り返し実行しないように前回のトリガーを記憶する
     // 斜め画像を用意するまでの暫定対応
-    private string _triggerName = "ToS";
-    private GameObject _gobj;
+    protected string _triggerName = "ToS";
+    protected GameObject _gobj;
 
     private Dictionary<Status, GameObject> _status = new Dictionary<Status, GameObject>();
 
@@ -61,14 +61,20 @@ public abstract class CharacterBase {
     public void AddStatus(Status status) {
         if (_status.ContainsKey(status)) return;
 
-        var sleep = (GameObject)GameObject.Instantiate(Resources.Load("Prefabs/Animations/status-sleep"), Vector3.zero, Quaternion.identity);
-        sleep.transform.SetParent(_gobj.transform);
-        sleep.transform.localPosition = new Vector3(0, 0.18f, 0);
-        _status.Add(status, sleep);
-
         if (status == Status.Sleep) {
+            var sleep = (GameObject)GameObject.Instantiate(Resources.Load("Prefabs/Animations/status-sleep"), Vector3.zero, Quaternion.identity);
+            sleep.transform.SetParent(_gobj.transform);
+            sleep.transform.localPosition = new Vector3(0, 0.18f, 0);
+            _status.Add(status, sleep);
             StopAnimation();
         }
+        else if (status == Status.Invisible) {
+            // 状態異常マークはないので null を格納
+            _status.Add(status, null);
+        }
+
+        OnStatusAdded(status);
+
     }
 
     public void RemoveStatus(Status status) {
@@ -100,7 +106,7 @@ public abstract class CharacterBase {
     }
 
     // TODO:UpdateLoc に揃えて UpdateDir にする
-    public void ChangeDir(Dir dir) {
+    public virtual void ChangeDir(Dir dir) {
         // if (_dir == dir) return; // TODO:斜めの画像がある場合は dir で判定する
         _dir = dir;
 
@@ -135,6 +141,10 @@ public abstract class CharacterBase {
         return _status.ContainsKey(Status.Sleep);
     }
 
+    public bool IsInvisible() {
+        return _status.ContainsKey(Status.Invisible);
+    }
+
     public IEnumerator FadeIn() {
         return CAction.FadeIn(_gobj, 0.5f);
     }
@@ -147,4 +157,10 @@ public abstract class CharacterBase {
 
     public abstract void OnTurnStart();
     public abstract void OnTurnEnd();
+
+    public virtual void OnStatusAdded(Status status) {
+    }
+
+    public virtual void OnStatusRemoved(Status status) {
+    }
 }

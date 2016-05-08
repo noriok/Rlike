@@ -169,4 +169,29 @@ public class Player : CharacterBase {
         Assert.IsTrue(false);
         return null;
     }
+
+
+    // TODO:UpdateLoc に揃えて UpdateDir にする
+    public override void ChangeDir(Dir dir) {
+        // if (_dir == dir) return; // TODO:斜めの画像がある場合は dir で判定する
+        _dir = dir;
+
+        string name = "ToN";
+        switch (dir) {
+        case Dir.N:  name = "ToN"; break;
+        case Dir.NE: name = "ToNE"; break;
+        case Dir.E:  name = "ToE"; break;
+        case Dir.SE: name = "ToSE"; break;
+        case Dir.S:  name = "ToS"; break;
+        case Dir.SW: name = "ToSW"; break;
+        case Dir.W:  name = "ToW"; break;
+        case Dir.NW: name = "ToNW"; break;
+        }
+
+        if (_triggerName == name) return;
+        _triggerName = name;
+
+        var anim = _gobj.GetComponent<Animator>();
+        anim.SetTrigger(name);
+    }
 }

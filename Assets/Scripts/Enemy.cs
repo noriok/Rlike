@@ -86,4 +86,16 @@ public class Enemy : CharacterBase {
         if (IsSleep()) return true;
         return false;
     }
+
+    public override void OnStatusAdded(Status status) {
+        switch (status) {
+        case Status.Invisible: {
+            var renderer = _gobj.GetComponent<SpriteRenderer>();
+            var color = renderer.color;
+            color.a = 0.1f;
+            renderer.color = color;
+            break;
+        }
+        }
+    }
 }

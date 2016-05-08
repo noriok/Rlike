@@ -16,7 +16,7 @@ public static class ItemFactory {
     }
 
     public static Item CreateHerb() {
-        return new Item(Herb(1));
+        return new Item(Herb(2));
     }
 
     public static Item CreateStone() {
@@ -54,6 +54,13 @@ public static class ItemFactory {
                 name: "睡眠草",
                 desc: "睡眠状態になるぞ。",
                 skill: new SkillSleep()
+            );
+        case 2:
+            return new ItemData(
+                type: type,
+                name: "消え去り草",
+                desc: "しばらく透明になるぞ。",
+                skill: new SkillInvisible()
             );
         }
 
