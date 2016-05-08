@@ -5,6 +5,8 @@ using UnityEngine;
 
 // immutable. 内部状態は変更しない
 public struct Loc : IEquatable<Loc> {
+    public static readonly Loc Zero = new Loc(0, 0);
+
     public int Row { get; private set; }
     public int Col { get; private set; }
 

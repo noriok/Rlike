@@ -27,6 +27,28 @@ public static class CAction {
 		if (updateCallback != null) updateCallback(x2, y2);
 	}
 
+    public static IEnumerator Move(GameObject target, Loc fm, Loc to) {
+        var src = fm.ToPosition();
+        var dst = to.ToPosition();
+
+        float speed = Config.ThrowItemSpeed;
+        if (fm.Row != to.Row && fm.Col != to.Col) {
+            speed *= 1.2f;
+        }
+
+        float elapsed = 0;
+        float duration = Vector3.Distance(src, dst) / speed;
+        while (elapsed <= duration) {
+            elapsed += Time.deltaTime;
+
+            float x = Mathf.Lerp(src.x, dst.x, elapsed / duration);
+            float y = Mathf.Lerp(src.y, dst.y, elapsed / duration);
+            target.transform.position = new Vector3(x, y, 0);
+            yield return null;
+        }
+        target.transform.position = dst;
+    }
+
     public static IEnumerator Quake(GameObject layer, float duration) {
         float d = 0.015f;
         var offsets = new[,] {

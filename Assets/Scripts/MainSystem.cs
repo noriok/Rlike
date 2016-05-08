@@ -643,7 +643,13 @@ public class MainSystem : MonoBehaviour {
         Debug.Log("---- Use Item");
         Assert.IsTrue(_acts.Count == 0);
 
-        _acts.Add(new ActPlayerUseItem(_player, item));
+        if (item.Type == ItemType.Wand) {
+            _acts.Add(new ActPlayerUseWand(_player, item));
+        }
+        else {
+            _acts.Add(new ActPlayerUseItem(_player, item));
+        }
+
         ChangeGameState(GameState.Act);
     }
 
@@ -697,6 +703,33 @@ public class MainSystem : MonoBehaviour {
         }
 
         ChangeGameState(GameState.Act);
+    }
+
+    public Loc FindHitTarget(Loc src, Dir front, out CharacterBase hitTarget) {
+        hitTarget = null;
+
+        Loc loc = src;
+        bool update = true;
+        while (update){
+            update = false;
+
+            var next = loc.Forward(front);
+            if (_floor.IsWall(next) || _floor.ExistsObstacle(next)) {
+                return next;
+            }
+            else {
+                int p = _enemies.FindIndex(e => e.Loc == next);
+                if (p != -1) {
+                    hitTarget = _enemies[p];
+                    return next;
+                }
+                update = true;
+                loc = next;
+            }
+        }
+
+        Assert.IsTrue(false);
+        return Loc.Zero;
     }
 
     private void ExecutePlayerUseSkill() {
