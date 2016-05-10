@@ -33,8 +33,10 @@ public class ActEnemyAttack : Act {
         // ターゲットの方を向く
         Actor.ChangeDir(Actor.Loc.Toward(_target.Loc));
 
-        // ターゲットは攻撃者の方を向く。ただし既に敵の方を向いている場合は向きは変えない
-        if (!sys.ExistsEnemy(_target.Front())) {
+        // ターゲットは攻撃者の方を向く。ただし以下の場合は振り向かない
+        // - 目の前に敵が存在する
+        // - 攻撃者が透明状態
+        if (!sys.ExistsEnemy(_target.Front()) && !Actor.IsInvisible()) {
             _target.ChangeDir(_target.Loc.Toward(Actor.Loc));
         }
 
