@@ -194,4 +194,22 @@ public class Player : CharacterBase {
         var anim = _gobj.GetComponent<Animator>();
         anim.SetTrigger(name);
     }
+
+    public override void OnStatusAdded(Status status) {
+        if (status == Status.Invisible) {
+            var renderer = _gobj.GetComponent<SpriteRenderer>();
+            var color = renderer.color;
+            color.a = 0.4f;
+            renderer.color = color;
+        }
+    }
+
+    public override void OnStatusRemoved(Status status) {
+        if (status == Status.Invisible) {
+            var renderer = _gobj.GetComponent<SpriteRenderer>();
+            var color = renderer.color;
+            color.a = 1.0f;
+            renderer.color = color;
+        }
+    }
 }

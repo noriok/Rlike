@@ -88,14 +88,14 @@ public class Enemy : CharacterBase {
     }
 
     public override void OnStatusAdded(Status status) {
-        switch (status) {
-        case Status.Invisible: {
-            var renderer = _gobj.GetComponent<SpriteRenderer>();
-            var color = renderer.color;
-            color.a = 0.1f;
-            renderer.color = color;
-            break;
+        if (status == Status.Invisible) {
+            _gobj.SetActive(false);
         }
+    }
+
+    public override void OnStatusRemoved(Status status) {
+        if (status == Status.Invisible) {
+            _gobj.SetActive(true);
         }
     }
 }
