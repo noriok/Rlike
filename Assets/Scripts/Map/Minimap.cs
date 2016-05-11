@@ -56,16 +56,21 @@ public class Minimap {
 			_itemIcons[i].SetActive(false);
 		}
 
+        int p = 0;
 		// 敵アイコンの更新
+        // TODO:見えない敵はアイコン表示しない
 		for (int i = 0; i < enemies.Count; i++) {
-			if (i >= _enemyIcons.Count) { // 追加
+            if (enemies[i].IsInvisible()) continue;
+
+            if (p == _enemyIcons.Count) { // 追加
 				var loc = enemies[i].Loc;
 				_enemyIcons.Add(CreateEnemyIcon(loc.Row, loc.Col, _layer));
 			}
 			else {
-				_enemyIcons[i].SetActive(true);
-				_enemyIcons[i].transform.localPosition = ToMinimapPosition(enemies[i].Loc);
+				_enemyIcons[p].SetActive(true);
+				_enemyIcons[p].transform.localPosition = ToMinimapPosition(enemies[i].Loc);
 			}
+            p++;
 		}
 
 		// アイテムアイコンの更新
