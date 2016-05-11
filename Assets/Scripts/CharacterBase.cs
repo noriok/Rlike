@@ -58,10 +58,12 @@ public abstract class CharacterBase {
         Position = loc.ToPosition();
     }
 
+    // 内部の状態管理。
+    // TODO: 見た目の変化は、OnStatusAdded, OnStatusRemoved で行う
     public void AddStatus(Status status) {
         if (_status.ContainsKey(status)) return;
 
-        if (status == Status.Sleep) {
+        if (status == Status.Sleep) { // TODO' OnStatusAdded で行う
             var sleep = (GameObject)GameObject.Instantiate(Resources.Load("Prefabs/Animations/status-sleep"), Vector3.zero, Quaternion.identity);
             sleep.transform.SetParent(_gobj.transform);
             sleep.transform.localPosition = new Vector3(0, 0.18f, 0);
@@ -74,7 +76,6 @@ public abstract class CharacterBase {
         }
 
         OnStatusAdded(status);
-
     }
 
     public void RemoveStatus(Status status) {
@@ -82,9 +83,11 @@ public abstract class CharacterBase {
             GameObject.Destroy(_status[status]);
             _status.Remove(status);
 
-            if (status == Status.Sleep) {
+            if (status == Status.Sleep) { // TODO: OnStatusRemoved で行う
                 PlayAnimation();
             }
+
+            OnStatusRemoved(status);
         }
     }
 

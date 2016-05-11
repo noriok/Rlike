@@ -57,15 +57,6 @@ public class MainSystem : MonoBehaviour {
             _itemWindow.SetActive(true);
 
             var sc = GameObject.Find("Canvas/ScrollView/Panel/Content").GetComponent<ScrollController>();
-/*
-            var items = new[] {
-                ItemFactory.CreateHerb(),
-                ItemFactory.CreateStone(),
-                ItemFactory.CreateMagic(),
-            };
-            sc.Init(items.ToList());
-            */
-
             sc.Init(_player.Items);
 
             sc.SetCloseCallback(() => {
@@ -229,10 +220,6 @@ public class MainSystem : MonoBehaviour {
     }
 
     void OnGUI() {
-        // Func<string, bool> button = (caption) => {
-        //     return GUILayout.Button(caption, GUILayout.Width(110), GUILayout.Height(50));
-        // };
-
         int x = 300;
         if (GUI.Button(new Rect(x, 0, 100, 40), "test")) {
             StartCoroutine(NextFloor());
@@ -368,16 +355,6 @@ public class MainSystem : MonoBehaviour {
             Destroy(d);
         }
     }
-
-    // private void ZoomIn() {
-    //     var camera = GameObject.Find("Main Camera");
-    //     camera.GetComponent<Camera>().orthographicSize -= 0.1f;
-    // }
-
-    // private void ZoomOut() {
-    //     var camera = GameObject.Find("Main Camera");
-    //     camera.GetComponent<Camera>().orthographicSize += 0.1f;
-    // }
 
     public float OrthographicSize {
         get {
