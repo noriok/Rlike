@@ -56,9 +56,8 @@ public class Minimap {
 			_itemIcons[i].SetActive(false);
 		}
 
-        int p = 0;
 		// 敵アイコンの更新
-        // TODO:見えない敵はアイコン表示しない
+        int p = 0;
 		for (int i = 0; i < enemies.Count; i++) {
             if (enemies[i].IsInvisible()) continue;
 
