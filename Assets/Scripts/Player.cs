@@ -9,8 +9,6 @@ public class Player : CharacterBase {
 
     private List<Item> _items = new List<Item>();
 
-    private Loc _nextLoc; // 次のターンでの位置
-
     private Dictionary<Dir, GameObject> _dirs = new Dictionary<Dir, GameObject>();
 
     public Player(Loc loc, GameObject gobj) : base(loc, gobj) {
