@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using UnityEngine;
+// using UnityEngine;
 using UnityEngine.Assertions;
 
 public static class EnemyStrategy {
@@ -45,16 +45,6 @@ public static class EnemyStrategy {
         }
         return false;
     }
-
-    // private static Loc Move(Enemy enemy, Loc[] candidates, Floor floor, bool[,] locs) {
-    //     foreach (var loc in candidates) {
-    //         Dir dir = enemy.Loc.Toward(loc);
-    //         if (!locs[loc.Row, loc.Col] && floor.CanAdvance(enemy.Loc, dir)) {
-    //             return loc;
-    //         }
-    //     }
-    //     return false;
-    // }
 
     public static List<Act> Detect(List<Enemy> enemies, Player player, Loc playerNextLoc, Floor floor) {
         // プレイヤーが見えない場合の行動
@@ -306,5 +296,4 @@ public static class EnemyStrategy {
 
         return q;
     }
-
 }
