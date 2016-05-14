@@ -37,7 +37,7 @@ public class Map {
             }
         }
 
-        _mapLayer = new GameObject(LayerName.Map);
+        _mapLayer = LayerManager.GetLayer(LayerName.Map);
 
         var flat = Resources.Load("Prefabs/MapChip/pipo-map001_0");
         var mountain = Resources.Load("Prefabs/MapChip/pipo-map001_at-yama2_0");

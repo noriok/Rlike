@@ -48,6 +48,8 @@ public class MainSystem : MonoBehaviour {
     private int _gold;
 
     void Start() {
+        LayerManager.CreateLayer();
+
         _itemWindow.SetActive(false);
         _btnItem.onClick.AddListener(() => {
             if (_gameState != GameState.InputWait) return;
@@ -81,10 +83,11 @@ public class MainSystem : MonoBehaviour {
         // _player.AddStatus(Status.Invisible);
         _floor = FloorCreator.CreateFloor(1);
 
-        var enemyLayer = new GameObject(LayerName.Enemy);
+
+        var enemyLayer = LayerManager.GetLayer(LayerName.Enemy);
         SetupFloorEnemy(1, enemyLayer);
 
-        var itemLayer = new GameObject(LayerName.Item);
+        var itemLayer = LayerManager.GetLayer(LayerName.Item);
         SetupFloorItem(5, itemLayer);
 
         var camera = GameObject.Find("Main Camera");
@@ -264,21 +267,13 @@ public class MainSystem : MonoBehaviour {
         _enemies.Clear();
         _fieldItems.Clear();
 
-        Destroy(GameObject.Find(LayerName.Enemy));
-        Destroy(GameObject.Find(LayerName.Item));
-        Destroy(GameObject.Find(LayerName.FieldObject));
-        Destroy(GameObject.Find(LayerName.Trap));
-        Destroy(GameObject.Find(LayerName.Map));
-        Destroy(GameObject.Find(LayerName.Minimap));
-
-        // TODO:フロア遷移でアイテムレイヤーが作られていない
-        // フロア遷移直後に全てのレイヤーを作成する
+        LayerManager.RemoveLayer();
+        // 同一フレームで、同じ GameObject に対して Destroy したあとに new GameObject できないようなので
+        // yield return null で生成のタイミングをずらす
+        yield return null;
+        LayerManager.CreateLayer();
 
         _floor = FloorCreator.CreateFloor(2);
-
-        // TODO:レイヤー管理
-        var enemyLayer = new GameObject(LayerName.Enemy);
-        //DeployEnemy(3, enemyLayer);
 
         _player.UpdateLoc(new Loc(2, 8));
         _player.ChangeDir(Dir.S);

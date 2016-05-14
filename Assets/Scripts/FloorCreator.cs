@@ -66,9 +66,8 @@ public static class FloorCreator {
 
 	public static Floor CreateFloor(int floorNumber) {
 		// var floorLayer = new GameObject(LayerName.Floor);
-
-		var fieldObjectLayer = new GameObject(LayerName.FieldObject);
-		var trapLayer = new GameObject(LayerName.Trap);
+		var fieldObjectLayer = LayerManager.GetLayer(LayerName.FieldObject);
+		var trapLayer = LayerManager.GetLayer(LayerName.Trap);
 
 		// マップ生成
 		var mapData = CreateMap(floorNumber);

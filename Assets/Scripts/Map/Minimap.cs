@@ -15,7 +15,7 @@ public class Minimap {
 	private float _elapsed;
 
 	public Minimap(char[,] map, List<FieldObject> fieldObjects, Loc stairsLoc) {
-		_layer = new GameObject(LayerName.Minimap);
+		_layer = LayerManager.GetLayer(LayerName.Minimap);
 
 		int rows = map.GetLength(0);
 		int cols = map.GetLength(1);
