@@ -6,10 +6,11 @@ using System.Linq;
 
 public class Map {
     private const int NoRoom = -1;
-    private char[,] _mapData;
+    public char[,] MapData { get; private set; }
+    // private char[,] _mapData;
 
-    public int Rows { get { return _mapData.GetLength(0); } }
-    public int Cols { get { return _mapData.GetLength(1); } }
+    public int Rows { get { return MapData.GetLength(0); } }
+    public int Cols { get { return MapData.GetLength(1); } }
 
     private GameObject _mapLayer;
 
@@ -17,9 +18,9 @@ public class Map {
     private int[,] _roomMap;
 
     public Map(char[,] mapData) {
-        _mapData = mapData;
-        int rows = _mapData.GetLength(0);
-        int cols = _mapData.GetLength(1);
+        MapData = mapData;
+        int rows = mapData.GetLength(0);
+        int cols = mapData.GetLength(1);
 
         _rooms = GetRooms();
         _roomMap = new int[rows, cols];
@@ -44,19 +45,22 @@ public class Map {
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < cols; j++) {
 
-                if (_mapData[i, j] == MapChar.Sea) {
+                if (MapData[i, j] == MapChar.Sea || MapData[i, j] == MapChar.Sand) {
                     var dir = Dir.N;
                     var xs = new List<int>();
                     var loc = new Loc(i, j);
                     for (int k = 0; k < 8; k++) {
                         var chip = GetMapChar(loc.Forward(dir));
-                        xs.Add(chip == MapChar.Sea ? 0 : 1);
+                        xs.Add(chip == MapData[i, j] ? 0 : 1); // 隣接するマップチップが同じか
                         dir = dir.Clockwise();
                     }
                     Debug.Log(">> " + string.Join(" ", xs.Select(e => e.ToString()).ToArray()));
 
                     var offsets = new[,] { { -1, 1, }, { 1, 1 }, { -1, -1 }, { 1, -1 } };
-                    var pathnames = MapChipUtils.GetSeaMapChipName(xs.ToArray());
+                    var pathnames = MapData[i, j] == MapChar.Sea
+                        ? MapChipUtils.GetSeaMapChipName(xs.ToArray())
+                        : MapChipUtils.GetSandMapChipName(xs.ToArray());
+
                     for (int k = 0; k < pathnames.Length; k++) {
                         Debug.Log("pathname: " + pathnames[k]);
                         var pos = loc.ToPosition();
@@ -66,16 +70,14 @@ public class Map {
                         pos.y += offsets[k, 1] * Config.ChipSize / 4;
                         var gobj = (GameObject)GameObject.Instantiate(obj, pos, Quaternion.identity);
                         gobj.transform.SetParent(_mapLayer.transform);
-                        //break;
                     }
-
                 }
                 else {
                     var pos = new Loc(i, j).ToPosition();
                     var floatObj = (GameObject)GameObject.Instantiate(flat, pos, Quaternion.identity);
                     floatObj.transform.SetParent(_mapLayer.transform);
 
-                    switch (_mapData[i, j]) {
+                    switch (MapData[i, j]) {
                     case MapChar.Wall:
                         var mtObj = (GameObject)GameObject.Instantiate(mountain, pos, Quaternion.identity);
                         mtObj.transform.SetParent(_mapLayer.transform);
@@ -99,7 +101,7 @@ public class Map {
 
     private char GetMapChar(int row, int col) {
         if (OutOfMap(row, col)) return MapChar.Wall; // マップ外は壁扱い
-        return _mapData[row, col];
+        return MapData[row, col];
     }
 
     public bool OutOfMap(Loc loc) {
@@ -182,7 +184,7 @@ public class Map {
             for (int j = 0; j < Cols; j++) {
                 if (used[i, j]) continue;
 
-                if (_mapData[i, j] == MapChar.Room) {
+                if (MapData[i, j] == MapChar.Room) {
                     int minR = i, maxR = i;
                     int minC = j, maxC = j;
                     var entrances = new List<Loc>();
@@ -205,10 +207,10 @@ public class Map {
                             int r = loc.Row + d[0];
                             int c = loc.Col + d[1];
                             if (OutOfMap(r, c) || used[r, c]) continue;
-                            if (_mapData[r, c] == MapChar.Room) {
+                            if (MapData[r, c] == MapChar.Room) {
                                 q.Enqueue(new Loc(r, c));
                             }
-                            else if (_mapData[r, c] == MapChar.Passage) {
+                            else if (MapData[r, c] == MapChar.Passage) {
                                 entrances.Add(new Loc(r, c));
                             }
                         }

@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.Assertions;
-using System.Collections;
+// using System.Collections;
 
 public class LayerManager {
 
@@ -13,17 +13,24 @@ public class LayerManager {
         LayerName.Minimap,
     };
 
-    public static void CreateLayer() {
-        // レイヤーを作成
+    public static void CreateAllLayer() {
         foreach (var name in _layerNames) {
             new GameObject(name);
         }
     }
 
-    public static void RemoveLayer() {
+    public static void CreateLayer(string layerName) {
+        new GameObject(layerName);
+    }
+
+    public static void RemoveAllLayer() {
         foreach (var name in _layerNames) {
             GameObject.Destroy(GameObject.Find(name));
         }
+    }
+
+    public static void RemoveLayer(string layerName) {
+        GameObject.Destroy(GameObject.Find(layerName));
     }
 
     public static GameObject GetLayer(string layerName) {

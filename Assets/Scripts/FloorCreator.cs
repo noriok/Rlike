@@ -45,7 +45,7 @@ public static class FloorCreator {
 
 	private static char[,] CreateMap(int floorNumber) {
         string mapData = floorNumber == 1 ? TestMap : Map2;
-        mapData = Map2;
+        mapData = TestMap;
         var lines = mapData.Trim().Split(new[] { '\n' });
 
         int rows = lines.Length;

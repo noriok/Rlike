@@ -48,7 +48,7 @@ public class MainSystem : MonoBehaviour {
     private int _gold;
 
     void Start() {
-        LayerManager.CreateLayer();
+        LayerManager.CreateAllLayer();
 
         _itemWindow.SetActive(false);
         _btnItem.onClick.AddListener(() => {
@@ -139,12 +139,13 @@ public class MainSystem : MonoBehaviour {
                 if (_fieldItems.Where(e => e.Loc == loc).Any()) continue;
 
                 if (_floor.CanPutItem(loc)) {
-                    if (rand.Next(2) % 2 == 0) {
+                    if (rand.Next(2) % 2 == 100) {
                         var item = FieldItemFactory.CreateWand(loc, layer);
                         AddFieldItem(item);
                     }
                     else {
-                        var item = FieldItemFactory.CreateHerb(loc, layer);
+                        //var item = FieldItemFactory.CreateHerb(loc, layer);
+                        var item = FieldItemFactory.CreateMagic(loc, layer);
                         AddFieldItem(item);
                     }
                     // AddFieldItem(FieldItemFactory.CreateHerb(loc, layer));
@@ -267,11 +268,11 @@ public class MainSystem : MonoBehaviour {
         _enemies.Clear();
         _fieldItems.Clear();
 
-        LayerManager.RemoveLayer();
+        LayerManager.RemoveAllLayer();
         // 同一フレームで、同じ GameObject に対して Destroy したあとに new GameObject できないようなので
         // yield return null で生成のタイミングをずらす
         yield return null;
-        LayerManager.CreateLayer();
+        LayerManager.CreateAllLayer();
 
         _floor = FloorCreator.CreateFloor(2);
 
@@ -550,7 +551,7 @@ public class MainSystem : MonoBehaviour {
             ChangeGameState(GameState.Act);
         }
         else {
-            Debug.Log("進めません");
+            // Debug.Log("進めません");
             _player.ChangeDir(dir);
         }
     }
@@ -832,4 +833,9 @@ public class MainSystem : MonoBehaviour {
     //     }
     //     return null;
     // }
+
+    // 水がれ
+    public IEnumerator Sun() {
+        yield return _floor.Sun();
+    }
 }

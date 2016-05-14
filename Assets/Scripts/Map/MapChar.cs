@@ -4,4 +4,5 @@
     public const char Room = '.'; // 部屋
     public const char Passage = '+'; // 通路
     public const char Sea = '~'; // 海
+    public const char Sand = '%'; // 砂漠
 }

@@ -30,11 +30,15 @@ public static class ItemFactory {
     }
 
     public static Item CreateMagic() {
-        return new Item(Magic(0));
+        return new Item(Magic(4));
     }
 
     public static Item CreateWand() {
         return new Item(Wand(1));
+    }
+
+    private static ItemData CreateItemData(ItemType type, string name, string desc, Skill skill) {
+        return new ItemData(type, name, desc, skill);
     }
 
     private static ItemData Herb(int index) {
@@ -86,6 +90,13 @@ public static class ItemFactory {
                 desc: "とびつくぞ。",
                 skill: new SkillFly()
             );
+        case 2:
+            return CreateItemData(
+                type: type,
+                name: "ふきとばしの杖",
+                desc: "相手を吹き飛ばすぞ",
+                skill: SkillNone
+            );
         }
 
         Assert.IsTrue(false);
@@ -123,6 +134,13 @@ public static class ItemFactory {
                 name: "千里眼の書",
                 desc: "アイテムの位置が分かるぞ。",
                 skill: SkillNone
+            );
+        case 4:
+            return CreateItemData(
+                type: type,
+                name: "水がれの書",
+                desc: "フロアの水が涸れるぞ。",
+                skill: new SkillSun()
             );
         }
 

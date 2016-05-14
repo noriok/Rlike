@@ -34,6 +34,27 @@ public class Floor {
         _minimap.Hide();
     }
 
+    // 水がれ
+    public IEnumerator Sun() {
+        var mapData = _map.MapData;
+        LayerManager.RemoveLayer(LayerName.Map);
+        LayerManager.RemoveLayer(LayerName.Minimap);
+        yield return null;
+        LayerManager.CreateLayer(LayerName.Map);
+        LayerManager.CreateLayer(LayerName.Minimap);
+
+        for (int i = 0; i < mapData.GetLength(0); i++) {
+            for (int j = 0; j < mapData.GetLength(1); j++) {
+                if (mapData[i, j] == MapChar.Sea) {
+                    mapData[i, j] = MapChar.Sand;
+                }
+            }
+        }
+
+        _map = new Map(mapData);
+        _minimap = new Minimap(mapData, _fieldObjects, StairsLoc);
+    }
+
     private T FindFieldObject<T>(Loc loc) where T : FieldObject {
         foreach (var obj in _fieldObjects) {
             if (obj.Loc == loc && obj is T) {

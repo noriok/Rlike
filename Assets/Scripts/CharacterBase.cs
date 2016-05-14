@@ -149,7 +149,7 @@ public abstract class CharacterBase {
     }
 
     public IEnumerator FadeIn() {
-        return CAction.FadeIn(_gobj, 0.5f);
+        return CAction.Fade(_gobj, 0, 1f, 0.5f);
     }
 
     public virtual void ShowDirection(Dir dir) {

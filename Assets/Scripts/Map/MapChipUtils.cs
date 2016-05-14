@@ -39,7 +39,7 @@ public static class MapChipUtils {
         { x, x, 0, 0, 0, x, x, x },
     };
 
-    public static string[] GetSeaMapChipName(int[] neighbors) {
+    private static string[] GetMapChipName(int[] neighbors, string pathNamePrefix) {
         var xs = new List<string>();
         for (int i = 0; i < 4; i++) {
 
@@ -57,7 +57,8 @@ public static class MapChipUtils {
                 }
 
                 if (matched) {
-                    var name = string.Format("pipo-map001_at-umi_{0}", p);
+                    // var name = string.Format("pipo-map001_at-umi_{0}", p);
+                    var name = string.Format("{0}{1}", pathNamePrefix, p);
                     xs.Add(name);
                     ok = true;
                     break;
@@ -72,4 +73,14 @@ public static class MapChipUtils {
         }
         return xs.ToArray();
     }
+
+    public static string[] GetSeaMapChipName(int[] neighbors) {
+        return GetMapChipName(neighbors, "pipo-map001_at-umi_");
+    }
+
+    public static string[] GetSandMapChipName(int[] neighbors) {
+        return GetMapChipName(neighbors, "pipo-map001_at-sabaku_");
+    }
+
+
 }

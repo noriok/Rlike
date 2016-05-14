@@ -39,6 +39,11 @@ public static class FieldItemFactory {
         return Create(item, loc, layer);
     }
 
+    public static FieldItem CreateMagic(Loc loc, GameObject layer) {
+        var item = ItemFactory.CreateMagic();
+        return Create(item, loc, layer);
+    }
+
     public static FieldItem CreateFromItem(Item item, Loc loc) {
         // TODO:layer
         var layer = GameObject.Find(LayerName.Item);
