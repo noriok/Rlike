@@ -45,7 +45,7 @@ public class Map {
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < cols; j++) {
 
-                if (MapData[i, j] == MapChar.Sea || MapData[i, j] == MapChar.Sand) {
+                if (MapData[i, j] == MapChar.Water || MapData[i, j] == MapChar.Sand) {
                     var dir = Dir.N;
                     var xs = new List<int>();
                     var loc = new Loc(i, j);
@@ -57,7 +57,7 @@ public class Map {
                     Debug.Log(">> " + string.Join(" ", xs.Select(e => e.ToString()).ToArray()));
 
                     var offsets = new[,] { { -1, 1, }, { 1, 1 }, { -1, -1 }, { 1, -1 } };
-                    var pathnames = MapData[i, j] == MapChar.Sea
+                    var pathnames = MapData[i, j] == MapChar.Water
                         ? MapChipUtils.GetSeaMapChipName(xs.ToArray())
                         : MapChipUtils.GetSandMapChipName(xs.ToArray());
 

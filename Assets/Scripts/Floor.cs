@@ -45,7 +45,7 @@ public class Floor {
 
         for (int i = 0; i < mapData.GetLength(0); i++) {
             for (int j = 0; j < mapData.GetLength(1); j++) {
-                if (mapData[i, j] == MapChar.Sea) {
+                if (mapData[i, j] == MapChar.Water) {
                     mapData[i, j] = MapChar.Sand;
                 }
             }
