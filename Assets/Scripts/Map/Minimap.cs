@@ -21,9 +21,15 @@ public class Minimap {
 		int cols = map.GetLength(1);
 		for (int i = 0; i < rows; i++) {
 			for (int j = 0; j < cols; j++) {
-				if (map[i, j] == MapChar.Room || map[i, j] == MapChar.Passage) {
-					CreateFloor(i, j, _layer);
-				}
+                switch (map[i, j]) {
+                case MapChar.Room:
+                case MapChar.Passage:
+                case MapChar.Sand:
+                    CreateFloor(i, j, _layer);
+                    break;
+                case MapChar.Water: // TODO:水
+                    break;
+                }
 			}
 		}
 

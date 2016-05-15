@@ -7,7 +7,6 @@ using System.Linq;
 public class Map {
     private const int NoRoom = -1;
     public char[,] MapData { get; private set; }
-    // private char[,] _mapData;
 
     public int Rows { get { return MapData.GetLength(0); } }
     public int Cols { get { return MapData.GetLength(1); } }
@@ -23,6 +22,7 @@ public class Map {
         int cols = mapData.GetLength(1);
 
         _rooms = GetRooms();
+        // _roomMap に各マスがどの部屋に所属しているのか、部屋番号を格納する
         _roomMap = new int[rows, cols];
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < cols; j++) {
@@ -133,7 +133,15 @@ public class Map {
     }
 
     public bool IsRoom(int row, int col) {
-        return GetMapChar(row, col) == MapChar.Room;
+        if (OutOfMap(row, col)) return false;
+
+        if (_roomMap[row, col] != NoRoom) {
+            char c = GetMapChar(row, col);
+            if (c == MapChar.Room || c == MapChar.Sand) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public bool IsPassage(Loc loc) {
@@ -142,6 +150,14 @@ public class Map {
 
     public bool IsPassage(int row, int col) {
         return GetMapChar(row, col) == MapChar.Passage;
+    }
+
+    public bool IsWater(Loc loc) {
+        return IsWall(loc.Row, loc.Col);
+    }
+
+    public bool IsWater(int row, int col) {
+        return GetMapChar(row, col) == MapChar.Water;
     }
 
     public bool IsSameRoom(Loc a, Loc b) {

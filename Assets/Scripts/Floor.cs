@@ -146,6 +146,10 @@ public class Floor {
         return _map.IsPassage(loc);
     }
 
+    public bool IsWater(Loc loc) {
+        return _map.IsWater(loc);
+    }
+
     public bool IsEntrance(Loc loc) {
         return _map.IsEntrance(loc);
     }
@@ -160,6 +164,8 @@ public class Floor {
 
     public bool CanPutItem(Loc loc) {
         if (!IsRoomOrPassage(loc)) return false;
+        // 水の上にはアイテムは置けない
+        if (IsWater(loc)) return false;
 
         // ワナが配置してあるなら置けない
         if (ExistsTrap(loc)) return false;
@@ -169,8 +175,6 @@ public class Floor {
         if (ExistsNoticeBoard(loc)) return false;
         // 階段の上には置けない
         if (StairsLoc == loc) return false;
-
-        // TODO:水の上なら置けない
 
         return true;
     }

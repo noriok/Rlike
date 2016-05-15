@@ -105,6 +105,7 @@ public class MainSystem : MonoBehaviour {
         ChangeGameState(GameState.TurnStart);
     }
 
+    // フロアに敵を配置する
     private void SetupFloorEnemy(int n, GameObject layer) {
         Assert.IsTrue(_enemies.Count == 0);
         if (DebugConfig.NoEnemy) return;
@@ -115,7 +116,10 @@ public class MainSystem : MonoBehaviour {
             for (int j = 0; j < tryCount; j++) {
                 var loc = Utils.RandomRoomLoc(Utils.Choice(rooms));
 
+                // TODO:敵を配置可能か調べるメソッド
                 if (_floor.ExistsObstacle(loc)) continue;
+                if (_floor.IsWater(loc)) continue;
+
                 if (_enemies.Any(e => e.Loc == loc)) continue;
                 if (_player.Loc == loc) continue;
 
@@ -125,6 +129,7 @@ public class MainSystem : MonoBehaviour {
         }
     }
 
+    // フロアにアイテムを配置する
     private void SetupFloorItem(int n, GameObject layer) {
         Assert.IsTrue(_fieldItems.Count == 0);
 
@@ -796,6 +801,8 @@ public class MainSystem : MonoBehaviour {
         _dialog.Show(message);
     }
 
+    // 部屋内のランダムな位置を返す
+    // ただし、水や敵がいる位置は返さない
     public Loc RandomRoomLoc(Loc defaultLoc) {
         var rand = new System.Random();
         const int retryCount = 20;
@@ -805,6 +812,7 @@ public class MainSystem : MonoBehaviour {
             int r = rand.Next(room.Row, room.Row + room.Height);
             int c = rand.Next(room.Col, room.Col + room.Width);
             var loc = new Loc(r, c);
+            if (_floor.IsWater(loc)) continue;
             if (!_enemies.Any(e => e.Loc == loc)) {
                 return loc;
             }
