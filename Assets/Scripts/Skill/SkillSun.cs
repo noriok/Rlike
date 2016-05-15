@@ -24,5 +24,6 @@ public class SkillSun : Skill {
         GameObject.Destroy(fog);
         yield return CAction.Fade(mask, 1, 0, 0.6f);
         GameObject.Destroy(mask);
+        yield return new WaitForSeconds(0.2f);
     }
 }
