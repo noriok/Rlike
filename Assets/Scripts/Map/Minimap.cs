@@ -28,6 +28,8 @@ public class Minimap {
                     CreateFloor(i, j, _layer);
                     break;
                 case MapChar.Water: // TODO:水
+                    Debug.Log("water----");
+                    CreateWater(i, j, _layer);
                     break;
                 }
 			}
@@ -129,6 +131,15 @@ public class Minimap {
 		renderer.color = color;
 		return gobj;
 	}
+
+    private GameObject CreateWater(int row, int col, GameObject layer) {
+		var gobj = CreateIcon("Prefabs/Minimap/minimap-water", row, col, layer);
+		var renderer = gobj.GetComponent<SpriteRenderer>();
+		var color = renderer.color;
+		color.a = 0.4f;
+		renderer.color = color;
+		return gobj;
+    }
 
 	private GameObject CreateTrapIcon(int row, int col, GameObject layer) {
 		return CreateIcon("Prefabs/Minimap/minimap-trap", row, col, layer);

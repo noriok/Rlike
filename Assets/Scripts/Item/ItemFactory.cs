@@ -66,6 +66,13 @@ public static class ItemFactory {
                 desc: "しばらく透明になるぞ。",
                 skill: new SkillInvisible()
             );
+        case 3:
+            return new ItemData(
+                type: type,
+                name: "高飛び草",
+                desc: "どこかにワープするぞ。",
+                skill: SkillNone
+            );
         }
 
         Assert.IsTrue(false);
@@ -94,7 +101,7 @@ public static class ItemFactory {
             return CreateItemData(
                 type: type,
                 name: "ふきとばしの杖",
-                desc: "相手を吹き飛ばすぞ",
+                desc: "相手を吹き飛ばすぞ。",
                 skill: SkillNone
             );
         }
