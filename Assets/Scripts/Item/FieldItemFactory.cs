@@ -29,18 +29,18 @@ public static class FieldItemFactory {
         return Create(item, loc, layer);
     }
 
-    public static FieldItem CreateHerb(Loc loc, GameObject layer) {
-        var item = ItemFactory.CreateHerb(0);
+    public static FieldItem CreateHerb(Loc loc, GameObject layer, int index) {
+        var item = ItemFactory.CreateHerb(index);
         return Create(item, loc, layer);
     }
 
-    public static FieldItem CreateWand(Loc loc, GameObject layer) {
-        var item = ItemFactory.CreateWand(0);
+    public static FieldItem CreateWand(Loc loc, GameObject layer, int index) {
+        var item = ItemFactory.CreateWand(index);
         return Create(item, loc, layer);
     }
 
-    public static FieldItem CreateMagic(Loc loc, GameObject layer) {
-        var item = ItemFactory.CreateMagic(0);
+    public static FieldItem CreateMagic(Loc loc, GameObject layer, int index) {
+        var item = ItemFactory.CreateMagic(index);
         return Create(item, loc, layer);
     }
 

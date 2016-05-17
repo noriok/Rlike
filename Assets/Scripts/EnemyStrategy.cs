@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-// using UnityEngine;
+using UnityEngine;
 using UnityEngine.Assertions;
 
 public static class EnemyStrategy {
@@ -146,6 +146,9 @@ public static class EnemyStrategy {
                     }
                     else if (floor.IsRoom(enemy.Loc)) { // 部屋にいるなら入り口に向かう
                         Room room = floor.FindRoom(enemy.Loc);
+                        Debug.Log("room = " + room);
+                        Debug.Log("room >> " + room.Entrances.Length);
+                        Debug.LogFormat("width:{0} height:{1}", room.Width, room.Height);
                         Assert.IsTrue(room != null && room.Entrances.Length > 0);
 
                         Loc[] entrances = room.Entrances;

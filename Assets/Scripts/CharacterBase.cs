@@ -71,19 +71,19 @@ public abstract class CharacterBase {
 
     // 内部の状態管理。
     // TODO: 見た目の変化は、OnStatusAdded, OnStatusRemoved で行う
-    public void AddStatus(Status status) {
+    public void AddStatus(Status status, int depth) {
         if (_status.ContainsKey(status)) return;
 
         if (status == Status.Sleep) { // TODO' OnStatusAdded で行う
             var sleep = (GameObject)GameObject.Instantiate(Resources.Load("Prefabs/Animations/status-sleep"), Vector3.zero, Quaternion.identity);
             sleep.transform.SetParent(_gobj.transform);
             sleep.transform.localPosition = new Vector3(0, 0.18f, 0);
-            _status.Add(status, new StatusOne(sleep, 10));
+            _status.Add(status, new StatusOne(sleep, depth));
             StopAnimation();
         }
         else if (status == Status.Invisible) {
             // 状態異常マークはないので null を格納
-            _status.Add(status, new StatusOne(null, 20));
+            _status.Add(status, new StatusOne(null, depth));
         }
 
         OnStatusAdded(status);

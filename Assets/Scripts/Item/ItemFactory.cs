@@ -16,7 +16,7 @@ public static class ItemFactory {
     }
 
     public static Item CreateHerb(int index) {
-        return new Item(Herb(0));
+        return new Item(Herb(index));
     }
 
     public static Item CreateStone() {
@@ -30,11 +30,11 @@ public static class ItemFactory {
     }
 
     public static Item CreateMagic(int index) {
-        return new Item(Magic(4));
+        return new Item(Magic(index));
     }
 
     public static Item CreateWand(int index) {
-        return new Item(Wand(1));
+        return new Item(Wand(index));
     }
 
     private static ItemData CreateItemData(ItemType type, string name, string desc, Skill skill) {

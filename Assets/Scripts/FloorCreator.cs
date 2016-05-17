@@ -5,17 +5,21 @@ using System.Linq;
 
 public static class FloorCreator {
     private const string TestMap = @"
-#
-#.....~.........#      ..........
-#....~~.........+++++++..........
-#...~...........#      ...~~~~...
-#...............#      ...~~~~...
-#####+       +         ...~~~~...
-    #+       +         ..........
-     +   .......           +
-     ++++.......++++++++++++
-         .......
-
+               ##########
+               .........
+#########      ..~~~~~..
+#.......#      ..~...~..
+#.......+++++++..~...~..
+#.......#      ..~~~~~..
+#.......#      .........
+#.......#          +
+###  +             +
+                   +
+                ......
+                ......
+                ......
+                ......
+                ......
 
 
 
@@ -74,20 +78,40 @@ public static class FloorCreator {
 		Map map = new Map(mapData);
 
 		// マップ上のフィールドオブジェクト作成
-		var fieldObjects = new List<FieldObject>();
-      	// fieldObjects.Add(FieldObjectFactory.CreateBonfire(new Loc(3, 3), fieldObjectLayer));
-        fieldObjects.Add(FieldObjectFactory.CreateTreasure(new Loc(4, 4), fieldObjectLayer));
-        fieldObjects.Add(FieldObjectFactory.CreateNoticeBoard(new Loc(1, 2), fieldObjectLayer, "立て札のメッセージ"));
+        var fieldObjects = new List<FieldObject>();
+        if (floorNumber == 1) {
+      	    // fieldObjects.Add(FieldObjectFactory.CreateBonfire(new Loc(3, 3), fieldObjectLayer));
+            // fieldObjects.Add(FieldObjectFactory.CreateTreasure(new Loc(4, 4), fieldObjectLayer));
+            fieldObjects.Add(FieldObjectFactory.CreateNoticeBoard(new Loc(1, 2), fieldObjectLayer, "立て札のメッセージ"));
 
-		// 階段生成
-		Loc stairsLoc = new Loc(1, 7);
-		FieldObjectFactory.CreateStairs(stairsLoc, fieldObjectLayer);
+            fieldObjects.Add(FieldObjectFactory.CreateNoticeBoard(new Loc(2, 15), fieldObjectLayer, "「場所替えの杖」を使って、\n孤島の敵と入れ替わろう！\n\n杖は何回でも使えるぞ！"));
+            fieldObjects.Add(FieldObjectFactory.CreateNoticeBoard(new Loc(3, 19), fieldObjectLayer, "「水がれの書」を使うと、\nフロアの水が涸れるぞ！"));
+            fieldObjects.Add(FieldObjectFactory.CreateNoticeBoard(new Loc(10, 20), fieldObjectLayer, "部屋の真ん中にあるのは\n召喚のワナです。\n\n「消え去り草」を使うと、\nしばらくの間、姿が見えなくなるぞ！"));
+
+
+        }
+
+        Loc stairsLoc = new Loc(1, 7);
+        if (floorNumber == 1) {
+		    // 階段生成
+		    // Loc stairsLoc = new Loc(1, 7);
+        }
+        else {
+
+        }
+        FieldObjectFactory.CreateStairs(stairsLoc, fieldObjectLayer);
+
 
         // ワナ生成
-        fieldObjects.Add(FieldObjectFactory.CreateTrapHeal(new Loc(3, 5), trapLayer));
-        fieldObjects.Add(FieldObjectFactory.CreateTrapWarp(new Loc(3, 6), trapLayer));
-        fieldObjects.Add(FieldObjectFactory.CreateTrapDamage(new Loc(3, 7), trapLayer));
-        fieldObjects.Add(FieldObjectFactory.CreateTrapSummon(new Loc(3, 8), trapLayer));
+        if (floorNumber == 1) {
+            fieldObjects.Add(FieldObjectFactory.CreateTrapSummon(new Loc(12, 19), trapLayer));
+
+
+        }
+//        fieldObjects.Add(FieldObjectFactory.CreateTrapHeal(new Loc(3, 5), trapLayer));
+//        fieldObjects.Add(FieldObjectFactory.CreateTrapWarp(new Loc(3, 6), trapLayer));
+//        fieldObjects.Add(FieldObjectFactory.CreateTrapDamage(new Loc(3, 7), trapLayer));
+//        fieldObjects.Add(FieldObjectFactory.CreateTrapSummon(new Loc(3, 8), trapLayer));
 
 		// ミニマップ生成
 		Minimap minimap = new Minimap(mapData, fieldObjects, stairsLoc);

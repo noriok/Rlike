@@ -44,6 +44,7 @@ public class MainSystem : MonoBehaviour {
     private FloorBanner _banner;
     private GameManager _gm;
     private Floor _floor;
+    private int _floorNumber = 1;
 
     private int _gold;
 
@@ -79,16 +80,15 @@ public class MainSystem : MonoBehaviour {
         _banner = new FloorBanner();
         _gm = new GameManager();
 
-        _player = _gm.CreatePlayer(new Loc(3, 5));
-        // _player.AddStatus(Status.Invisible);
-        _floor = FloorCreator.CreateFloor(1);
-
+        _player = _gm.CreatePlayer(new Loc(3, 3));
+        _floor = FloorCreator.CreateFloor(_floorNumber);
 
         var enemyLayer = LayerManager.GetLayer(LayerName.Enemy);
-        SetupFloorEnemy(1, enemyLayer);
+        SetupFloorEnemy_1(enemyLayer);
 
         var itemLayer = LayerManager.GetLayer(LayerName.Item);
-        SetupFloorItem(5, itemLayer);
+        // SetupFloorItem(5, itemLayer);
+        SetupFloorItem_1(itemLayer);
 
         var camera = GameObject.Find("Main Camera");
         camera.GetComponent<Camera>().orthographicSize = _cameraManager.CurrentSize;
@@ -103,6 +103,21 @@ public class MainSystem : MonoBehaviour {
 
         _player.SyncCameraPosition();
         ChangeGameState(GameState.TurnStart);
+    }
+
+    private Enemy MakeEnemy(Loc loc, GameObject layer, int sleepDepth) {
+        var e = EnemyFactory.CreateEnemy(loc, layer);
+        if (sleepDepth > 0) {
+            e.AddStatus(Status.Sleep, sleepDepth);
+        }
+        return e;
+    }
+
+    private void SetupFloorEnemy_1(GameObject layer) {
+        // _enemies.Add(EnemyFactory.CreateEnemy(new Loc(3, 19), layer));
+
+        _enemies.Add(MakeEnemy(new Loc(3, 18), layer, 100000));
+
     }
 
     // フロアに敵を配置する
@@ -129,6 +144,23 @@ public class MainSystem : MonoBehaviour {
         }
     }
 
+    private void SetupFloorItem_1(GameObject layer) {
+        FieldItem item = null;
+        // 場所替え
+        item = FieldItemFactory.CreateWand(new Loc(3, 15), layer, 0);
+        AddFieldItem(item);
+
+        // 水がれの書
+        item = FieldItemFactory.CreateMagic(new Loc(3, 20), layer, 4);
+        AddFieldItem(item);
+
+        // 消え去り草
+        item = FieldItemFactory.CreateHerb(new Loc(11, 19), layer, 2);
+        AddFieldItem(item);
+
+
+    }
+
     // フロアにアイテムを配置する
     private void SetupFloorItem(int n, GameObject layer) {
         Assert.IsTrue(_fieldItems.Count == 0);
@@ -145,12 +177,12 @@ public class MainSystem : MonoBehaviour {
 
                 if (_floor.CanPutItem(loc)) {
                     if (rand.Next(2) % 2 == 100) {
-                        var item = FieldItemFactory.CreateHerb(loc, layer);
+                        var item = FieldItemFactory.CreateHerb(loc, layer, 0);
                         AddFieldItem(item);
                     }
                     else {
                         //var item = FieldItemFactory.CreateHerb(loc, layer);
-                        var item = FieldItemFactory.CreateHerb(loc, layer);
+                        var item = FieldItemFactory.CreateHerb(loc, layer, 0);
                         AddFieldItem(item);
                     }
                     // AddFieldItem(FieldItemFactory.CreateHerb(loc, layer));

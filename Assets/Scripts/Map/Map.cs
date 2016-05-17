@@ -232,6 +232,13 @@ public class Map {
                         }
                     }
 
+                    // 部屋の内部の孤島は部屋の一部と見なす
+                    for (int k = minR; k <= maxR; k++) {
+                        for (int m = minC; m <= maxC; m++) {
+                            used[k, m] = true;
+                        }
+                    }
+
                     int width = maxC - minC + 1;
                     int height = maxR - minR + 1;
                     var room = new Room(minR, minC, width, height, entrances);

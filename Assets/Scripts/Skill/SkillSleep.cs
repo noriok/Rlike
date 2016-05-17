@@ -5,12 +5,12 @@ using System.Collections;
 public class SkillSleep : Skill {
 
     public override IEnumerator Use(CharacterBase sender, MainSystem sys) {
-        sender.AddStatus(Status.Sleep);
+        sender.AddStatus(Status.Sleep, 7);
         yield return null;
     }
 
     public override IEnumerator Hit(CharacterBase sender, CharacterBase target, MainSystem sys) {
-        target.AddStatus(Status.Sleep);
+        target.AddStatus(Status.Sleep, 7);
         yield return null;
     }
 }
