@@ -3,6 +3,16 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
+public class StatusOne {
+    public GameObject obj;
+    public int turn;
+
+    public StatusOne(GameObject obj, int turn) {
+        this.obj = obj;
+        this.turn = turn;
+    }
+}
+
 public abstract class CharacterBase {
     public int Row { get { return _loc.Row; } }
     public int Col { get { return _loc.Col; } }
@@ -26,7 +36,8 @@ public abstract class CharacterBase {
     protected string _triggerName = "ToS";
     protected GameObject _gobj;
 
-    private Dictionary<Status, GameObject> _status = new Dictionary<Status, GameObject>();
+//    private Dictionary<Status, GameObject> _status = new Dictionary<Status, GameObject>();
+    private Dictionary<Status, StatusOne> _status = new Dictionary<Status, StatusOne>();
 
     public CharacterBase(Loc loc, GameObject gobj) {
         ActCount = 0;
@@ -67,12 +78,12 @@ public abstract class CharacterBase {
             var sleep = (GameObject)GameObject.Instantiate(Resources.Load("Prefabs/Animations/status-sleep"), Vector3.zero, Quaternion.identity);
             sleep.transform.SetParent(_gobj.transform);
             sleep.transform.localPosition = new Vector3(0, 0.18f, 0);
-            _status.Add(status, sleep);
+            _status.Add(status, new StatusOne(sleep, 10));
             StopAnimation();
         }
         else if (status == Status.Invisible) {
             // 状態異常マークはないので null を格納
-            _status.Add(status, null);
+            _status.Add(status, new StatusOne(null, 20));
         }
 
         OnStatusAdded(status);
@@ -80,7 +91,7 @@ public abstract class CharacterBase {
 
     public void RemoveStatus(Status status) {
         if (_status.ContainsKey(status)) {
-            GameObject.Destroy(_status[status]);
+            GameObject.Destroy(_status[status].obj);
             _status.Remove(status);
 
             if (status == Status.Sleep) { // TODO: OnStatusRemoved で行う
@@ -93,7 +104,7 @@ public abstract class CharacterBase {
 
     public void RemoveAllStatus() {
         foreach (var kv in _status) {
-            GameObject.Destroy(kv.Value);
+            GameObject.Destroy(kv.Value.obj);
         }
         _status.Clear();
     }
@@ -159,7 +170,14 @@ public abstract class CharacterBase {
     }
 
     public abstract void OnTurnStart();
-    public abstract void OnTurnEnd();
+
+    public virtual void OnTurnEnd() {
+        foreach (var kv in _status) {
+            if (--kv.Value.turn <= 0) {
+                RemoveStatus(kv.Key);
+            }
+        }
+    }
 
     public virtual void OnStatusAdded(Status status) {
     }

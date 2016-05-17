@@ -65,6 +65,8 @@ public class Enemy : CharacterBase {
     }
 
     public override void OnTurnEnd() {
+        base.OnTurnEnd();
+
         if (IsLockedOn) {
             if (Loc == Target) {
                 CancelTarget();
