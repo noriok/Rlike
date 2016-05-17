@@ -2,6 +2,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 
 public class TrapSummon : Trap {
 	public TrapSummon(Loc loc, GameObject gobj) : base(loc, gobj) {
@@ -13,10 +14,22 @@ public class TrapSummon : Trap {
 	// 周囲八マスからランダムに選ぶ
 	// その位置に敵がいないことを確認
 	private Func<IEnumerator>[] Summon(Loc src, MainSystem sys) {
-		var locs = new List<Loc>();
-		locs.Add(new Loc(src.Row - 1, src.Col));
-		locs.Add(new Loc(src.Row, src.Col + 1));
-		locs.Add(new Loc(src.Row + 1, src.Col + 1));
+        var xs = new List<Loc>(src.Neighbors());
+        Utils.Shuffle(xs);
+
+        var rand = new System.Random();
+        int n = rand.Next(2, 3);
+        Debug.Log("n = " + n);
+
+        var locs = new List<Loc>();
+        for (int i = 0; i < xs.Count; i++) {
+            // TODO: 敵の配置だけでなく、敵が配置可能かも調べる
+            if (!sys.ExistsEnemy(xs[i])) {
+                locs.Add(xs[i]);
+
+                if (locs.Count == n) break;
+            }
+        }
 
 		List<Func<IEnumerator>> fns = new List<Func<IEnumerator>>();
 		for (int i = 0; i < locs.Count; i++) {
@@ -28,6 +41,14 @@ public class TrapSummon : Trap {
 
 	// TODO:Run rename
 	public override IEnumerator RunAnimation(CharacterBase sender, MainSystem sys) {
-		yield return Anim.Par(sys, Summon(sender.Loc, sys));
+        var xs = Summon(sender.Loc, sys);
+
+        if (xs.Length == 0) {
+            yield break;
+        }
+        else {
+            yield return Anim.Par(sys, xs);
+		    // yield return Anim.Par(sys, Summon(sender.Loc, sys));
+        }
 	}
 }

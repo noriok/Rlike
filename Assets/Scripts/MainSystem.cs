@@ -777,16 +777,13 @@ public class MainSystem : MonoBehaviour {
     }
 
     public IEnumerator Summon(Loc loc) {
-        Assert.IsTrue(false);
-        yield break;
-
         // TODO: assert(loc に敵がいない)
-        // var e = EnemyFactory.CreateEnemy(loc.Row, loc.Col);
-        // _enemies.Add(e);
+        var e = EnemyFactory.CreateEnemy(loc, LayerManager.GetLayer(LayerName.Enemy));
+        _enemies.Add(e);
 
-        // yield return Anim.Par(this,
-        //                       () => e.FadeIn(),
-        //                       () => EffectAnim.Aura2(e.Position));
+        yield return Anim.Par(this,
+                              () => e.FadeIn(),
+                              () => EffectAnim.Aura2(e.Position));
     }
 
     public void ShowMinimap() {
