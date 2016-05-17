@@ -134,15 +134,20 @@ public class Player : CharacterBase {
         ActCount = 1;
     }
 
+    private int _counter = 0;
     public override void OnTurnEnd() {
-        // HP を回復
-        float toHp = Utils.Clamp(Hp + 1, 0, MaxHp);
+        base.OnTurnEnd();
 
-        var imageFg = GameObject.Find("Canvas/Header/Image_HP_FG").GetComponent<Image>();
-        var textHp = GameObject.Find("Canvas/Header/Text_HP_Value").GetComponent<Text>();
-        textHp.text = string.Format("{0}/{1}", toHp, MaxHp);
-        imageFg.fillAmount = toHp / MaxHp;
-        HealHp(1);
+        if (++_counter % 5 == 0) {
+            // HP を回復
+            float toHp = Utils.Clamp(Hp + 1, 0, MaxHp);
+
+            var imageFg = GameObject.Find("Canvas/Header/Image_HP_FG").GetComponent<Image>();
+            var textHp = GameObject.Find("Canvas/Header/Text_HP_Value").GetComponent<Text>();
+            textHp.text = string.Format("{0}/{1}", toHp, MaxHp);
+            imageFg.fillAmount = toHp / MaxHp;
+            HealHp(1);
+        }
     }
 
     public void AddItem(Item item) {
