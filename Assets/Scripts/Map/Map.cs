@@ -153,7 +153,7 @@ public class Map {
     }
 
     public bool IsWater(Loc loc) {
-        return IsWall(loc.Row, loc.Col);
+        return IsWater(loc.Row, loc.Col);
     }
 
     public bool IsWater(int row, int col) {
