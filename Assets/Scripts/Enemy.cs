@@ -35,6 +35,13 @@ public class Enemy : CharacterBase {
         _barGreen.transform.localScale = new Vector3(scale, 1, 1);
     }
 
+    public override IEnumerator HealAnim(int delta) {
+        int hp = Utils.Clamp(Hp + delta, 0, MaxHp);
+        float scale = hp * HP_GAUGE_MAX_SCALE / MaxHp;
+        _barGreen.transform.localScale = new Vector3(scale, 1, 1);
+        yield return null;
+    }
+
     public override IEnumerator DamageAnim(int delta) {
         int fm = Hp;
         int to = Utils.Clamp(Hp - delta, 0, MaxHp);

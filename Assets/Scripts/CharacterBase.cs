@@ -122,6 +122,9 @@ public abstract class CharacterBase {
     // TODO:UpdateLoc に揃えて UpdateDir にする
     public virtual void ChangeDir(Dir dir) {
         // if (_dir == dir) return; // TODO:斜めの画像がある場合は dir で判定する
+        // TODO:敵が消えている場合の処理。プレイヤー追跡ロジックの動作がおかしい。
+        if (IsInvisible()) return;
+
         _dir = dir;
 
         string name = "ToN";
@@ -173,8 +176,10 @@ public abstract class CharacterBase {
 
     public virtual void OnTurnEnd() {
         foreach (var kv in _status) {
+            Debug.LogFormat("status:{0} turn:{1}", kv.Key, kv.Value.turn);
             if (--kv.Value.turn <= 0) {
                 RemoveStatus(kv.Key);
+                break; // TODO:status を削除する方法
             }
         }
     }

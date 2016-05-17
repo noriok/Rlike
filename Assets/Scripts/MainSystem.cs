@@ -145,12 +145,12 @@ public class MainSystem : MonoBehaviour {
 
                 if (_floor.CanPutItem(loc)) {
                     if (rand.Next(2) % 2 == 100) {
-                        var item = FieldItemFactory.CreateWand(loc, layer);
+                        var item = FieldItemFactory.CreateHerb(loc, layer);
                         AddFieldItem(item);
                     }
                     else {
                         //var item = FieldItemFactory.CreateHerb(loc, layer);
-                        var item = FieldItemFactory.CreateMagic(loc, layer);
+                        var item = FieldItemFactory.CreateHerb(loc, layer);
                         AddFieldItem(item);
                     }
                     // AddFieldItem(FieldItemFactory.CreateHerb(loc, layer));

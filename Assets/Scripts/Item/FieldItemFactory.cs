@@ -30,17 +30,17 @@ public static class FieldItemFactory {
     }
 
     public static FieldItem CreateHerb(Loc loc, GameObject layer) {
-        var item = ItemFactory.CreateHerb();
+        var item = ItemFactory.CreateHerb(0);
         return Create(item, loc, layer);
     }
 
     public static FieldItem CreateWand(Loc loc, GameObject layer) {
-        var item = ItemFactory.CreateWand();
+        var item = ItemFactory.CreateWand(0);
         return Create(item, loc, layer);
     }
 
     public static FieldItem CreateMagic(Loc loc, GameObject layer) {
-        var item = ItemFactory.CreateMagic();
+        var item = ItemFactory.CreateMagic(0);
         return Create(item, loc, layer);
     }
 
