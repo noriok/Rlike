@@ -24,4 +24,9 @@ public class SkillWarp : Skill {
         }
         yield return new WaitForSeconds(0.4f);
     }
+
+    public override IEnumerator Hit(CharacterBase sender, CharacterBase target, MainSystem sys) {
+        yield return Use(target, sys);
+    }
+
 }
