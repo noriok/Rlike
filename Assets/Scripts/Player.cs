@@ -12,7 +12,7 @@ public class Player : CharacterBase {
     private Dictionary<Dir, GameObject> _dirs = new Dictionary<Dir, GameObject>();
 
     public Player(Loc loc, GameObject gobj) : base(loc, gobj) {
-        Hp = MaxHp = 255;
+        Hp = MaxHp = 300;
         var textHp = GameObject.Find("Canvas/Header/Text_HP_Value").GetComponent<Text>();
         textHp.text = string.Format("{0}/{1}", Hp, MaxHp);
 
@@ -95,7 +95,7 @@ public class Player : CharacterBase {
 
     public override IEnumerator DamageAnim(int delta) {
         float fromHp = Hp;
-        float toHp = Utils.Clamp(Hp - delta, 0, MaxHp);
+        float toHp = Utils.Clamp(Hp - delta, 1, MaxHp);
 
         var fromAmount = fromHp / MaxHp;
         var toAmount = toHp / MaxHp;
@@ -120,6 +120,10 @@ public class Player : CharacterBase {
             yield return null;
         }
         imageMg.fillAmount = toAmount;
+    }
+
+    public override void DamageHp(int damage) {
+        Hp = Utils.Clamp(Hp - damage, 1, MaxHp);
     }
 
     public override string ToString() {
