@@ -264,6 +264,12 @@ public static class EnemyStrategy {
                     }
                     else if (floor.IsRoom(enemy.Loc)) { // 部屋にいるなら入り口に向かう
                         Room room = floor.FindRoom(enemy.Loc);
+                        if (room.Entrances.Length == 0) { // 何もしない
+                            updated = true;
+                            used[i] = true;
+                            break;
+                        }
+
                         Assert.IsTrue(room != null && room.Entrances.Length > 0);
 
                         Loc[] entrances = room.Entrances;

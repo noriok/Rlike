@@ -15,7 +15,7 @@ public class FloorBanner {
 		var image = GameObject.Find("Canvas/FloorBanner/Image").GetComponent<Image>();
 		var text = GameObject.Find("Canvas/FloorBanner/Text").GetComponent<Text>();
 
-		text.text = "テストダンジョン\n1F";
+		text.text = string.Format("{0}\n{1}F", floorName, floorNumber);
 		var color = text.color;
 		color.a = 0;
 		text.color = color;

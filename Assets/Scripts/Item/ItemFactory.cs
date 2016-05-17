@@ -71,7 +71,7 @@ public static class ItemFactory {
                 type: type,
                 name: "高飛び草",
                 desc: "どこかにワープするぞ。",
-                skill: SkillNone
+                skill: new SkillWarp()
             );
         }
 
@@ -125,8 +125,8 @@ public static class ItemFactory {
             return new ItemData(
                 type: type,
                 name: "大地の怒りの書",
-                desc: "部屋中の敵にダメージを与えるぞ。",
-                skill: SkillNone
+                desc: "部屋中の敵に大ダメージを与えるぞ。",
+                skill: new SkillTitan()
             );
         case 2:
             return new ItemData(

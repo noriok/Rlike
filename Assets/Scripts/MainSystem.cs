@@ -117,8 +117,20 @@ public class MainSystem : MonoBehaviour {
         // _enemies.Add(EnemyFactory.CreateEnemy(new Loc(3, 19), layer));
 
         _enemies.Add(MakeEnemy(new Loc(3, 18), layer, 100000));
-
+        _enemies.Add(MakeEnemy(new Loc(14, 5), layer, 100000));
     }
+
+    private void SetupFloorEnemy_2(GameObject layer) {
+        _enemies.Add(MakeEnemy(new Loc(2, 5), layer, 0));
+        _enemies.Add(MakeEnemy(new Loc(2, 7), layer, 0));
+
+        _enemies.Add(MakeEnemy(new Loc(6, 5), layer, 0));
+        _enemies.Add(MakeEnemy(new Loc(6, 7), layer, 0));
+
+        _enemies.Add(MakeEnemy(new Loc(4, 9), layer, 0));
+        _enemies.Add(MakeEnemy(new Loc(4, 3), layer, 0));
+    }
+
 
     // フロアに敵を配置する
     private void SetupFloorEnemy(int n, GameObject layer) {
@@ -151,14 +163,39 @@ public class MainSystem : MonoBehaviour {
         AddFieldItem(item);
 
         // 水がれの書
-        item = FieldItemFactory.CreateMagic(new Loc(3, 20), layer, 4);
+        item = FieldItemFactory.CreateMagic(new Loc(4, 18), layer, 4);
         AddFieldItem(item);
 
         // 消え去り草
         item = FieldItemFactory.CreateHerb(new Loc(11, 19), layer, 2);
         AddFieldItem(item);
+        item = FieldItemFactory.CreateHerb(new Loc(11, 20), layer, 2);
+        AddFieldItem(item);
 
+        // 高飛び草
+        item = FieldItemFactory.CreateHerb(new Loc(11, 32), layer, 3);
+        AddFieldItem(item);
 
+        item = FieldItemFactory.CreateHerb(new Loc(11, 31), layer, 3);
+        AddFieldItem(item);
+
+        // 薬草
+        item = FieldItemFactory.CreateHerb(new Loc(3, 5), layer, 0);
+        AddFieldItem(item);
+        item = FieldItemFactory.CreateHerb(new Loc(3, 6), layer, 0);
+        AddFieldItem(item);
+
+        // // テスト
+        // item = FieldItemFactory.CreateMagic(new Loc(3, 2), layer, 1);
+        // AddFieldItem(item);
+
+        // item = FieldItemFactory.CreateMagic(new Loc(3, 1), layer, 1);
+        // AddFieldItem(item);
+    }
+
+    private void SetupFloorItem_2(GameObject layer) {
+        var item = FieldItemFactory.CreateMagic(new Loc(4, 5), layer, 1);
+        AddFieldItem(item);
     }
 
     // フロアにアイテムを配置する
@@ -260,6 +297,7 @@ public class MainSystem : MonoBehaviour {
         CheckInput();
     }
 
+/*
     void OnGUI() {
         int x = 300;
         if (GUI.Button(new Rect(x, 0, 100, 40), "test")) {
@@ -269,6 +307,7 @@ public class MainSystem : MonoBehaviour {
             // StartCoroutine(Test());
         }
     }
+*/
 
     private void CheckInput() {
         if (_dialog.IsOpen) return;
@@ -299,7 +338,10 @@ public class MainSystem : MonoBehaviour {
     }
 
     private IEnumerator NextFloor() {
-        yield return _banner.FadeInAnimation("ダンジョン名", 1);
+        ++_floorNumber;
+        if (_floorNumber > 2) _floorNumber = 1;
+
+        yield return _banner.FadeInAnimation("テストダンジョン", _floorNumber);
 
         // TODO:次のフロア生成
         _enemies.Clear();
@@ -311,9 +353,20 @@ public class MainSystem : MonoBehaviour {
         yield return null;
         LayerManager.CreateAllLayer();
 
-        _floor = FloorCreator.CreateFloor(2);
+        _floor = FloorCreator.CreateFloor(_floorNumber);
 
-        _player.UpdateLoc(new Loc(2, 8));
+        if (_floorNumber % 2 == 1) {
+            _player.UpdateLoc(new Loc(3, 3));
+
+            SetupFloorEnemy_1(LayerManager.GetLayer(LayerName.Enemy));
+            SetupFloorItem_1(LayerManager.GetLayer(LayerName.Item));
+        }
+        else {
+            _player.UpdateLoc(new Loc(4, 6));
+
+            SetupFloorEnemy_2(LayerManager.GetLayer(LayerName.Enemy));
+            SetupFloorItem_2(LayerManager.GetLayer(LayerName.Item));
+        }
         _player.ChangeDir(Dir.S);
         yield return null; // TODO:yield return null を入れるとミニマップの位置が更新される
         _player.SyncCameraPosition(); // TODO:ミニマップの位置が更新されない
@@ -846,7 +899,7 @@ public class MainSystem : MonoBehaviour {
                 return loc;
             }
         }
-        return defaultLoc;
+        return defaultLoc; // ワープできない場合
     }
 
     public void IncGold(int gold) {
@@ -874,5 +927,9 @@ public class MainSystem : MonoBehaviour {
     // 水がれ
     public IEnumerator Sun() {
         yield return _floor.Sun();
+    }
+
+    public CharacterBase[] GetEnemies() {
+        return _enemies.ToArray();
     }
 }
