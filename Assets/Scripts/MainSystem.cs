@@ -84,11 +84,11 @@ public class MainSystem : MonoBehaviour {
         _floor = FloorCreator.CreateFloor(_floorNumber);
 
         var enemyLayer = LayerManager.GetLayer(LayerName.Enemy);
-        SetupFloorEnemy_1(enemyLayer);
+        // SetupFloorEnemy_1(enemyLayer);
 
         var itemLayer = LayerManager.GetLayer(LayerName.Item);
         // SetupFloorItem(5, itemLayer);
-        SetupFloorItem_1(itemLayer);
+        // SetupFloorItem_1(itemLayer);
 
         var camera = GameObject.Find("Main Camera");
         camera.GetComponent<Camera>().orthographicSize = _cameraManager.CurrentSize;
@@ -184,13 +184,6 @@ public class MainSystem : MonoBehaviour {
         AddFieldItem(item);
         item = FieldItemFactory.CreateHerb(new Loc(3, 6), layer, 0);
         AddFieldItem(item);
-
-        // // テスト
-        // item = FieldItemFactory.CreateMagic(new Loc(3, 2), layer, 1);
-        // AddFieldItem(item);
-
-        // item = FieldItemFactory.CreateMagic(new Loc(3, 1), layer, 1);
-        // AddFieldItem(item);
     }
 
     private void SetupFloorItem_2(GameObject layer) {
@@ -358,14 +351,14 @@ public class MainSystem : MonoBehaviour {
         if (_floorNumber % 2 == 1) {
             _player.UpdateLoc(new Loc(3, 3));
 
-            SetupFloorEnemy_1(LayerManager.GetLayer(LayerName.Enemy));
-            SetupFloorItem_1(LayerManager.GetLayer(LayerName.Item));
+            // SetupFloorEnemy_1(LayerManager.GetLayer(LayerName.Enemy));
+            // SetupFloorItem_1(LayerManager.GetLayer(LayerName.Item));
         }
         else {
             _player.UpdateLoc(new Loc(4, 6));
 
-            SetupFloorEnemy_2(LayerManager.GetLayer(LayerName.Enemy));
-            SetupFloorItem_2(LayerManager.GetLayer(LayerName.Item));
+            // SetupFloorEnemy_2(LayerManager.GetLayer(LayerName.Enemy));
+            // SetupFloorItem_2(LayerManager.GetLayer(LayerName.Item));
         }
         _player.ChangeDir(Dir.S);
         yield return null; // TODO:yield return null を入れるとミニマップの位置が更新される
