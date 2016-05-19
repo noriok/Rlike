@@ -42,16 +42,16 @@ public static class FloorCreator {
 
     private const string Map3 = @"
 ######
- ........
- ........
- ........
+ .~.~.~.~
+ ~.~.~.~.
+ .~.~.~.~
  ........
  ########
 ";
 
 	private static char[,] CreateMap(int floorNumber) {
         string mapData = floorNumber % 2 == 1 ? TestMap : Map2;
-        // mapData = TestMap;
+        mapData = Map3;
         var lines = mapData.Trim().Split(new[] { '\n' });
 
         int rows = lines.Length;
