@@ -96,24 +96,6 @@ public static class CAction {
         layer.transform.position = src;
     }
 
-    /*
-    public static IEnumerator FadeIn(GameObject obj, float duration) {
-        var renderer = obj.GetComponent<SpriteRenderer>();
-        var color = renderer.color;
-        color.a = 0;
-        renderer.color = color;
-
-        float elapsed = 0f;
-        while (elapsed <= duration) {
-            elapsed += Time.deltaTime;
-            float alpha = Mathf.Lerp(0, 1, elapsed / duration);
-            color.a = alpha;
-            renderer.color = color;
-            yield return null;
-        }
-    }*/
-
-
     public static IEnumerator Fade(GameObject obj, float fm, float to, float duration) {
         var renderer = obj.GetComponent<SpriteRenderer>();
         var color = renderer.color;
