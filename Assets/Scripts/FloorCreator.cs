@@ -152,7 +152,7 @@ public static class FloorCreator {
 		var fieldObjectLayer = LayerManager.GetLayer(LayerName.FieldObject);
 		var trapLayer = LayerManager.GetLayer(LayerName.Trap);
 
-        Data data = D1();
+        Data data = D2();
         char[,] mapData = CreateMap(data.Map);
         var map = new Map(mapData);
 
@@ -188,7 +188,28 @@ public static class FloorCreator {
         return new Data(map, stairsLoc, playerLoc, fobjs, fieldItems, enemies);
     }
 
+    private static Data D2() {
+        const string map = @"
+...~.~.~.
+....#.#.~
+...~...~.
+~.#.~#~.~
+.~.~.~.~.
+~.~#~.#.~
+.~...~...
+~.#.#....
+.~.~.~...
+";
 
+        var fobjs = new List<FieldObject>();
+        var stairsLoc = new Loc(7, 7);
 
+        var playerLoc = new Loc(1, 1);
+
+        var fieldItems = new List<FieldItem>();
+        var enemies = new List<Enemy>();
+
+        return new Data(map, stairsLoc, playerLoc, fobjs, fieldItems, enemies);
+    }
 
 }
