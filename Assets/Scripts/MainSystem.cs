@@ -44,7 +44,7 @@ public class MainSystem : MonoBehaviour {
     private FloorBanner _banner;
     private GameManager _gm;
     private Floor _floor;
-    private int _floorNumber = 1;
+    private int _floorNumber = 0;
 
     private int _gold;
 
@@ -81,14 +81,7 @@ public class MainSystem : MonoBehaviour {
         _gm = new GameManager();
 
         _player = _gm.CreatePlayer(new Loc(3, 3));
-        _floor = FloorCreator.CreateFloor(_floorNumber);
-
-        var enemyLayer = LayerManager.GetLayer(LayerName.Enemy);
-        // SetupFloorEnemy_1(enemyLayer);
-
-        var itemLayer = LayerManager.GetLayer(LayerName.Item);
-        // SetupFloorItem(5, itemLayer);
-        // SetupFloorItem_1(itemLayer);
+        // _floor = FloorCreator.CreateFloor2(_floorNumber, _player);
 
         var camera = GameObject.Find("Main Camera");
         camera.GetComponent<Camera>().orthographicSize = _cameraManager.CurrentSize;
@@ -101,8 +94,11 @@ public class MainSystem : MonoBehaviour {
             }
         });
 
-        _player.SyncCameraPosition();
-        ChangeGameState(GameState.TurnStart);
+        ChangeGameState(GameState.NextFloorTransition);
+        StartCoroutine(NextFloor());
+
+//        _player.SyncCameraPosition();
+//        ChangeGameState(GameState.TurnStart);
     }
 
     private Enemy MakeEnemy(Loc loc, GameObject layer, int sleepDepth) {
@@ -319,11 +315,11 @@ public class MainSystem : MonoBehaviour {
             return;
         }
 
-        if (Input.GetKey(KeyCode.A)) { // 回復アイテム使う
+        if (Input.GetKey(KeyCode.A)) {
             // ExecutePlayerUseItem();
         }
-        else if (Input.GetKey(KeyCode.S)) { // スキル使う
-            ExecutePlayerUseSkill();
+        else if (Input.GetKey(KeyCode.S)) {
+            // ExecutePlayerUseSkill();
         }
         else if (Input.GetKey(KeyCode.Period)) { // 何もせずターン終了
             ExecutePlayerWait();
@@ -332,11 +328,10 @@ public class MainSystem : MonoBehaviour {
 
     private IEnumerator NextFloor() {
         ++_floorNumber;
-        if (_floorNumber > 2) _floorNumber = 1;
+        if (_floorNumber > 1) {
+            yield return _banner.FadeInAnimation("テストダンジョン", _floorNumber);
+        }
 
-        yield return _banner.FadeInAnimation("テストダンジョン", _floorNumber);
-
-        // TODO:次のフロア生成
         _enemies.Clear();
         _fieldItems.Clear();
 
@@ -346,27 +341,14 @@ public class MainSystem : MonoBehaviour {
         yield return null;
         LayerManager.CreateAllLayer();
 
-        _floor = FloorCreator.CreateFloor(_floorNumber);
-
-        if (_floorNumber % 2 == 1) {
-            _player.UpdateLoc(new Loc(3, 3));
-
-            // SetupFloorEnemy_1(LayerManager.GetLayer(LayerName.Enemy));
-            // SetupFloorItem_1(LayerManager.GetLayer(LayerName.Item));
-        }
-        else {
-            _player.UpdateLoc(new Loc(4, 6));
-
-            // SetupFloorEnemy_2(LayerManager.GetLayer(LayerName.Enemy));
-            // SetupFloorItem_2(LayerManager.GetLayer(LayerName.Item));
-        }
-        _player.ChangeDir(Dir.S);
+        _floor = FloorCreator.CreateFloor2(_floorNumber, _player);
         yield return null; // TODO:yield return null を入れるとミニマップの位置が更新される
-        _player.SyncCameraPosition(); // TODO:ミニマップの位置が更新されない
+        _player.SyncCameraPosition();
 
-        yield return new WaitForSeconds(1.1f);
-        yield return _banner.FadeOutAnimation();
-
+        if (_floorNumber > 1) {
+            yield return new WaitForSeconds(1.1f);
+            yield return _banner.FadeOutAnimation();
+        }
         ChangeGameState(GameState.TurnStart);
     }
 

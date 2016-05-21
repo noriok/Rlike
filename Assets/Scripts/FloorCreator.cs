@@ -4,6 +4,26 @@ using System.Collections.Generic;
 using System.Linq;
 
 public static class FloorCreator {
+    private class Data {
+        public string Map { get; private set; }
+        public List<FieldObject> FieldObjects { get; private set; }
+        public Loc StairsLoc { get; private set; }
+
+        public Loc PlayerLoc { get; private set; }
+
+        public List<FieldItem> FieldItems { get; private set; }
+        public List<Enemy> Enemies { get; private set; }
+
+        public Data(string map, Loc stairsLoc, Loc playerLoc, List<FieldObject> fieldObjects, List<FieldItem> fieldItems, List<Enemy> enemies) {
+            Map = map;
+            StairsLoc = stairsLoc;
+            PlayerLoc = playerLoc;
+            FieldObjects = fieldObjects;
+            FieldItems = fieldItems;
+            Enemies = enemies;
+        }
+    }
+
     private const string TestMap = @"
                ##########
                .........
@@ -20,38 +40,40 @@ public static class FloorCreator {
   .....         ......++++
   .....+++++++++......
   .....         ......
-
-
-
-
 ####
 #####
 ";
 
-    private const string Map2 = @"
-##################
-  .........
-  .........
-  .........
-  .........
-  .........
-  .........
-  .........
-##################
-";
-
     private const string Map3 = @"
-######
- .~.~.~.~
- ~.~.~.~.
- .~.~.~.~
- ........
- ########
+.~.~.~.~
+~.~.~.~.
+.~.~.~.~
+........
+########
 ";
 
+    // TODO:削除
 	private static char[,] CreateMap(int floorNumber) {
-        string mapData = floorNumber % 2 == 1 ? TestMap : Map2;
-        mapData = Map3;
+        string mapData = Map3;
+        var lines = mapData.Trim().Split(new[] { '\n' });
+
+        int rows = lines.Length;
+        int cols = lines.Select(s => s.Length).Max();
+
+        var map = new char[rows, cols];
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < cols; j++) {
+                map[i, j] = MapChar.Wall;
+            }
+            for (int j = 0; j < lines[i].Length; j++) {
+                if (lines[i][j] == MapChar.None) continue;
+                map[i, j] = lines[i][j];
+            }
+        }
+		return map;
+	}
+
+	private static char[,] CreateMap(string mapData) {
         var lines = mapData.Trim().Split(new[] { '\n' });
 
         int rows = lines.Length;
@@ -125,4 +147,48 @@ public static class FloorCreator {
 		var floor = new Floor(map, minimap, fieldObjects, stairsLoc);
 		return floor;
 	}
+
+    public static Floor CreateFloor2(int floorNumber, Player player) {
+		var fieldObjectLayer = LayerManager.GetLayer(LayerName.FieldObject);
+		var trapLayer = LayerManager.GetLayer(LayerName.Trap);
+
+        Data data = D1();
+        char[,] mapData = CreateMap(data.Map);
+        var map = new Map(mapData);
+
+        FieldObjectFactory.CreateStairs(data.StairsLoc, fieldObjectLayer);
+
+		// ミニマップ生成
+		Minimap minimap = new Minimap(mapData, data.FieldObjects, data.StairsLoc);
+
+		var floor = new Floor(map, minimap, data.FieldObjects, data.StairsLoc);
+        player.UpdateLoc(data.PlayerLoc); // TODO:プレイヤーの初期位置設定
+        player.ChangeDir(Dir.S);
+		return floor;
+    }
+
+    // ------ フロアデータ
+
+    private static Data D1() {
+        const string map = @"
+.......
+.......
+.......
+.......
+";
+
+        var fobjs = new List<FieldObject>();
+        var stairsLoc = new Loc(0, 0);
+
+        var playerLoc = new Loc(2, 2);
+
+        var fieldItems = new List<FieldItem>();
+        var enemies = new List<Enemy>();
+
+        return new Data(map, stairsLoc, playerLoc, fobjs, fieldItems, enemies);
+    }
+
+
+
+
 }
