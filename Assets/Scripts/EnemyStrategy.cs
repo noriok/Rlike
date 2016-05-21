@@ -58,12 +58,25 @@ public static class EnemyStrategy {
         enemies.Sort((a, b) => {
             var x = a.Loc.SquareDistance(playerNextLoc);
             var y = b.Loc.SquareDistance(playerNextLoc);
+
+            if (x == y) { // 距離が等しい場合は、row の大きい方を優先する
+                return b.Row.CompareTo(a.Row);
+            }
             return x.CompareTo(y);
         });
 
         var q = new List<Act>();
 
         var locs = new bool[floor.Rows, floor.Cols]; // キャラクターの位置
+        Func<Loc, bool> existsEnemy = (loc) => {
+            int rows = locs.GetLength(0);
+            int cols = locs.GetLength(1);
+            if (0 <= loc.Row && loc.Row < rows && 0 <= loc.Col && loc.Col < cols) {
+                return locs[loc.Row, loc.Col];
+            }
+            return false;
+        };
+
         var used = new bool[enemies.Count];
         for (int i = 0; i < enemies.Count; i++) {
             if (enemies[i].ActCount <= 0) { // 行動済み
@@ -103,7 +116,7 @@ public static class EnemyStrategy {
                     // プレイヤーに近づく
                     foreach (var loc in Approach(enemy.Loc, playerNextLoc)) {
                         Dir dir = enemy.Loc.Toward(loc);
-                        if (!locs[loc.Row, loc.Col] && floor.CanAdvance(enemy.Loc, dir)) {
+                        if (!existsEnemy(loc) && floor.CanAdvance(enemy.Loc, dir)) {
                             q.Add(new ActEnemyMove(enemy, loc));
                             locs[loc.Row, loc.Col] = true;
                             locs[enemy.Row, enemy.Col] = false;
@@ -119,7 +132,7 @@ public static class EnemyStrategy {
                     if (enemy.IsLockedOn) {
                          foreach (var loc in Approach(enemy.Loc, enemy.Target)) {
                             Dir dir = enemy.Loc.Toward(loc);
-                            if (!locs[loc.Row, loc.Col] && floor.CanAdvance(enemy.Loc, dir)) {
+                            if (!existsEnemy(loc) && floor.CanAdvance(enemy.Loc, dir)) {
                                 q.Add(new ActEnemyMove(enemy, loc));
                                 locs[loc.Row, loc.Col] = true;
                                 locs[enemy.Row, enemy.Col] = false;
@@ -134,7 +147,7 @@ public static class EnemyStrategy {
 
                         foreach (var loc in Advance(enemy.Loc, enemy.Dir)) {
                             Dir dir = enemy.Loc.Toward(loc);
-                            if (!locs[loc.Row, loc.Col] && floor.CanAdvance(enemy.Loc, dir)) {
+                            if (!existsEnemy(loc) && floor.CanAdvance(enemy.Loc, dir)) {
                                 q.Add(new ActEnemyMove(enemy, loc));
                                 locs[loc.Row, loc.Col] = true;
                                 locs[enemy.Row, enemy.Col] = false;
@@ -147,10 +160,14 @@ public static class EnemyStrategy {
                     else if (floor.IsRoom(enemy.Loc)) { // 部屋にいるなら入り口に向かう
                         Room room = floor.FindRoom(enemy.Loc);
                         Debug.Log("room = " + room);
-                        Debug.Log("room >> " + room.Entrances.Length);
-                        Debug.LogFormat("width:{0} height:{1}", room.Width, room.Height);
-                        Assert.IsTrue(room != null && room.Entrances.Length > 0);
+                        Debug.Log("room.Entrances.Length = " + room.Entrances.Length);
+                        if (room.Entrances.Length == 0) { // 入り口がないなら何もしない
+                            updated = true;
+                            used[i] = true;
+                            break;
+                        }
 
+                        Assert.IsTrue(room != null && room.Entrances.Length > 0);
                         Loc[] entrances = room.Entrances;
                         if (entrances.Length > 1) {
                             // 隣接する入り口には向かわない(通路から部屋に入って、また通路に戻るパターン)
@@ -161,7 +178,7 @@ public static class EnemyStrategy {
                         enemy.LockOn(target);
                         foreach (var loc in Approach(enemy.Loc, enemy.Target)) {
                             Dir dir = enemy.Loc.Toward(loc);
-                            if (!locs[loc.Row, loc.Col] && floor.CanAdvance(enemy.Loc, dir)) {
+                            if (!existsEnemy(loc) && floor.CanAdvance(enemy.Loc, dir)) {
                                 q.Add(new ActEnemyMove(enemy, loc));
                                 locs[loc.Row, loc.Col] = true;
                                 locs[enemy.Row, enemy.Col] = false;
@@ -207,6 +224,15 @@ public static class EnemyStrategy {
         var q = new List<Act>();
 
         var locs = new bool[floor.Rows, floor.Cols]; // キャラクターの位置
+        Func<Loc, bool> existsEnemy = (loc) => {
+            int rows = locs.GetLength(0);
+            int cols = locs.GetLength(1);
+            if (0 <= loc.Row && loc.Row < rows && 0 <= loc.Col && loc.Col < cols) {
+                return locs[loc.Row, loc.Col];
+            }
+            return false;
+        };
+
         var used = new bool[enemies.Count];
         for (int i = 0; i < enemies.Count; i++) {
             if (enemies[i].ActCount <= 0) { // 行動済み
@@ -237,7 +263,7 @@ public static class EnemyStrategy {
                     if (enemy.IsLockedOn) {
                          foreach (var loc in Approach(enemy.Loc, enemy.Target)) {
                             Dir dir = enemy.Loc.Toward(loc);
-                            if (!locs[loc.Row, loc.Col] && floor.CanAdvance(enemy.Loc, dir)) {
+                            if (!existsEnemy(loc) && floor.CanAdvance(enemy.Loc, dir)) {
                                 q.Add(new ActEnemyMove(enemy, loc));
                                 locs[loc.Row, loc.Col] = true;
                                 locs[enemy.Row, enemy.Col] = false;
@@ -252,7 +278,7 @@ public static class EnemyStrategy {
 
                         foreach (var loc in Advance(enemy.Loc, enemy.Dir)) {
                             Dir dir = enemy.Loc.Toward(loc);
-                            if (!locs[loc.Row, loc.Col] && floor.CanAdvance(enemy.Loc, dir)) {
+                            if (!existsEnemy(loc) && floor.CanAdvance(enemy.Loc, dir)) {
                                 q.Add(new ActEnemyMove(enemy, loc));
                                 locs[loc.Row, loc.Col] = true;
                                 locs[enemy.Row, enemy.Col] = false;
@@ -264,7 +290,7 @@ public static class EnemyStrategy {
                     }
                     else if (floor.IsRoom(enemy.Loc)) { // 部屋にいるなら入り口に向かう
                         Room room = floor.FindRoom(enemy.Loc);
-                        if (room.Entrances.Length == 0) { // 何もしない
+                        if (room.Entrances.Length == 0) { // 入り口がないなら何もしない
                             updated = true;
                             used[i] = true;
                             break;
@@ -282,7 +308,7 @@ public static class EnemyStrategy {
                         enemy.LockOn(target);
                         foreach (var loc in Approach(enemy.Loc, enemy.Target)) {
                             Dir dir = enemy.Loc.Toward(loc);
-                            if (!locs[loc.Row, loc.Col] && floor.CanAdvance(enemy.Loc, dir)) {
+                            if (!existsEnemy(loc) && floor.CanAdvance(enemy.Loc, dir)) {
                                 q.Add(new ActEnemyMove(enemy, loc));
                                 locs[loc.Row, loc.Col] = true;
                                 locs[enemy.Row, enemy.Col] = false;

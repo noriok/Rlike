@@ -73,6 +73,13 @@ public static class ItemFactory {
                 desc: "どこかにワープするぞ。",
                 skill: new SkillWarp()
             );
+        case 4:
+            return new ItemData(
+                type: type,
+                name: "目薬草",
+                desc: "見えないものが見えるようになるぞ。",
+                skill: SkillNone
+            );
         }
 
         Assert.IsTrue(false);
@@ -93,7 +100,7 @@ public static class ItemFactory {
         case 1:
             return new ItemData(
                 type: type,
-                name: "飛びつきの杖",
+                name: "とびつきの杖",
                 desc: "とびつくぞ。",
                 skill: new SkillFly()
             );
@@ -101,7 +108,7 @@ public static class ItemFactory {
             return CreateItemData(
                 type: type,
                 name: "ふきとばしの杖",
-                desc: "相手を吹き飛ばすぞ。",
+                desc: "モンスターを吹き飛ばすぞ。",
                 skill: SkillNone
             );
         }

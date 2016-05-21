@@ -148,13 +148,21 @@ public static class FloorCreator {
 		return floor;
 	}
 
-    public static Floor CreateFloor2(int floorNumber, Player player) {
+    public static Floor CreateFloor2(int floorNumber, Player player, MainSystem sys) {
 		var fieldObjectLayer = LayerManager.GetLayer(LayerName.FieldObject);
 		var trapLayer = LayerManager.GetLayer(LayerName.Trap);
 
-        Data data = D2();
+        Data data = D10();
         char[,] mapData = CreateMap(data.Map);
         var map = new Map(mapData);
+
+        foreach (var fitem in data.FieldItems) {
+            sys.AddFieldItem(fitem);
+        }
+
+        foreach (var enemy in data.Enemies) {
+            sys.AddEnemy(enemy);
+        }
 
         FieldObjectFactory.CreateStairs(data.StairsLoc, fieldObjectLayer);
 
@@ -189,6 +197,7 @@ public static class FloorCreator {
     }
 
     private static Data D2() {
+        // 斜め移動
         const string map = @"
 ...~.~.~.
 ....#.#.~
@@ -212,4 +221,229 @@ public static class FloorCreator {
         return new Data(map, stairsLoc, playerLoc, fobjs, fieldItems, enemies);
     }
 
+    private static Data D3() {
+        // いかずちの杖を振って敵を倒す
+        // 2 体いる。使用回数は 1 回
+        const string map = @"
+.........
+.........
+.........
+.........
+.........
+";
+
+        var fobjs = new List<FieldObject>();
+        var stairsLoc = new Loc(7, 7);
+
+        var playerLoc = new Loc(1, 1);
+
+        var fieldItems = new List<FieldItem>();
+        var enemies = new List<Enemy>();
+
+        return new Data(map, stairsLoc, playerLoc, fobjs, fieldItems, enemies);
+    }
+
+    private static Data D4() {
+        // 場所替えで敵と位置を入れ替わって階段に向かう
+        const string map = @"
+...~...~...
+...~...~...
+...~...~...
+...~...~...
+...~...~...
+";
+
+        var fobjs = new List<FieldObject>();
+        var stairsLoc = new Loc(2, 10);
+
+        var playerLoc = new Loc(2, 1);
+
+        var fitems = new List<FieldItem>();
+        fitems.Add(FieldItemFactory.CreateWand(new Loc(2, 2), 0));
+
+        var enemies = new List<Enemy>();
+        enemies.Add(EnemyFactory.CreateEnemy(new Loc(2, 4)));
+        enemies.Add(EnemyFactory.CreateEnemy(new Loc(2, 8)));
+
+        foreach (var e in enemies) {
+            e.ChangeDir(Dir.W);
+        }
+        return new Data(map, stairsLoc, playerLoc, fobjs, fitems, enemies);
+    }
+
+    private static Data D5() {
+        // かなしばりで敵をふさいで階段に向かう
+        const string map = @"
+.......
+.~~.~~.
+.~...~.
+.~...~.
+.~~~~~.
+.......
+";
+
+        var fobjs = new List<FieldObject>();
+        var stairsLoc = new Loc(0, 2);
+
+        var playerLoc = new Loc(5, 3);
+
+        var fitems = new List<FieldItem>();
+        // (5, 4) かなしばりの杖
+        // fitems.Add(FieldItemFactory.CreateWand(new Loc(2, 2), 0));
+
+        var enemies = new List<Enemy>();
+        enemies.Add(EnemyFactory.CreateEnemy(new Loc(3, 2)));
+        enemies.Add(EnemyFactory.CreateEnemy(new Loc(3, 3)));
+        enemies.Add(EnemyFactory.CreateEnemy(new Loc(3, 4)));
+        return new Data(map, stairsLoc, playerLoc, fobjs, fitems, enemies);
+    }
+
+
+    private static Data D6() {
+        // めぐすり草を使う。ワープのワナが見える。
+        // TODO:ワープは必ずいまいる部屋とは別の部屋にワープする
+        const string map = @"
+....##....#
+....##....#
+....##....#
+....##....#
+";
+
+        var stairsLoc = new Loc(2, 6);
+        var playerLoc = new Loc(1, 3);
+
+        var fobjs = new List<FieldObject>();
+        fobjs.Add(FieldObjectFactory.CreateTrapWarp(new Loc(0, 0)));
+
+        var fitems = new List<FieldItem>();
+        // (5, 4) かなしばりの杖
+        // fitems.Add(FieldItemFactory.CreateWand(new Loc(2, 2), 0));
+
+        var enemies = new List<Enemy>();
+        return new Data(map, stairsLoc, playerLoc, fobjs, fitems, enemies);
+    }
+
+    private static Data D7() {
+        // 矢をうってくる敵
+        const string map = @"
+.............
+..~..........
+.............
+..#..........
+.............
+";
+
+        var stairsLoc = new Loc(2, 6);
+        var playerLoc = new Loc(1, 3);
+
+        var fobjs = new List<FieldObject>();
+        fobjs.Add(FieldObjectFactory.CreateTrapWarp(new Loc(0, 0)));
+
+        var fitems = new List<FieldItem>();
+        // (5, 4) かなしばりの杖
+        // fitems.Add(FieldItemFactory.CreateWand(new Loc(2, 2), 0));
+
+        var enemies = new List<Enemy>();
+        return new Data(map, stairsLoc, playerLoc, fobjs, fitems, enemies);
+    }
+
+
+    private static Data D8() {
+        // TODO: 上下左右いずれの方向に進んでも全ての敵が回りにくるロジック
+        const string map = @"
+.........
+.........
+..~...~..
+.........    ...
+.........++++...
+.........    ...
+..~...~..
+.........
+.........
+";
+
+        var stairsLoc = new Loc(4, 14);
+        var playerLoc = new Loc(4, 4);
+
+        var fobjs = new List<FieldObject>();
+
+        var fitems = new List<FieldItem>();
+        fitems.Add(FieldItemFactory.CreateHerb(new Loc(5, 4), 4));
+
+        var enemies = new List<Enemy>();
+        enemies.Add(EnemyFactory.CreateEnemy(new Loc(4, 8)));
+        enemies.Add(EnemyFactory.CreateEnemy(new Loc(4, 0)));
+        enemies.Add(EnemyFactory.CreateEnemy(new Loc(1, 1)));
+        enemies.Add(EnemyFactory.CreateEnemy(new Loc(1, 7)));
+        enemies.Add(EnemyFactory.CreateEnemy(new Loc(7, 1)));
+        enemies.Add(EnemyFactory.CreateEnemy(new Loc(7, 7)));
+
+        enemies.Add(EnemyFactory.CreateEnemy(new Loc(0, 4)));
+        enemies.Add(EnemyFactory.CreateEnemy(new Loc(8, 4)));
+        return new Data(map, stairsLoc, playerLoc, fobjs, fitems, enemies);
+    }
+
+
+    private static Data D9() {
+        // TODO: 上下左右いずれの方向に進んでも全ての敵が回りにくるロジック
+        // ふきとばし。場所替え
+        const string map = @"
+.....
+.....
+..~..
+.....
+.....
+.....
+  +
+  +    ......
+  +++++......
+       ......
+";
+
+        var stairsLoc = new Loc(4, 14);
+        var playerLoc = new Loc(1, 2);
+
+        var fobjs = new List<FieldObject>();
+
+        var fitems = new List<FieldItem>();
+        //fitems.Add(FieldItemFactory.CreateHerb(new Loc(5, 4), 4));
+
+        var enemies = new List<Enemy>();
+        enemies.Add(EnemyFactory.CreateEnemy(new Loc(4, 2)));
+
+
+        return new Data(map, stairsLoc, playerLoc, fobjs, fitems, enemies);
+    }
+
+    private static Data D10() {
+        // TODO: 上下左右いずれの方向に進んでも全ての敵が回りにくるロジック
+        // ふきとばし。場所替え
+        // とびつきで
+        const string map = @"
+........
+........
+........
+.~~~~~~.
+.~....~.
+.~....~.
+.~....~.
+.~~~~~~.
+........
+";
+
+        var stairsLoc = new Loc(5, 4);
+        var playerLoc = new Loc(0, 3);
+
+        var fobjs = new List<FieldObject>();
+        fobjs.Add(FieldObjectFactory.CreateNoticeBoard(new Loc(5, 3), "ゲームクリアです！！ \n\n階段を降りると\n1Fに戻ります。"));
+
+        var fitems = new List<FieldItem>();
+        fitems.Add(FieldItemFactory.CreateWand(new Loc(2, 3), 1));
+        fitems.Add(FieldItemFactory.CreateWand(new Loc(2, 4), 2));
+
+        var enemies = new List<Enemy>();
+        enemies.Add(EnemyFactory.CreateEnemy(new Loc(6, 5)));
+
+        return new Data(map, stairsLoc, playerLoc, fobjs, fitems, enemies);
+    }
 }

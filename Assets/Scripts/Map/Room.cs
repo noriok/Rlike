@@ -25,4 +25,8 @@ public class Room {
 	public bool IsEntrance(Loc loc) {
 		return Array.IndexOf(Entrances, loc) >= 0;
 	}
+
+    public override string ToString() {
+        return string.Format("Room row:{0} col:{1} width:{2} height:{3}", Row, Col, Width, Height);
+    }
 }

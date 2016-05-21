@@ -2,7 +2,9 @@
 using UnityEngine;
 
 public static class EnemyFactory {
-    public static Enemy CreateEnemy(Loc loc, GameObject layer) {
+    public static Enemy CreateEnemy(Loc loc) {
+        var layer = LayerManager.GetLayer(LayerName.Enemy);
+
         string[] names = new[] { "hone_0", "obake_0" };
         var name = names[new System.Random().Next(names.Length)];
 

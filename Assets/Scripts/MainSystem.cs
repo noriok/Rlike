@@ -102,7 +102,7 @@ public class MainSystem : MonoBehaviour {
     }
 
     private Enemy MakeEnemy(Loc loc, GameObject layer, int sleepDepth) {
-        var e = EnemyFactory.CreateEnemy(loc, layer);
+        var e = EnemyFactory.CreateEnemy(loc);
         if (sleepDepth > 0) {
             e.AddStatus(Status.Sleep, sleepDepth);
         }
@@ -146,7 +146,7 @@ public class MainSystem : MonoBehaviour {
                 if (_enemies.Any(e => e.Loc == loc)) continue;
                 if (_player.Loc == loc) continue;
 
-                _enemies.Add(EnemyFactory.CreateEnemy(loc, layer));
+                _enemies.Add(EnemyFactory.CreateEnemy(loc));
                 break;
             }
         }
@@ -155,35 +155,35 @@ public class MainSystem : MonoBehaviour {
     private void SetupFloorItem_1(GameObject layer) {
         FieldItem item = null;
         // 場所替え
-        item = FieldItemFactory.CreateWand(new Loc(3, 15), layer, 0);
+        item = FieldItemFactory.CreateWand(new Loc(3, 15), 0);
         AddFieldItem(item);
 
         // 水がれの書
-        item = FieldItemFactory.CreateMagic(new Loc(4, 18), layer, 4);
+        item = FieldItemFactory.CreateMagic(new Loc(4, 18), 4);
         AddFieldItem(item);
 
         // 消え去り草
-        item = FieldItemFactory.CreateHerb(new Loc(11, 19), layer, 2);
+        item = FieldItemFactory.CreateHerb(new Loc(11, 19), 2);
         AddFieldItem(item);
-        item = FieldItemFactory.CreateHerb(new Loc(11, 20), layer, 2);
+        item = FieldItemFactory.CreateHerb(new Loc(11, 20), 2);
         AddFieldItem(item);
 
         // 高飛び草
-        item = FieldItemFactory.CreateHerb(new Loc(11, 32), layer, 3);
+        item = FieldItemFactory.CreateHerb(new Loc(11, 32), 3);
         AddFieldItem(item);
 
-        item = FieldItemFactory.CreateHerb(new Loc(11, 31), layer, 3);
+        item = FieldItemFactory.CreateHerb(new Loc(11, 31), 3);
         AddFieldItem(item);
 
         // 薬草
-        item = FieldItemFactory.CreateHerb(new Loc(3, 5), layer, 0);
+        item = FieldItemFactory.CreateHerb(new Loc(3, 5), 0);
         AddFieldItem(item);
-        item = FieldItemFactory.CreateHerb(new Loc(3, 6), layer, 0);
+        item = FieldItemFactory.CreateHerb(new Loc(3, 6), 0);
         AddFieldItem(item);
     }
 
     private void SetupFloorItem_2(GameObject layer) {
-        var item = FieldItemFactory.CreateMagic(new Loc(4, 5), layer, 1);
+        var item = FieldItemFactory.CreateMagic(new Loc(4, 5), 1);
         AddFieldItem(item);
     }
 
@@ -203,12 +203,12 @@ public class MainSystem : MonoBehaviour {
 
                 if (_floor.CanPutItem(loc)) {
                     if (rand.Next(2) % 2 == 100) {
-                        var item = FieldItemFactory.CreateHerb(loc, layer, 0);
+                        var item = FieldItemFactory.CreateHerb(loc, 0);
                         AddFieldItem(item);
                     }
                     else {
                         //var item = FieldItemFactory.CreateHerb(loc, layer);
-                        var item = FieldItemFactory.CreateHerb(loc, layer, 0);
+                        var item = FieldItemFactory.CreateHerb(loc, 0);
                         AddFieldItem(item);
                     }
                     // AddFieldItem(FieldItemFactory.CreateHerb(loc, layer));
@@ -220,6 +220,10 @@ public class MainSystem : MonoBehaviour {
 
     public void AddFieldItem(FieldItem fieldItem) {
         _fieldItems.Add(fieldItem);
+    }
+
+    public void AddEnemy(Enemy enemy) {
+        _enemies.Add(enemy);
     }
 
     public void FallItemToFloor(Loc fallLoc, FieldItem fieldItem) {
@@ -341,7 +345,7 @@ public class MainSystem : MonoBehaviour {
         yield return null;
         LayerManager.CreateAllLayer();
 
-        _floor = FloorCreator.CreateFloor2(_floorNumber, _player);
+        _floor = FloorCreator.CreateFloor2(_floorNumber, _player, this);
         yield return null; // TODO:yield return null を入れるとミニマップの位置が更新される
         _player.SyncCameraPosition();
 
@@ -838,7 +842,7 @@ public class MainSystem : MonoBehaviour {
 
     public IEnumerator Summon(Loc loc) {
         // TODO: assert(loc に敵がいない)
-        var e = EnemyFactory.CreateEnemy(loc, LayerManager.GetLayer(LayerName.Enemy));
+        var e = EnemyFactory.CreateEnemy(loc);
         _enemies.Add(e);
 
         yield return Anim.Par(this,
