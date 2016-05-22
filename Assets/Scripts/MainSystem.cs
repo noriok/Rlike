@@ -332,6 +332,7 @@ public class MainSystem : MonoBehaviour {
 
     private IEnumerator NextFloor() {
         ++_floorNumber;
+        if (_floorNumber == 10) _floorNumber = 1;
         if (_floorNumber > 1) {
             yield return _banner.FadeInAnimation("テストダンジョン", _floorNumber);
         }

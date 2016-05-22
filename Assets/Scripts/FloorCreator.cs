@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.Assertions;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -148,13 +149,30 @@ public static class FloorCreator {
 		return floor;
 	}
 
+    private static Data GetData(int floorNumber) {
+        switch (floorNumber) {
+        case 1: return D1();
+        case 2: return D2();
+        case 3: return D3();
+        case 4: return D4();
+        case 5: return D5();
+        case 6: return D6();
+        case 7: return D7();
+        case 8: return D8();
+        case 9: return D9();
+        }
+        Assert.IsTrue(false);
+        return null;
+    }
+
     public static Floor CreateFloor2(int floorNumber, Player player, MainSystem sys) {
 		var fieldObjectLayer = LayerManager.GetLayer(LayerName.FieldObject);
 		var trapLayer = LayerManager.GetLayer(LayerName.Trap);
 
         player.ClearItems();
 
-        Data data = D6();
+        // Data data = D6();
+        Data data = GetData(floorNumber);
         char[,] mapData = CreateMap(data.Map);
         var map = new Map(mapData);
 
@@ -185,21 +203,24 @@ public static class FloorCreator {
 .......
 .......
 .......
+.......
+.......
 ";
 
+        var stairsLoc = new Loc(0, 3);
+        var playerLoc = new Loc(2, 3);
+
         var fobjs = new List<FieldObject>();
-        var stairsLoc = new Loc(0, 0);
+        fobjs.Add(FieldObjectFactory.CreateNoticeBoard(new Loc(0, 4), "テスト\n\n画面右上の「ギブアップ」ボタンを押すと\nそのフロアをやり直します。"));
 
-        var playerLoc = new Loc(2, 2);
-
-        var fieldItems = new List<FieldItem>();
+        var fitems = new List<FieldItem>();
         var enemies = new List<Enemy>();
 
-        return new Data(map, stairsLoc, playerLoc, fobjs, fieldItems, enemies);
+        return new Data(map, stairsLoc, playerLoc, fobjs, fitems, enemies);
     }
 
     private static Data D2() {
-        // 斜め移動
+        // 斜め移動の練習
         const string map = @"
 ...~.~.~.
 ....#.#.~
@@ -279,7 +300,7 @@ public static class FloorCreator {
     }
 
     private static Data D5() {
-        // かなしばりで敵をふさいで階段に向かう
+        // かなしばりで敵の進行をふさぐ
         const string map = @"
 .......
 .~~.~~.
@@ -343,16 +364,11 @@ public static class FloorCreator {
         var playerLoc = new Loc(1, 3);
 
         var fobjs = new List<FieldObject>();
-        fobjs.Add(FieldObjectFactory.CreateTrapWarp(new Loc(0, 0)));
-
         var fitems = new List<FieldItem>();
-        // (5, 4) かなしばりの杖
-        // fitems.Add(FieldItemFactory.CreateWand(new Loc(2, 2), 0));
 
         var enemies = new List<Enemy>();
         return new Data(map, stairsLoc, playerLoc, fobjs, fitems, enemies);
     }
-
 
     private static Data D8() {
         // TODO: 上下左右いずれの方向に進んでも全ての敵が回りにくるロジック
