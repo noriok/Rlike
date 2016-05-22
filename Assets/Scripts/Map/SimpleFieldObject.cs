@@ -4,7 +4,7 @@
 public abstract class SimpleFieldObject : FieldObject {
 //	private GameObject _gobj;
 
-	public SimpleFieldObject(Loc loc, GameObject gobj) : base(loc, gobj) {
+    public SimpleFieldObject(Loc loc, GameObject gobj) : base(loc, gobj) {
 //		_gobj = gobj;
-	}
+    }
 }
