@@ -922,4 +922,9 @@ public class MainSystem : MonoBehaviour {
         }
         return enemies.ToArray();
     }
+
+    // めぐすり
+    public void Eyedrops() {
+        _floor.Eyedrops();
+    }
 }

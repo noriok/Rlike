@@ -37,7 +37,7 @@ public class Minimap {
 
 		// trap
 		foreach (var fo in fieldObjects) {
-			if (fo is Trap) {
+			if (fo is Trap && fo.Visible) {
 				CreateTrapIcon(fo.Loc.Row, fo.Loc.Col, _layer);
 			}
 		}
@@ -51,6 +51,10 @@ public class Minimap {
 		_layer.transform.localScale = new Vector3(0.1f, 0.1f, 1.0f);
 		_layer.transform.position = new Vector3(-0.8f, 0.3f, 0);
 	}
+
+    public void AddTrapIcon(Loc loc) {
+        CreateTrapIcon(loc.Row, loc.Col, _layer);
+    }
 
 	public void UpdateIcon(Loc playerLoc, List<Enemy> enemies, List<FieldItem> items) {
 		_playerIcon.transform.localPosition = ToMinimapPosition(playerLoc);

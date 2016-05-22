@@ -178,4 +178,14 @@ public class Floor {
 
         return true;
     }
+
+    // めぐすり
+    public void Eyedrops() {
+        foreach (var fobj in _fieldObjects) {
+            if (fobj is Trap && !fobj.Visible) {
+                fobj.Visible = true;
+                _minimap.AddTrapIcon(fobj.Loc);
+            }
+        }
+    }
 }

@@ -78,7 +78,7 @@ public static class ItemFactory {
                 type: type,
                 name: "目薬草",
                 desc: "見えないものが見えるようになるぞ。",
-                skill: SkillNone
+                skill: new SkillEyedrops()
             );
         }
 

@@ -6,7 +6,7 @@ public class Treasure : FieldObject {
 	private GameObject _close;
 	private GameObject _anim;
 
-	public Treasure(Loc loc, GameObject open, GameObject close, GameObject anim) : base(loc) {
+	public Treasure(Loc loc, GameObject open, GameObject close, GameObject anim) : base(loc, null) { // TODO:宝箱作り直し
 		_open = open;
 		_close = close;
 		_anim = anim;

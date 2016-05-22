@@ -154,7 +154,7 @@ public static class FloorCreator {
 
         player.ClearItems();
 
-        Data data = D8();
+        Data data = D6();
         char[,] mapData = CreateMap(data.Map);
         var map = new Map(mapData);
 
@@ -322,8 +322,8 @@ public static class FloorCreator {
         fobjs.Add(FieldObjectFactory.CreateTrapWarp(new Loc(0, 0)));
 
         var fitems = new List<FieldItem>();
-        // (5, 4) かなしばりの杖
-        // fitems.Add(FieldItemFactory.CreateWand(new Loc(2, 2), 0));
+        // めぐすり草
+        fitems.Add(FieldItemFactory.CreateHerb(new Loc(1, 1), 4));
 
         var enemies = new List<Enemy>();
         return new Data(map, stairsLoc, playerLoc, fobjs, fitems, enemies);
