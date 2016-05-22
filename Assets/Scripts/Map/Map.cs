@@ -54,7 +54,7 @@ public class Map {
                         xs.Add(chip == MapData[i, j] ? 0 : 1); // 隣接するマップチップが同じか
                         dir = dir.Clockwise();
                     }
-                    Debug.Log(">> " + string.Join(" ", xs.Select(e => e.ToString()).ToArray()));
+                    // Debug.Log(">> " + string.Join(" ", xs.Select(e => e.ToString()).ToArray()));
 
                     var offsets = new[,] { { -1, 1, }, { 1, 1 }, { -1, -1 }, { 1, -1 } };
                     var pathnames = MapData[i, j] == MapChar.Water
@@ -62,7 +62,7 @@ public class Map {
                         : MapChipUtils.GetSandMapChipName(xs.ToArray());
 
                     for (int k = 0; k < pathnames.Length; k++) {
-                        Debug.Log("pathname: " + pathnames[k]);
+                        // Debug.Log("pathname: " + pathnames[k]);
                         var pos = loc.ToPosition();
 
                         var obj = Resources.Load("Prefabs/MapChip/" + pathnames[k]);

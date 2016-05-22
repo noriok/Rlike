@@ -101,7 +101,7 @@ public class MainSystem : MonoBehaviour {
 //        ChangeGameState(GameState.TurnStart);
     }
 
-    private Enemy MakeEnemy(Loc loc, GameObject layer, int sleepDepth) {
+    private Enemy MakeEnemy(Loc loc, int sleepDepth) {
         var e = EnemyFactory.CreateEnemy(loc);
         if (sleepDepth > 0) {
             e.AddStatus(StatusType.Sleep, sleepDepth);
@@ -112,19 +112,19 @@ public class MainSystem : MonoBehaviour {
     private void SetupFloorEnemy_1(GameObject layer) {
         // _enemies.Add(EnemyFactory.CreateEnemy(new Loc(3, 19), layer));
 
-        _enemies.Add(MakeEnemy(new Loc(3, 18), layer, 100000));
-        _enemies.Add(MakeEnemy(new Loc(14, 5), layer, 100000));
+        _enemies.Add(MakeEnemy(new Loc(3, 18), 100000));
+        _enemies.Add(MakeEnemy(new Loc(14, 5), 100000));
     }
 
     private void SetupFloorEnemy_2(GameObject layer) {
-        _enemies.Add(MakeEnemy(new Loc(2, 5), layer, 0));
-        _enemies.Add(MakeEnemy(new Loc(2, 7), layer, 0));
+        _enemies.Add(MakeEnemy(new Loc(2, 5), 0));
+        _enemies.Add(MakeEnemy(new Loc(2, 7), 0));
 
-        _enemies.Add(MakeEnemy(new Loc(6, 5), layer, 0));
-        _enemies.Add(MakeEnemy(new Loc(6, 7), layer, 0));
+        _enemies.Add(MakeEnemy(new Loc(6, 5), 0));
+        _enemies.Add(MakeEnemy(new Loc(6, 7), 0));
 
-        _enemies.Add(MakeEnemy(new Loc(4, 9), layer, 0));
-        _enemies.Add(MakeEnemy(new Loc(4, 3), layer, 0));
+        _enemies.Add(MakeEnemy(new Loc(4, 9), 0));
+        _enemies.Add(MakeEnemy(new Loc(4, 3), 0));
     }
 
 

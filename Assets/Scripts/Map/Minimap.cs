@@ -28,7 +28,6 @@ public class Minimap {
                     CreateFloor(i, j, _layer);
                     break;
                 case MapChar.Water: // TODO:水
-                    Debug.Log("water----");
                     CreateWater(i, j, _layer);
                     break;
                 }
