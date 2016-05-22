@@ -864,7 +864,10 @@ public class MainSystem : MonoBehaviour {
     }
 
     // 部屋内のランダムな位置を返す
-    // ただし、水や敵がいる位置は返さない
+    // ただし以下が存在する場合は除く
+    // - 敵
+    // - 水
+    // - 障害物
     public Loc RandomRoomLoc(Loc defaultLoc) {
         var rand = new System.Random();
         const int retryCount = 20;
@@ -875,6 +878,7 @@ public class MainSystem : MonoBehaviour {
             int c = rand.Next(room.Col, room.Col + room.Width);
             var loc = new Loc(r, c);
             if (_floor.IsWater(loc)) continue;
+            if (_floor.ExistsObstacle(loc)) continue;
             if (!_enemies.Any(e => e.Loc == loc)) {
                 return loc;
             }
