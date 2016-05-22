@@ -1,0 +1,187 @@
+fileFormatVersion: 2
+guid: ae6101640e8754df7a4f4682251a2950
+timeCreated: 1463894341
+licenseType: Free
+TextureImporter:
+  fileIDToRecycleName:
+    21300000: pipo-btleffect021_0
+    21300002: pipo-btleffect021_1
+    21300004: pipo-btleffect021_2
+    21300006: pipo-btleffect021_3
+    21300008: pipo-btleffect021_4
+    21300010: pipo-btleffect021_5
+  serializedVersion: 2
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 1
+    linearTexture: 0
+    correctGamma: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 0
+  cubemapConvolution: 0
+  cubemapConvolutionSteps: 7
+  cubemapConvolutionExponent: 1.5
+  seamlessCubemap: 0
+  textureFormat: -1
+  maxTextureSize: 2048
+  textureSettings:
+    filterMode: -1
+    aniso: 16
+    mipBias: -1
+    wrapMode: 1
+  nPOTScale: 0
+  lightmap: 0
+  rGBM: 0
+  compressionQuality: 50
+  allowsAlphaSplitting: 0
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spritePixelsToUnits: 120
+  alphaIsTransparency: 1
+  textureType: 8
+  buildTargetSettings: []
+  spriteSheet:
+    sprites:
+    - name: pipo-btleffect021_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 720
+        width: 320
+        height: 120
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -35, y: 60}
+        - {x: -56, y: 29}
+        - {x: -56, y: -43}
+        - {x: -33, y: -51}
+        - {x: 49, y: -51}
+        - {x: 57, y: -40}
+        - {x: 57, y: 31}
+        - {x: 37, y: 60}
+    - name: pipo-btleffect021_1
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 600
+        width: 320
+        height: 120
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -37, y: 57}
+        - {x: -68, y: 14}
+        - {x: -68, y: -5}
+        - {x: -40, y: -45}
+        - {x: -28, y: -48}
+        - {x: 30, y: -48}
+        - {x: 67, y: -29}
+        - {x: 67, y: 16}
+        - {x: 53, y: 57}
+    - name: pipo-btleffect021_2
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 480
+        width: 320
+        height: 120
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -110, y: -18}
+        - {x: -62, y: -44}
+        - {x: 59, y: -44}
+        - {x: 108, y: -22}
+        - {x: 108, y: 22}
+        - {x: 106, y: 25}
+        - {x: 30, y: 53}
+        - {x: -51, y: 53}
+        - {x: -110, y: 13}
+    - name: pipo-btleffect021_3
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 360
+        width: 320
+        height: 120
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 34, y: 47}
+        - {x: -97, y: 47}
+        - {x: -151, y: 11}
+        - {x: -151, y: -45}
+        - {x: -114, y: -49}
+        - {x: 131, y: -49}
+        - {x: 148, y: -28}
+        - {x: 148, y: 18}
+        - {x: 96, y: 38}
+    - name: pipo-btleffect021_4
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 240
+        width: 320
+        height: 120
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 160, y: 23}
+        - {x: 102, y: 48}
+        - {x: -94, y: 48}
+        - {x: -160, y: 25}
+        - {x: -160, y: -41}
+        - {x: -96, y: -59}
+        - {x: 63, y: -59}
+        - {x: 68, y: -58}
+        - {x: 124, y: -46}
+        - {x: 149, y: -37}
+        - {x: 160, y: -30}
+    - name: pipo-btleffect021_5
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 120
+        width: 320
+        height: 120
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 125, y: 36}
+        - {x: 70, y: 47}
+        - {x: -96, y: 47}
+        - {x: -160, y: 23}
+        - {x: -160, y: -29}
+        - {x: -103, y: -53}
+        - {x: -66, y: -58}
+        - {x: 64, y: -58}
+        - {x: 86, y: -57}
+        - {x: 159, y: -33}
+        - {x: 160, y: -28}
+        - {x: 160, y: 18}
+    outline: []
+  spritePackingTag: 
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

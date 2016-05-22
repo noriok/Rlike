@@ -8,7 +8,7 @@ public class DamageWait {
     private CharacterBase _target;
 
     private IEnumerator Run(MainSystem sys) {
-        var dmg = 999;
+        var dmg = 99;
 
         _target.RemoveStatus(StatusType.Sleep);
         yield return Anim.Par(sys,

@@ -154,7 +154,7 @@ public static class FloorCreator {
 
         player.ClearItems();
 
-        Data data = D5();
+        Data data = D8();
         char[,] mapData = CreateMap(data.Map);
         var map = new Map(mapData);
 
@@ -372,8 +372,11 @@ public static class FloorCreator {
         var playerLoc = new Loc(4, 4);
 
         var fobjs = new List<FieldObject>();
+        // 地雷のワナ
+        fobjs.Add(FieldObjectFactory.CreateTrapLandmine(new Loc(4, 4)));
 
         var fitems = new List<FieldItem>();
+        // めぐすり草
         fitems.Add(FieldItemFactory.CreateHerb(new Loc(5, 4), 4));
 
         var enemies = new List<Enemy>();
@@ -383,13 +386,12 @@ public static class FloorCreator {
         enemies.Add(EnemyFactory.CreateEnemy(new Loc(1, 7)));
         enemies.Add(EnemyFactory.CreateEnemy(new Loc(7, 1)));
         enemies.Add(EnemyFactory.CreateEnemy(new Loc(7, 7)));
-
         enemies.Add(EnemyFactory.CreateEnemy(new Loc(0, 4)));
         enemies.Add(EnemyFactory.CreateEnemy(new Loc(8, 4)));
+
         return new Data(map, stairsLoc, playerLoc, fobjs, fitems, enemies);
     }
-
-
+/*
     private static Data D9() {
         // ふきとばし。場所替え
         const string map = @"
@@ -419,8 +421,9 @@ public static class FloorCreator {
 
         return new Data(map, stairsLoc, playerLoc, fobjs, fitems, enemies);
     }
+*/
 
-    private static Data D10() {
+    private static Data D9() {
         // TODO: 上下左右いずれの方向に進んでも全ての敵が回りにくるロジック
         // ふきとばし。場所替え
         // とびつきで

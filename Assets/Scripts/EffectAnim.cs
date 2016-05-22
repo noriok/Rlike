@@ -136,4 +136,12 @@ public static class EffectAnim {
             yield return null;
         }
     }
+
+    public static IEnumerator Landmine(Vector3 pos) {
+        var obj2 = Resources.Load("Prefabs/Animations/landmine");
+        var gobj2 = (GameObject)GameObject.Instantiate(obj2, pos, Quaternion.identity);
+        while (gobj2 != null) {
+            yield return null;
+        }
+    }
 }

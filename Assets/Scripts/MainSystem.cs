@@ -911,4 +911,15 @@ public class MainSystem : MonoBehaviour {
     public CharacterBase[] GetEnemies() {
         return _enemies.ToArray();
     }
+
+    public Enemy[] CollectNeighborEnemies(Loc loc) {
+        var enemies = new List<Enemy>();
+        foreach (var loc2 in loc.Neighbors()) {
+            var e = FindEnemy(loc2);
+            if (e != null) {
+                enemies.Add(e);
+            }
+        }
+        return enemies.ToArray();
+    }
 }

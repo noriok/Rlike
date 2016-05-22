@@ -54,4 +54,9 @@ public static class FieldObjectFactory {
 		var obj = Create("Prefabs/Trap/trap_summon", loc.ToPosition());
 		return new TrapSummon(loc, obj);
 	}
+
+    public static Trap CreateTrapLandmine(Loc loc) {
+		var obj = Create("Prefabs/Trap/trap_landmine", loc.ToPosition());
+		return new TrapLandmine(loc, obj);
+    }
 }
