@@ -109,7 +109,7 @@ public static class ItemFactory {
                 type: type,
                 name: "ふきとばしの杖",
                 desc: "モンスターを吹き飛ばすぞ。",
-                skill: SkillNone
+                skill: new SkillBlow()
             );
         case 3:
             return CreateItemData(

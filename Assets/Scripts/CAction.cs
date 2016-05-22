@@ -76,7 +76,27 @@ public static class CAction {
     }
 
     public static IEnumerator MoveEnemy(Enemy enemy, Loc to) {
-        yield break;
+        Loc fm = enemy.Loc;
+        var src = fm.ToPosition();
+        var dst = to.ToPosition();
+
+        float speed = Config.ThrowItemSpeed;
+        if (fm.Row != to.Row && fm.Col != to.Col) {
+            speed *= 1.2f;
+        }
+
+        float elapsed = 0;
+        float duration = Vector3.Distance(src, dst) / speed;
+        while (elapsed <= duration) {
+            elapsed += Time.deltaTime;
+
+            float x = Mathf.Lerp(src.x, dst.x, elapsed / duration);
+            float y = Mathf.Lerp(src.y, dst.y, elapsed / duration);
+
+            enemy.Position = new Vector3(x, y, 0);
+            yield return null;
+        }
+        enemy.UpdateLoc(to);
     }
 
     public static IEnumerator Quake(GameObject layer, float duration) {
