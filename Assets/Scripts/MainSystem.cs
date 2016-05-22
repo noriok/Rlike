@@ -104,7 +104,7 @@ public class MainSystem : MonoBehaviour {
     private Enemy MakeEnemy(Loc loc, GameObject layer, int sleepDepth) {
         var e = EnemyFactory.CreateEnemy(loc);
         if (sleepDepth > 0) {
-            e.AddStatus(Status.Sleep, sleepDepth);
+            e.AddStatus(StatusType.Sleep, sleepDepth);
         }
         return e;
     }

@@ -40,7 +40,7 @@ public class ActEnemyAttack : Act {
             _target.ChangeDir(_target.Loc.Toward(Actor.Loc));
         }
 
-        _target.RemoveStatus(Status.Sleep);
+        _target.RemoveStatus(StatusType.Sleep);
         var dmg = 1 + new System.Random().Next(30);
         // yield return _target.DamageAnim(dmg);
         yield return Anim.Par(sys,

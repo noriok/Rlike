@@ -93,17 +93,22 @@ public class Enemy : CharacterBase {
     // 行動できないなら true
     public bool IsBehavioralIncapacitation() {
         if (IsSleep()) return true;
+        if (IsFreeze()) return true;
         return false;
     }
 
-    public override void OnStatusAdded(Status status) {
-        if (status == Status.Invisible) {
+    private void AddStatusSymbol(string pathName) {
+
+    }
+
+    public override void OnStatusAdded(StatusType status) {
+        if (status == StatusType.Invisible) {
             _gobj.SetActive(false);
         }
     }
 
-    public override void OnStatusRemoved(Status status) {
-        if (status == Status.Invisible) {
+    public override void OnStatusRemoved(StatusType status) {
+        if (status == StatusType.Invisible) {
             _gobj.SetActive(true);
         }
     }

@@ -37,7 +37,7 @@ public abstract class CharacterBase {
     protected GameObject _gobj;
 
 //    private Dictionary<Status, GameObject> _status = new Dictionary<Status, GameObject>();
-    private Dictionary<Status, StatusOne> _status = new Dictionary<Status, StatusOne>();
+    private Dictionary<StatusType, StatusOne> _status = new Dictionary<StatusType, StatusOne>();
 
     public CharacterBase(Loc loc, GameObject gobj) {
         ActCount = 0;
@@ -62,6 +62,9 @@ public abstract class CharacterBase {
 
     public virtual void DamageHp(int damage) {
         Hp = Utils.Clamp(Hp - damage, 0, MaxHp);
+
+        RemoveStatus(StatusType.Sleep);
+        RemoveStatus(StatusType.Freeze);
     }
 
     public virtual void UpdateLoc(Loc loc) {
@@ -69,19 +72,33 @@ public abstract class CharacterBase {
         Position = loc.ToPosition();
     }
 
+    public void AddStatus(StatusType status) {
+        AddStatus(status, int.MaxValue);
+    }
+
+    private GameObject CreateStatusSymbol(string pathName) {
+        var st = (GameObject)GameObject.Instantiate(Resources.Load(pathName), Vector3.zero, Quaternion.identity);
+        st.transform.SetParent(_gobj.transform);
+        st.transform.localPosition = new Vector3(0, 0.18f, 0);
+        return st;
+    }
+
     // 内部の状態管理。
     // TODO: 見た目の変化は、OnStatusAdded, OnStatusRemoved で行う
-    public void AddStatus(Status status, int depth) {
+    public void AddStatus(StatusType status, int depth) {
         if (_status.ContainsKey(status)) return;
 
-        if (status == Status.Sleep) { // TODO' OnStatusAdded で行う
-            var sleep = (GameObject)GameObject.Instantiate(Resources.Load("Prefabs/Animations/status-sleep"), Vector3.zero, Quaternion.identity);
-            sleep.transform.SetParent(_gobj.transform);
-            sleep.transform.localPosition = new Vector3(0, 0.18f, 0);
-            _status.Add(status, new StatusOne(sleep, depth));
+        if (status == StatusType.Sleep) {
+            var st = CreateStatusSymbol("Prefabs/Animations/status-sleep");
+            _status.Add(status, new StatusOne(st, depth));
             StopAnimation();
         }
-        else if (status == Status.Invisible) {
+        else if (status == StatusType.Freeze) {
+            var st = CreateStatusSymbol("Prefabs/Animations/status-freeze");
+            _status.Add(status, new StatusOne(st, depth));
+            StopAnimation();
+        }
+        else if (status == StatusType.Invisible) {
             // 状態異常マークはないので null を格納
             _status.Add(status, new StatusOne(null, depth));
         }
@@ -89,12 +106,15 @@ public abstract class CharacterBase {
         OnStatusAdded(status);
     }
 
-    public void RemoveStatus(Status status) {
+    public void RemoveStatus(StatusType status) {
         if (_status.ContainsKey(status)) {
             GameObject.Destroy(_status[status].obj);
             _status.Remove(status);
 
-            if (status == Status.Sleep) { // TODO: OnStatusRemoved で行う
+            if (status == StatusType.Sleep) {
+                PlayAnimation();
+            }
+            else if (status == StatusType.Freeze) {
                 PlayAnimation();
             }
 
@@ -155,11 +175,15 @@ public abstract class CharacterBase {
     }
 
     public bool IsSleep() {
-        return _status.ContainsKey(Status.Sleep);
+        return _status.ContainsKey(StatusType.Sleep);
+    }
+
+    public bool IsFreeze() {
+        return _status.ContainsKey(StatusType.Freeze);
     }
 
     public bool IsInvisible() {
-        return _status.ContainsKey(Status.Invisible);
+        return _status.ContainsKey(StatusType.Invisible);
     }
 
     public IEnumerator FadeIn() {
@@ -184,9 +208,9 @@ public abstract class CharacterBase {
         }
     }
 
-    public virtual void OnStatusAdded(Status status) {
+    public virtual void OnStatusAdded(StatusType status) {
     }
 
-    public virtual void OnStatusRemoved(Status status) {
+    public virtual void OnStatusRemoved(StatusType status) {
     }
 }

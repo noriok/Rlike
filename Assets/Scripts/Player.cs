@@ -122,10 +122,6 @@ public class Player : CharacterBase {
         imageMg.fillAmount = toAmount;
     }
 
-    public override void DamageHp(int damage) {
-        Hp = Utils.Clamp(Hp - damage, 1, MaxHp);
-    }
-
     public override string ToString() {
         return string.Format("P: Loc:{0}", Loc);
     }
@@ -201,8 +197,8 @@ public class Player : CharacterBase {
         anim.SetTrigger(name);
     }
 
-    public override void OnStatusAdded(Status status) {
-        if (status == Status.Invisible) {
+    public override void OnStatusAdded(StatusType status) {
+        if (status == StatusType.Invisible) {
             var renderer = _gobj.GetComponent<SpriteRenderer>();
             var color = renderer.color;
             color.a = 0.4f;
@@ -210,8 +206,8 @@ public class Player : CharacterBase {
         }
     }
 
-    public override void OnStatusRemoved(Status status) {
-        if (status == Status.Invisible) {
+    public override void OnStatusRemoved(StatusType status) {
+        if (status == StatusType.Invisible) {
             var renderer = _gobj.GetComponent<SpriteRenderer>();
             var color = renderer.color;
             color.a = 1.0f;

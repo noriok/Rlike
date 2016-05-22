@@ -154,7 +154,7 @@ public static class FloorCreator {
 
         player.ClearItems();
 
-        Data data = D3();
+        Data data = D5();
         char[,] mapData = CreateMap(data.Map);
         var map = new Map(mapData);
 
@@ -211,7 +211,6 @@ public static class FloorCreator {
 ~.#.#....
 .~.~.~...
 ";
-
         var fobjs = new List<FieldObject>();
         var stairsLoc = new Loc(7, 7);
 
@@ -224,14 +223,14 @@ public static class FloorCreator {
     }
 
     private static Data D3() {
-        // いかずちの杖を振って敵を倒す
+        // いかずちの杖を振って敵を倒す。
         // 2 体いる。使用回数は 1 回
         const string map = @"
-.........
-.........
-.........
-.........
-.........
+....~...
+....~.~.
+....~.~.
+....~.~~
+........
 ";
 
         var fobjs = new List<FieldObject>();
@@ -240,6 +239,7 @@ public static class FloorCreator {
         var playerLoc = new Loc(2, 1);
 
         var fitems = new List<FieldItem>();
+        // いかずちの杖
         fitems.Add(FieldItemFactory.CreateWand(new Loc(3, 1), 3));
 
         var enemies = new List<Enemy>();
@@ -265,6 +265,7 @@ public static class FloorCreator {
         var playerLoc = new Loc(2, 1);
 
         var fitems = new List<FieldItem>();
+        // 場所替えの杖
         fitems.Add(FieldItemFactory.CreateWand(new Loc(2, 2), 0));
 
         var enemies = new List<Enemy>();
@@ -294,8 +295,8 @@ public static class FloorCreator {
         var playerLoc = new Loc(5, 3);
 
         var fitems = new List<FieldItem>();
-        // (5, 4) かなしばりの杖
-        // fitems.Add(FieldItemFactory.CreateWand(new Loc(2, 2), 0));
+        // かなしばりの杖
+        fitems.Add(FieldItemFactory.CreateWand(new Loc(5, 5), 4));
 
         var enemies = new List<Enemy>();
         enemies.Add(EnemyFactory.CreateEnemy(new Loc(3, 2)));
@@ -314,7 +315,6 @@ public static class FloorCreator {
 ....##....#
 ....##....#
 ";
-
         var stairsLoc = new Loc(2, 6);
         var playerLoc = new Loc(1, 3);
 
@@ -391,7 +391,6 @@ public static class FloorCreator {
 
 
     private static Data D9() {
-        // TODO: 上下左右いずれの方向に進んでも全ての敵が回りにくるロジック
         // ふきとばし。場所替え
         const string map = @"
 .....
