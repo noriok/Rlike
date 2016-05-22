@@ -928,4 +928,8 @@ public class MainSystem : MonoBehaviour {
     public void Eyedrops() {
         _floor.Eyedrops();
     }
+
+    public bool IsWater(Loc loc) {
+        return _floor.IsWater(loc);
+    }
 }

@@ -49,6 +49,7 @@ public static class CAction {
         target.transform.position = dst;
     }
 
+    // カメラ追従
     public static IEnumerator MovePlayer(Player player, Loc to) {
         Loc fm = player.Loc;
         var src = fm.ToPosition();
@@ -72,6 +73,10 @@ public static class CAction {
             yield return null;
         }
         player.UpdateLoc(to);
+    }
+
+    public static IEnumerator MoveEnemy(Enemy enemy, Loc to) {
+        yield break;
     }
 
     public static IEnumerator Quake(GameObject layer, float duration) {

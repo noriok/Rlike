@@ -171,8 +171,8 @@ public static class FloorCreator {
 
         player.ClearItems();
 
-        // Data data = D6();
-        Data data = GetData(floorNumber);
+        Data data = D9();
+        // Data data = GetData(floorNumber);
         char[,] mapData = CreateMap(data.Map);
         var map = new Map(mapData);
 
