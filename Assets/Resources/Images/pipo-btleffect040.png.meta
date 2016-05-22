@@ -1,0 +1,232 @@
+fileFormatVersion: 2
+guid: c88f19f86fdb346f0b24bc85bbe77087
+timeCreated: 1463841937
+licenseType: Free
+TextureImporter:
+  fileIDToRecycleName:
+    21300000: pipo-btleffect040_0
+    21300002: pipo-btleffect040_1
+    21300004: pipo-btleffect040_2
+    21300006: pipo-btleffect040_3
+    21300008: pipo-btleffect040_4
+    21300010: pipo-btleffect040_5
+    21300012: pipo-btleffect040_6
+    21300014: pipo-btleffect040_7
+  serializedVersion: 2
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 1
+    linearTexture: 0
+    correctGamma: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 0
+  cubemapConvolution: 0
+  cubemapConvolutionSteps: 7
+  cubemapConvolutionExponent: 1.5
+  seamlessCubemap: 0
+  textureFormat: -1
+  maxTextureSize: 2048
+  textureSettings:
+    filterMode: -1
+    aniso: 16
+    mipBias: -1
+    wrapMode: 1
+  nPOTScale: 0
+  lightmap: 0
+  rGBM: 0
+  compressionQuality: 50
+  allowsAlphaSplitting: 0
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spritePixelsToUnits: 200
+  alphaIsTransparency: 1
+  textureType: 8
+  buildTargetSettings: []
+  spriteSheet:
+    sprites:
+    - name: pipo-btleffect040_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 120
+        height: 120
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 12, y: 50}
+        - {x: 9, y: 52}
+        - {x: -33, y: 52}
+        - {x: -33, y: -15}
+        - {x: -12, y: -15}
+        - {x: -9, y: -13}
+        - {x: 8, y: 11}
+        - {x: 12, y: 37}
+    - name: pipo-btleffect040_1
+      rect:
+        serializedVersion: 2
+        x: 120
+        y: 0
+        width: 120
+        height: 120
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -35, y: -17}
+        - {x: -17, y: -41}
+        - {x: 11, y: -41}
+        - {x: 25, y: -32}
+        - {x: 25, y: 40}
+        - {x: 24, y: 50}
+        - {x: 17, y: 54}
+        - {x: -4, y: 54}
+        - {x: -35, y: 41}
+    - name: pipo-btleffect040_2
+      rect:
+        serializedVersion: 2
+        x: 240
+        y: 0
+        width: 120
+        height: 120
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 40, y: 59}
+        - {x: -32, y: 59}
+        - {x: -39, y: 40}
+        - {x: -39, y: -34}
+        - {x: 10, y: -55}
+        - {x: 22, y: -55}
+        - {x: 48, y: -45}
+        - {x: 51, y: -40}
+        - {x: 51, y: 25}
+    - name: pipo-btleffect040_3
+      rect:
+        serializedVersion: 2
+        x: 360
+        y: 0
+        width: 120
+        height: 120
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -21, y: 60}
+        - {x: -45, y: 51}
+        - {x: -47, y: 25}
+        - {x: -47, y: -32}
+        - {x: -26, y: -60}
+        - {x: 9, y: -60}
+        - {x: 24, y: -52}
+        - {x: 35, y: -36}
+        - {x: 35, y: 1}
+        - {x: 18, y: 60}
+      - - {x: -49, y: -8}
+        - {x: -55, y: -12}
+        - {x: -55, y: -16}
+        - {x: -53, y: -17}
+        - {x: -49, y: -17}
+        - {x: -46, y: -12}
+        - {x: -46, y: -8}
+    - name: pipo-btleffect040_4
+      rect:
+        serializedVersion: 2
+        x: 480
+        y: 0
+        width: 120
+        height: 120
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -60, y: -48}
+        - {x: -50, y: -53}
+        - {x: 7, y: -53}
+        - {x: 42, y: -37}
+        - {x: 42, y: -14}
+        - {x: 17, y: 60}
+        - {x: -32, y: 60}
+        - {x: -40, y: 58}
+        - {x: -60, y: -4}
+    - name: pipo-btleffect040_5
+      rect:
+        serializedVersion: 2
+        x: 600
+        y: 0
+        width: 120
+        height: 120
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 15, y: 60}
+        - {x: -19, y: 60}
+        - {x: -47, y: 6}
+        - {x: -47, y: -25}
+        - {x: -22, y: -46}
+        - {x: 9, y: -59}
+        - {x: 36, y: -59}
+        - {x: 42, y: -51}
+        - {x: 42, y: -23}
+        - {x: 26, y: 56}
+    - name: pipo-btleffect040_6
+      rect:
+        serializedVersion: 2
+        x: 720
+        y: 0
+        width: 120
+        height: 120
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -49, y: 24}
+        - {x: -60, y: 2}
+        - {x: -60, y: -55}
+        - {x: 36, y: -55}
+        - {x: 41, y: -48}
+        - {x: 41, y: -4}
+        - {x: 15, y: 60}
+        - {x: -18, y: 60}
+        - {x: -58, y: 37}
+    - name: pipo-btleffect040_7
+      rect:
+        serializedVersion: 2
+        x: 840
+        y: 0
+        width: 120
+        height: 120
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -15, y: 60}
+        - {x: -32, y: 57}
+        - {x: -43, y: 36}
+        - {x: -43, y: -14}
+        - {x: -34, y: -44}
+        - {x: -29, y: -45}
+        - {x: 21, y: -45}
+        - {x: 21, y: 60}
+    outline: []
+  spritePackingTag: 
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

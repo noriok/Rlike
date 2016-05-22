@@ -127,6 +127,13 @@ public static class EffectAnim {
         while (gobj2 != null) {
             yield return null;
         }
+    }
 
+    public static IEnumerator Thunder(Vector3 pos) {
+        var obj2 = Resources.Load("Prefabs/Animations/thunder");
+        var gobj2 = (GameObject)GameObject.Instantiate(obj2, pos, Quaternion.identity);
+        while (gobj2 != null) {
+            yield return null;
+        }
     }
 }

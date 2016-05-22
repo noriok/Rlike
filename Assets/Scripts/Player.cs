@@ -218,4 +218,8 @@ public class Player : CharacterBase {
             renderer.color = color;
         }
     }
+
+    public void ClearItems() {
+        _items.Clear();
+    }
 }

@@ -111,6 +111,13 @@ public static class ItemFactory {
                 desc: "モンスターを吹き飛ばすぞ。",
                 skill: SkillNone
             );
+        case 3:
+            return CreateItemData(
+                type: type,
+                name: "いかずちの杖",
+                desc: "いかずちのダメージを与えるぞ。",
+                skill: new SkillThunder()
+            );
         }
 
         Assert.IsTrue(false);
