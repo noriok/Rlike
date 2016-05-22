@@ -6,7 +6,6 @@ using System.Linq;
 
 public class TrapSummon : Trap {
 	public TrapSummon(Loc loc, GameObject gobj) : base(loc, gobj) {
-
 	}
 
 	// 一時変数を共有するクロージャとイテレータを同時に使うのを避けるため関数化する
@@ -19,8 +18,6 @@ public class TrapSummon : Trap {
 
         var rand = new System.Random();
         int n = rand.Next(2, 3);
-        Debug.Log("n = " + n);
-
         var locs = new List<Loc>();
         for (int i = 0; i < xs.Count; i++) {
             // TODO: 敵の配置だけでなく、敵が配置可能かも調べる
