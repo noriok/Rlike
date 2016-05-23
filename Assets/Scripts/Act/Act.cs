@@ -13,6 +13,7 @@ public abstract class Act {
         _animationFinished = true;
     }
 
+    // TODO:rename
     protected virtual IEnumerator RunAnimation(MainSystem sys) {
         yield break;
     }

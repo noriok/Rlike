@@ -171,7 +171,7 @@ public static class FloorCreator {
 
         player.ClearItems();
 
-        Data data = D9();
+        Data data = D7();
         // Data data = GetData(floorNumber);
         char[,] mapData = CreateMap(data.Map);
         var map = new Map(mapData);
@@ -353,20 +353,22 @@ public static class FloorCreator {
     private static Data D7() {
         // 矢をうってくる敵
         const string map = @"
-.............
-..~..........
-.............
-..#..........
-.............
+...........
+..~........
+...........
+..#........
+...........
 ";
 
-        var stairsLoc = new Loc(2, 6);
-        var playerLoc = new Loc(1, 3);
+        var stairsLoc = new Loc(2, 10);
+        var playerLoc = new Loc(2, 1);
 
         var fobjs = new List<FieldObject>();
         var fitems = new List<FieldItem>();
 
         var enemies = new List<Enemy>();
+        enemies.Add(EnemyFactory.CreateEnemy(new Loc(2, 5)));
+
         return new Data(map, stairsLoc, playerLoc, fobjs, fitems, enemies);
     }
 

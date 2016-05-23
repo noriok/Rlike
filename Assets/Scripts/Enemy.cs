@@ -90,15 +90,12 @@ public class Enemy : CharacterBase {
         IsLockedOn = false;
     }
 
+    // TODO:rename
     // 行動できないなら true
     public bool IsBehavioralIncapacitation() {
         if (IsSleep()) return true;
         if (IsFreeze()) return true;
         return false;
-    }
-
-    private void AddStatusSymbol(string pathName) {
-
     }
 
     public override void OnStatusAdded(StatusType status) {

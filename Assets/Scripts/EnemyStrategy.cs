@@ -90,6 +90,41 @@ public static class EnemyStrategy {
         }
         locs[playerNextLoc.Row, playerNextLoc.Col] = true;
 
+        // 遠距離攻撃をする敵
+        // - プレイヤーと同じ部屋にいる
+        // - プレイヤーは直線上に位置する
+        // - プレイヤーとの間に障害物や敵は存在しない
+        for (int i = 0; i < enemies.Count; i++) {
+            if (used[i]) continue;
+
+            if (floor.InSight(enemies[i].Loc, playerNextLoc)) {
+                if (enemies[i].Loc.Row == playerNextLoc.Row ||
+                    enemies[i].Loc.Col == playerNextLoc.Col ||
+                    Math.Abs(enemies[i].Loc.Row - playerNextLoc.Row) == Math.Abs(enemies[i].Loc.Col - playerNextLoc.Col))
+                {
+                    Dir front = enemies[i].Loc.Toward(playerNextLoc);
+                    Loc loc = enemies[i].Loc.Forward(front);
+
+                    bool ok = true;
+                    while (loc != playerNextLoc) {
+                        // 敵が存在する。障害物があるなら遠距離攻撃しない
+                        if (locs[loc.Row, loc.Col] || floor.ExistsObstacle(loc) || floor.IsWall(loc)) {
+                            ok = false;
+                            break;
+                        }
+
+                        loc = loc.Forward(front);
+                    }
+
+                    Debug.Log("ok = " + ok);
+                    if (ok) { // 遠距離攻撃を行う
+                        q.Add(new ActEnemyLongDistanceAttack(enemies[i], player, playerNextLoc));
+                        used[i] = true;
+                    }
+                }
+            }
+        }
+
         // 移動するキャラ
         bool updated = true;
         while (updated) {
