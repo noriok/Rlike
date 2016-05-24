@@ -54,7 +54,7 @@ public static class FloorCreator {
 ";
 
     // TODO:削除
-	private static char[,] CreateMap(int floorNumber) {
+    private static char[,] CreateMap(int floorNumber) {
         string mapData = Map3;
         var lines = mapData.Trim().Split(new[] { '\n' });
 
@@ -71,10 +71,10 @@ public static class FloorCreator {
                 map[i, j] = lines[i][j];
             }
         }
-		return map;
-	}
+        return map;
+    }
 
-	private static char[,] CreateMap(string mapData) {
+    private static char[,] CreateMap(string mapData) {
         var lines = mapData.Trim().Split(new[] { '\n' });
 
         int rows = lines.Length;
@@ -90,8 +90,8 @@ public static class FloorCreator {
                 map[i, j] = lines[i][j];
             }
         }
-		return map;
-	}
+        return map;
+    }
 
     private static Data GetData(int floorNumber) {
         switch (floorNumber) {
@@ -110,7 +110,7 @@ public static class FloorCreator {
     }
 
     public static Floor CreateFloor(int floorNumber, Player player, MainSystem sys) {
-		var fieldObjectLayer = LayerManager.GetLayer(LayerName.FieldObject);
+        var fieldObjectLayer = LayerManager.GetLayer(LayerName.FieldObject);
 //		var trapLayer = LayerManager.GetLayer(LayerName.Trap);
 
         player.ClearItems();
@@ -130,13 +130,13 @@ public static class FloorCreator {
 
         FieldObjectFactory.CreateStairs(data.StairsLoc, fieldObjectLayer);
 
-		// ミニマップ生成
-		Minimap minimap = new Minimap(mapData, data.FieldObjects, data.StairsLoc);
+        // ミニマップ生成
+        Minimap minimap = new Minimap(mapData, data.FieldObjects, data.StairsLoc);
 
-		var floor = new Floor(map, minimap, data.FieldObjects, data.StairsLoc);
+        var floor = new Floor(map, minimap, data.FieldObjects, data.StairsLoc);
         player.UpdateLoc(data.PlayerLoc); // TODO:プレイヤーの初期位置設定
         player.ChangeDir(Dir.S);
-		return floor;
+        return floor;
     }
 
     // ------ フロアデータ
