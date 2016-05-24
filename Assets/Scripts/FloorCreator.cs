@@ -93,62 +93,6 @@ public static class FloorCreator {
 		return map;
 	}
 
-	public static Floor CreateFloor(int floorNumber) {
-		// var floorLayer = new GameObject(LayerName.Floor);
-		var fieldObjectLayer = LayerManager.GetLayer(LayerName.FieldObject);
-		// var trapLayer = LayerManager.GetLayer(LayerName.Trap);
-
-		// マップ生成
-		var mapData = CreateMap(floorNumber);
-		Map map = new Map(mapData);
-
-		// マップ上のフィールドオブジェクト作成
-        var fieldObjects = new List<FieldObject>();
-
-        // if (floorNumber == 1) {
-        //     fieldObjects.Add(FieldObjectFactory.CreateNoticeBoard(new Loc(1, 2), fieldObjectLayer, "立て札のメッセージ"));
-
-        //     fieldObjects.Add(FieldObjectFactory.CreateNoticeBoard(new Loc(2, 15), fieldObjectLayer, "「場所替えの杖」を使って、\n孤島の敵と入れ替わろう！\n\n杖は何回でも使えるぞ！"));
-        //     fieldObjects.Add(FieldObjectFactory.CreateNoticeBoard(new Loc(3, 19), fieldObjectLayer, "「水がれの書」を使うと、\nフロアの水が涸れるぞ！"));
-        //     fieldObjects.Add(FieldObjectFactory.CreateNoticeBoard(new Loc(10, 20), fieldObjectLayer, "部屋の真ん中にあるのは\n召喚のワナです。\n\n「消え去り草」を使うと、\nしばらくの間、姿が見えなくなるぞ！"));
-        //     fieldObjects.Add(FieldObjectFactory.CreateNoticeBoard(new Loc(7, 29), fieldObjectLayer, "右にあるのは「ワープのワナ」です。\n\n踏むとどこかにワープするぞ！"));
-
-        //     fieldObjects.Add(FieldObjectFactory.CreateNoticeBoard(new Loc(4, 3), fieldObjectLayer, "■制限:\n・プレイヤーの HP はゼロにはなりません\n  (ゲームオーバーにはならない)\n\n■未実装項目:\n・足下のアイテムを「使う」など\n・その場で方向転換\n・足踏み(ターンスキップ)\n・テキストメッセージ"));
-        //     fieldObjects.Add(FieldObjectFactory.CreateNoticeBoard(new Loc(7, 32), fieldObjectLayer, "水を枯らさないと\n階段を降りられないぞ！"));
-
-        //     fieldObjects.Add(FieldObjectFactory.CreateNoticeBoard(new Loc(13, 3), fieldObjectLayer, "右にあるのは\n「回復のワナ」です。"));
-        // }
-        // else {
-        //     fieldObjects.Add(FieldObjectFactory.CreateNoticeBoard(new Loc(1, 7), fieldObjectLayer, "ゲームクリアです！！\n\n階段を降りると、\n1Fに戻ります。"));
-        // }
-
-        Loc stairsLoc = new Loc(1, 7);
-        // if (floorNumber == 1) {
-		//     // 階段生成
-        //     stairsLoc = new Loc(9, 32);
-        //     // stairsLoc = new Loc(3, 1);
-        // }
-        // else {
-        //     stairsLoc = new Loc(1, 6);
-
-        // }
-        FieldObjectFactory.CreateStairs(stairsLoc, fieldObjectLayer);
-
-        // ワナ生成
-        // if (floorNumber == 1) {
-        //     fieldObjects.Add(FieldObjectFactory.CreateTrapSummon(new Loc(12, 19), trapLayer));
-        //     fieldObjects.Add(FieldObjectFactory.CreateTrapWarp(new Loc(7, 30), trapLayer));
-        //     fieldObjects.Add(FieldObjectFactory.CreateTrapHeal(new Loc(13, 4), trapLayer));
-        // }
-
-
-		// ミニマップ生成
-		Minimap minimap = new Minimap(mapData, fieldObjects, stairsLoc);
-
-		var floor = new Floor(map, minimap, fieldObjects, stairsLoc);
-		return floor;
-	}
-
     private static Data GetData(int floorNumber) {
         switch (floorNumber) {
         case 1: return D1();
@@ -165,7 +109,7 @@ public static class FloorCreator {
         return null;
     }
 
-    public static Floor CreateFloor2(int floorNumber, Player player, MainSystem sys) {
+    public static Floor CreateFloor(int floorNumber, Player player, MainSystem sys) {
 		var fieldObjectLayer = LayerManager.GetLayer(LayerName.FieldObject);
 //		var trapLayer = LayerManager.GetLayer(LayerName.Trap);
 

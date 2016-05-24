@@ -346,7 +346,7 @@ public class MainSystem : MonoBehaviour {
         yield return null;
         LayerManager.CreateAllLayer();
 
-        _floor = FloorCreator.CreateFloor2(_floorNumber, _player, this);
+        _floor = FloorCreator.CreateFloor(_floorNumber, _player, this);
         yield return null; // TODO:yield return null を入れるとミニマップの位置が更新される
         _player.SyncCameraPosition();
 
