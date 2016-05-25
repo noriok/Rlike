@@ -311,7 +311,7 @@ public static class FloorCreator {
         var fitems = new List<FieldItem>();
 
         var enemies = new List<Enemy>();
-        enemies.Add(EnemyFactory.CreateEnemy(new Loc(2, 5)));
+        enemies.Add(EnemyFactory.CreateEnemy(new Loc(2, 4)));
 
         return new Data(map, stairsLoc, playerLoc, fobjs, fitems, enemies);
     }
