@@ -96,9 +96,6 @@ public class MainSystem : MonoBehaviour {
 
         ChangeGameState(GameState.NextFloorTransition);
         StartCoroutine(NextFloor());
-
-//        _player.SyncCameraPosition();
-//        ChangeGameState(GameState.TurnStart);
     }
 
     private Enemy MakeEnemy(Loc loc, int sleepDepth) {
@@ -108,25 +105,6 @@ public class MainSystem : MonoBehaviour {
         }
         return e;
     }
-
-    private void SetupFloorEnemy_1(GameObject layer) {
-        // _enemies.Add(EnemyFactory.CreateEnemy(new Loc(3, 19), layer));
-
-        _enemies.Add(MakeEnemy(new Loc(3, 18), 100000));
-        _enemies.Add(MakeEnemy(new Loc(14, 5), 100000));
-    }
-
-    private void SetupFloorEnemy_2(GameObject layer) {
-        _enemies.Add(MakeEnemy(new Loc(2, 5), 0));
-        _enemies.Add(MakeEnemy(new Loc(2, 7), 0));
-
-        _enemies.Add(MakeEnemy(new Loc(6, 5), 0));
-        _enemies.Add(MakeEnemy(new Loc(6, 7), 0));
-
-        _enemies.Add(MakeEnemy(new Loc(4, 9), 0));
-        _enemies.Add(MakeEnemy(new Loc(4, 3), 0));
-    }
-
 
     // フロアに敵を配置する
     private void SetupFloorEnemy(int n, GameObject layer) {
