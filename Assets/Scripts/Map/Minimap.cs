@@ -98,7 +98,7 @@ public class Minimap {
 
     // プレイヤーアイコンの点滅更新
     public void UpdatePlayerIconBlink() {
-        float blinkTime = 0.6f;
+        float blinkTime = 0.5f;
         _elapsed += Time.deltaTime;
         if (_elapsed >= blinkTime) {
             _playerIcon.SetActive(!_playerIcon.activeSelf);
