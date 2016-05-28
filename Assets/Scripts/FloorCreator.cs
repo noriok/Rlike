@@ -110,9 +110,6 @@ public static class FloorCreator {
     }
 
     public static Floor CreateFloor(int floorNumber, Player player, MainSystem sys) {
-        var fieldObjectLayer = LayerManager.GetLayer(LayerName.FieldObject);
-//		var trapLayer = LayerManager.GetLayer(LayerName.Trap);
-
         // プレイヤーの状態をリセット
         player.ClearItems();
         player.UpdateHp(player.MaxHp);
@@ -130,7 +127,7 @@ public static class FloorCreator {
             sys.AddEnemy(enemy);
         }
 
-        FieldObjectFactory.CreateStairs(data.StairsLoc, fieldObjectLayer);
+        FieldObjectFactory.CreateStairs(data.StairsLoc);
 
         // ミニマップ生成
         Minimap minimap = new Minimap(mapData, data.FieldObjects, data.StairsLoc);

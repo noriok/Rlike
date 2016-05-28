@@ -29,7 +29,7 @@ public static class FieldObjectFactory {
 		return new NoticeBoard(loc, obj, msg);
 	}
 
-	public static void CreateStairs(Loc loc, GameObject layer) {
+	public static void CreateStairs(Loc loc) {
 		Create("Prefabs/MapChip/mapchip-stairs", loc.ToPosition());
 	}
 
