@@ -15,22 +15,26 @@ public class LayerManager {
 
     public static void CreateAllLayer() {
         foreach (var name in _layerNames) {
-            new GameObject(name);
+            CreateLayer(name);
         }
     }
 
     public static void CreateLayer(string layerName) {
+        Debug.LogFormat("--> Create layer:{0}", layerName);
         new GameObject(layerName);
     }
 
     public static void RemoveAllLayer() {
         foreach (var name in _layerNames) {
-            GameObject.Destroy(GameObject.Find(name));
+            RemoveLayer(name);
         }
     }
 
     public static void RemoveLayer(string layerName) {
-        GameObject.Destroy(GameObject.Find(layerName));
+        var layer = GameObject.Find(layerName);
+        Assert.IsTrue(layer != null);
+        Debug.Log("--> destroy layer = " + layer);
+        GameObject.Destroy(layer);
     }
 
     public static GameObject GetLayer(string layerName) {

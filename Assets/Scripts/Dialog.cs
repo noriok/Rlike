@@ -14,6 +14,8 @@ public class Dialog {
 		_dialogText = GameObject.Find("Canvas/Dialog/Text");
 
 		var btnOK = GameObject.Find("Canvas/Dialog/Button_OK").GetComponent<Button>();
+
+        btnOK.onClick.RemoveAllListeners();
 		btnOK.onClick.AddListener(() => {
 			Assert.IsTrue(IsOpen);
 			IsOpen = false;

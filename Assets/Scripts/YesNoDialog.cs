@@ -1,46 +1,27 @@
 ﻿using UnityEngine;
 using UnityEngine.Assertions;
+using System;
 using UnityEngine.UI;
-// using System.Collections;
 
 public class YesNoDialog {
-	private GameObject _dialog;
-	private GameObject _dialogText;
 
-	public bool IsOpen { get; private set; }
-	public bool IsYesPressed { get; private set; }
-	public bool IsNoPressed { get; private set; }
-
-	public YesNoDialog() {
-		_dialog = GameObject.Find("Canvas/YesNoDialog");
-		_dialogText = GameObject.Find("Canvas/YesNoDialog/Text");
+	public YesNoDialog(GameObject dialog, string message, Action yesCallback, Action noCallback) {
+        dialog.SetActive(true);
+        var text = dialog.transform.Find("Text").GetComponent<Text>();
+        text.text = message;
 
 		var btnYes = GameObject.Find("Canvas/YesNoDialog/Button_Yes").GetComponent<Button>();
+        btnYes.onClick.RemoveAllListeners();
 		btnYes.onClick.AddListener(() => {
-			Assert.IsTrue(IsOpen);
-			IsOpen = false;
-			IsYesPressed = true;
-			_dialog.SetActive(false);
+            dialog.SetActive(false);
+            yesCallback();
 		});
 
 		var btnNo = GameObject.Find("Canvas/YesNoDialog/Button_No").GetComponent<Button>();
+        btnNo.onClick.RemoveAllListeners();
 		btnNo.onClick.AddListener(() => {
-			Assert.IsTrue(IsOpen);
-			IsOpen = false;
-			IsNoPressed = true;
-			_dialog.SetActive(false);
+            dialog.SetActive(false);
+            noCallback();
 		});
-
-		_dialog.SetActive(false);
-	}
-
-	public void Show(string message) {
-		Assert.IsFalse(IsOpen);;
-
-		IsYesPressed = IsNoPressed = false;
-		IsOpen = true;
-		var text = _dialogText.GetComponent<Text>();
-		text.text = message;
-		_dialog.SetActive(true);
 	}
 }

@@ -15,6 +15,7 @@ enum GameState {
     TurnEnd, // ターン終了
 
     ConfirmStairsDialog, // 階段を降りますかダイアログ
+    ConfirmGiveup, // ギブアップダイアログ
     NextFloorTransition,
 
     DisplayItemWindow,
@@ -25,7 +26,13 @@ public class MainSystem : MonoBehaviour {
     Button _btnItem;
 
     [SerializeField]
+    Button _btnGiveup;
+
+    [SerializeField]
     GameObject _itemWindow;
+
+    [SerializeField]
+    GameObject _yesNoDialog;
 
     private CameraManager _cameraManager = new CameraManager();
     private GameState _gameState;
@@ -36,7 +43,6 @@ public class MainSystem : MonoBehaviour {
     private List<Act> _acts = new List<Act>();
 
     private Dialog _dialog;
-    private YesNoDialog _yesNoDialog;
 
     private int _turnCount = 0;
 
@@ -49,6 +55,8 @@ public class MainSystem : MonoBehaviour {
     private int _gold;
 
     void Start() {
+        _yesNoDialog.SetActive(false);
+
         LayerManager.CreateAllLayer();
 
         _itemWindow.SetActive(false);
@@ -73,10 +81,14 @@ public class MainSystem : MonoBehaviour {
             });
         });
 
+        _btnGiveup.onClick.AddListener(() => {
+            if (_gameState != GameState.InputWait) return;
+            ChangeGameState(GameState.ConfirmGiveup);
+        });
+
         DLog.Enable = false;
         _keyPad = new KeyPad();
         _dialog = new Dialog();
-        _yesNoDialog = new YesNoDialog();
         _banner = new FloorBanner();
         _gm = new GameManager();
 
@@ -96,6 +108,33 @@ public class MainSystem : MonoBehaviour {
 
         ChangeGameState(GameState.NextFloorTransition);
         StartCoroutine(NextFloor());
+    }
+
+    private void ShowYesNoDialog(string message, Action yes, Action no) {
+        new YesNoDialog(_yesNoDialog, message, yes, no);
+    }
+
+    private void ConfirmDownStairs() {
+        Action yes = () => {
+            ChangeGameState(GameState.NextFloorTransition);
+            StartCoroutine(NextFloor());
+        };
+        Action no = () => {
+            ChangeGameState(GameState.TurnStart);
+        };
+        ShowYesNoDialog("階段をおりますか？", yes, no);
+    }
+
+    private void ConfirmGiveup() {
+        Action yes = () => {
+            _floorNumber--;
+            ChangeGameState(GameState.NextFloorTransition);
+            StartCoroutine(NextFloor());
+        };
+        Action no = () => {
+            ChangeGameState(GameState.InputWait);
+        };
+        ShowYesNoDialog("ギブアップしますか？", yes, no);
     }
 
     private Enemy MakeEnemy(Loc loc, int sleepDepth) {
@@ -128,41 +167,6 @@ public class MainSystem : MonoBehaviour {
                 break;
             }
         }
-    }
-
-    private void SetupFloorItem_1(GameObject layer) {
-        FieldItem item = null;
-        // 場所替え
-        item = FieldItemFactory.CreateWand(new Loc(3, 15), 0);
-        AddFieldItem(item);
-
-        // 水がれの書
-        item = FieldItemFactory.CreateMagic(new Loc(4, 18), 4);
-        AddFieldItem(item);
-
-        // 消え去り草
-        item = FieldItemFactory.CreateHerb(new Loc(11, 19), 2);
-        AddFieldItem(item);
-        item = FieldItemFactory.CreateHerb(new Loc(11, 20), 2);
-        AddFieldItem(item);
-
-        // 高飛び草
-        item = FieldItemFactory.CreateHerb(new Loc(11, 32), 3);
-        AddFieldItem(item);
-
-        item = FieldItemFactory.CreateHerb(new Loc(11, 31), 3);
-        AddFieldItem(item);
-
-        // 薬草
-        item = FieldItemFactory.CreateHerb(new Loc(3, 5), 0);
-        AddFieldItem(item);
-        item = FieldItemFactory.CreateHerb(new Loc(3, 6), 0);
-        AddFieldItem(item);
-    }
-
-    private void SetupFloorItem_2(GameObject layer) {
-        var item = FieldItemFactory.CreateMagic(new Loc(4, 5), 1);
-        AddFieldItem(item);
     }
 
     // フロアにアイテムを配置する
@@ -249,17 +253,10 @@ public class MainSystem : MonoBehaviour {
 
         if (_gameState == GameState.DisplayItemWindow) return;
 
-        if (_gameState == GameState.ConfirmStairsDialog) {
-            if (_yesNoDialog.IsYesPressed) {
-                ChangeGameState(GameState.NextFloorTransition);
-                StartCoroutine(NextFloor());
-            }
-            else if (_yesNoDialog.IsNoPressed) {
-                ChangeGameState(GameState.TurnStart);
-            }
-            return;
-        }
-        else if (_gameState == GameState.Act) {
+        if (_gameState == GameState.ConfirmStairsDialog) return;
+        if (_gameState == GameState.ConfirmGiveup) return;
+
+        if (_gameState == GameState.Act) {
             UpdateAct();
             return;
         }
@@ -321,6 +318,7 @@ public class MainSystem : MonoBehaviour {
         LayerManager.RemoveAllLayer();
         // 同一フレームで、同じ GameObject に対して Destroy したあとに new GameObject できないようなので
         // yield return null で生成のタイミングをずらす
+
         yield return null;
         LayerManager.CreateAllLayer();
 
@@ -468,7 +466,11 @@ public class MainSystem : MonoBehaviour {
             break;
 
         case GameState.ConfirmStairsDialog:
-            _yesNoDialog.Show("階段を降りますか？");
+            ConfirmDownStairs();
+            break;
+
+        case GameState.ConfirmGiveup:
+            ConfirmGiveup();
             break;
 
         case GameState.NextFloorTransition:
