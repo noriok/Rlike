@@ -8,11 +8,10 @@ public class Player : CharacterBase {
     public List<Item> Items { get { return _items; } }
 
     private List<Item> _items = new List<Item>();
-
     private Dictionary<Dir, GameObject> _dirs = new Dictionary<Dir, GameObject>();
 
     public Player(Loc loc, GameObject gobj) : base(loc, gobj) {
-        Hp = MaxHp = 300;
+        Hp = MaxHp = 15;
         var textHp = GameObject.Find("Canvas/Header/Text_HP_Value").GetComponent<Text>();
         textHp.text = string.Format("{0}/{1}", Hp, MaxHp);
 
@@ -69,6 +68,17 @@ public class Player : CharacterBase {
         }
     }
 
+    // TODO:作り直し
+    public void UpdateHp(int hp) {
+        hp = Utils.Clamp(hp, 0, MaxHp);
+        Hp = hp;
+
+        var imageFg = GameObject.Find("Canvas/Header/Image_HP_FG").GetComponent<Image>();
+        var textHp = GameObject.Find("Canvas/Header/Text_HP_Value").GetComponent<Text>();
+        textHp.text = string.Format("{0}/{1}", hp, MaxHp);
+        imageFg.fillAmount = hp / MaxHp;
+    }
+
     public override IEnumerator HealAnim(int delta) {
         float fromHp = Hp;
         float toHp = Utils.Clamp(Hp + delta, 0, MaxHp);
@@ -95,7 +105,7 @@ public class Player : CharacterBase {
 
     public override IEnumerator DamageAnim(int delta) {
         float fromHp = Hp;
-        float toHp = Utils.Clamp(Hp - delta, 1, MaxHp);
+        float toHp = Utils.Clamp(Hp - delta, 0, MaxHp);
 
         var fromAmount = fromHp / MaxHp;
         var toAmount = toHp / MaxHp;
@@ -137,27 +147,28 @@ public class Player : CharacterBase {
         if (++_counter % 5 == 0) {
             // HP 自然回復
             if (Hp > 0) {
-                float toHp = Utils.Clamp(Hp + 1, 0, MaxHp);
+                int heal = 1;
+                float toHp = Utils.Clamp(Hp + heal, 0, MaxHp);
 
                 var imageFg = GameObject.Find("Canvas/Header/Image_HP_FG").GetComponent<Image>();
                 var textHp = GameObject.Find("Canvas/Header/Text_HP_Value").GetComponent<Text>();
                 textHp.text = string.Format("{0}/{1}", toHp, MaxHp);
                 imageFg.fillAmount = toHp / MaxHp;
-                HealHp(1);
+                HealHp(heal);
             }
         }
     }
 
     public void AddItem(Item item) {
-        // 石はまとまる
-        if (item.Type == ItemType.Stone) {
-            for (int i = 0; i < _items.Count; i++) {
-                if (_items[i].Type == ItemType.Stone) {
-                    _items[i].Inc(item.Count);
-                    return;
-                }
-            }
-        }
+        // // 石はまとまる
+        // if (item.Type == ItemType.Stone) {
+        //     for (int i = 0; i < _items.Count; i++) {
+        //         if (_items[i].Type == ItemType.Stone) {
+        //             _items[i].Inc(item.Count);
+        //             return;
+        //         }
+        //     }
+        // }
         _items.Add(item);
     }
 

@@ -113,7 +113,10 @@ public static class FloorCreator {
         var fieldObjectLayer = LayerManager.GetLayer(LayerName.FieldObject);
 //		var trapLayer = LayerManager.GetLayer(LayerName.Trap);
 
+        // プレイヤーの状態をリセット
         player.ClearItems();
+        player.UpdateHp(player.MaxHp);
+
 
         Data data = D7();
         // Data data = GetData(floorNumber);

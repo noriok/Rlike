@@ -12,7 +12,7 @@ public class SkillThunder : Skill {
                               () => EffectAnim.PopupWhiteDigits(target, damage));
         target.DamageHp(damage);
 
-        if (target.Hp <= 0) {
+        if (target.Hp <= 0 && target is Enemy) {
             var pos = target.Position;
             target.Destroy();
             yield return EffectAnim.Dead(pos);

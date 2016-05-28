@@ -60,6 +60,7 @@ public class MainSystem : MonoBehaviour {
     private int _gold;
 
     void Start() {
+        _floorNumber = 7;
         _okDialog.SetActive(false);
         _yesNoDialog.SetActive(false);
 
@@ -295,8 +296,6 @@ public class MainSystem : MonoBehaviour {
 */
 
     private void CheckInput() {
-//        if (_dialog.IsOpen) return;
-
         Dir dir;
         if (_keyPad.IsMove(out dir)) {
             ExecutePlayerMove(dir);
@@ -506,6 +505,18 @@ public class MainSystem : MonoBehaviour {
     }
 
     private void UpdateAct() {
+        if (_player.Hp <= 0) {
+            // ゲームオーバーダイアログを表示して、フロアをやり直す。
+            Action ok = () => {
+                _acts.Clear();
+                _floorNumber--;
+                ChangeGameState(GameState.NextFloorTransition);
+                StartCoroutine(NextFloor());
+            };
+            ShowOKDialog("ゲームオーバーです。\nフロアをやり直します。", ok);
+            return;
+        }
+
         Assert.IsTrue(_player.Hp > 0);
 
        // HP がゼロの敵は削除する
