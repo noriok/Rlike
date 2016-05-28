@@ -1,13 +1,9 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using UnityEngine.Assertions;
 using UnityEngine.UI;
-using System;
-// using System.Collections;
 
-public class ItemCommandWindow : MonoBehaviour {
-    [SerializeField]
-    GameObject _itemWindow;
-
+public class FootItemCommandWindow : MonoBehaviour {
     [SerializeField]
     Image _imageIcon;
 
@@ -18,7 +14,7 @@ public class ItemCommandWindow : MonoBehaviour {
     Text _textDesc;
 
     [SerializeField]
-    Button _btnBack;
+    Button _btnClose;
 
     [SerializeField]
     Button _btnUse;
@@ -27,9 +23,9 @@ public class ItemCommandWindow : MonoBehaviour {
     Button _btnThrow;
 
     [SerializeField]
-    Button _btnPut;
+    Button _btnTake;
 
-    Action<ItemActionType, Item> _itemActionCallback;
+    Action<ItemActionType, FieldItem> _itemActionCallback;
 
     private string GetSpritePathName(ItemType itemType) {
         switch (itemType) {
@@ -48,10 +44,11 @@ public class ItemCommandWindow : MonoBehaviour {
         return "";
     }
 
-    public void Init(Item item, Action<ItemActionType, Item> itemActionCallback) {
+    public void Init(FieldItem fieldItem, Action<ItemActionType, FieldItem> itemActionCallback) {
         _itemActionCallback = itemActionCallback;
         Assert.IsTrue(_itemActionCallback != null);
 
+        Item item = fieldItem.Item;
         _textName.text = item.Name;
         _textDesc.text = item.Desc;
 
@@ -64,36 +61,37 @@ public class ItemCommandWindow : MonoBehaviour {
             _btnUse.interactable = true;
         }
 
-        _btnBack.onClick.RemoveAllListeners();
+        _btnClose.onClick.RemoveAllListeners();
         _btnUse.onClick.RemoveAllListeners();
         _btnThrow.onClick.RemoveAllListeners();
-        _btnPut.onClick.RemoveAllListeners();
+        _btnTake.onClick.RemoveAllListeners();
 
-        _btnBack.onClick.AddListener(() => {
-            Debug.Log("戻るが押されました");
+        _btnClose.onClick.AddListener(() => {
+            Debug.Log("閉じるが押されました");
             gameObject.SetActive(false);
-            _itemWindow.SetActive(true);
+
+            _itemActionCallback(ItemActionType.Close, fieldItem);
         });
 
         _btnUse.onClick.AddListener(() => {
             Debug.Log("使うが押されました");
             gameObject.SetActive(false);
 
-            _itemActionCallback(ItemActionType.Use, item);
+            _itemActionCallback(ItemActionType.Use, fieldItem);
         });
 
         _btnThrow.onClick.AddListener(() => {
             Debug.Log("投げるが押されました");
             gameObject.SetActive(false);
 
-            _itemActionCallback(ItemActionType.Throw, item);
+            _itemActionCallback(ItemActionType.Throw, fieldItem);
         });
 
-        _btnPut.onClick.AddListener(() => {
-            Debug.Log("置くが押されました");
+        _btnTake.onClick.AddListener(() => {
+            Debug.Log("拾うが押されました");
             gameObject.SetActive(false);
 
-            _itemActionCallback(ItemActionType.Put, item);
+            _itemActionCallback(ItemActionType.Take, fieldItem);
         });
     }
 }

@@ -1,8 +1,7 @@
-﻿using UnityEngine;
-using System.Collections;
-
-public enum ItemActionType {
+﻿public enum ItemActionType {
+    Close,
     Use,
     Throw,
     Put,
+    Take,
 }

@@ -117,9 +117,8 @@ public static class FloorCreator {
         player.ClearItems();
         player.UpdateHp(player.MaxHp);
 
-
-        Data data = D7();
-        // Data data = GetData(floorNumber);
+        // Data data = D1();
+        Data data = GetData(floorNumber);
         char[,] mapData = CreateMap(data.Map);
         var map = new Map(mapData);
 
@@ -161,6 +160,11 @@ public static class FloorCreator {
         fobjs.Add(FieldObjectFactory.CreateNoticeBoard(new Loc(0, 4), "テスト\n\n画面右上の「ギブアップ」ボタンを押すと\nそのフロアをやり直します。"));
 
         var fitems = new List<FieldItem>();
+        fitems.Add(FieldItemFactory.CreateWand(new Loc(2, 3), 3));
+        fitems.Add(FieldItemFactory.CreateWand(new Loc(3, 2), 3));
+        fitems.Add(FieldItemFactory.CreateWand(new Loc(3, 3), 3));
+        fitems.Add(FieldItemFactory.CreateWand(new Loc(3, 4), 3));
+
         var enemies = new List<Enemy>();
 
         return new Data(map, stairsLoc, playerLoc, fobjs, fitems, enemies);

@@ -20,6 +20,8 @@ enum GameState {
     NextFloorTransition,
 
     DisplayItemWindow,
+    DisplayFootItemCommandWindow,
+    DisplayFootTrapCommandWindow,
     DisplayDialog,
 }
 
@@ -28,10 +30,19 @@ public class MainSystem : MonoBehaviour {
     Button _btnItem;
 
     [SerializeField]
+    Button _btnFoot;
+
+    [SerializeField]
     Button _btnGiveup;
 
     [SerializeField]
     GameObject _itemWindow;
+
+    [SerializeField]
+    GameObject _footItemCommandWindow;
+
+    [SerializeField]
+    GameObject _footTrapCommandWindow;
 
     [SerializeField]
     GameObject _yesNoDialog;
@@ -60,6 +71,8 @@ public class MainSystem : MonoBehaviour {
     void Start() {
         _okDialog.SetActive(false);
         _yesNoDialog.SetActive(false);
+        _footItemCommandWindow.SetActive(false);
+        _footTrapCommandWindow.SetActive(false);
 
         LayerManager.CreateAllLayer();
 
@@ -68,7 +81,6 @@ public class MainSystem : MonoBehaviour {
             if (_gameState != GameState.InputWait) return;
 
             ChangeGameState(GameState.DisplayItemWindow);
-
             _itemWindow.SetActive(true);
 
             var sc = GameObject.Find("Canvas/ScrollView/Panel/Content").GetComponent<ScrollController>();
@@ -85,6 +97,27 @@ public class MainSystem : MonoBehaviour {
             });
         });
 
+        _btnFoot.onClick.AddListener(() => {
+            if (_gameState != GameState.InputWait) return;
+
+            Debug.Log("足下ボタンが押されました");
+
+            var fieldItem = FindFieldItem(_player.Loc);
+            if (fieldItem == null) {
+                Debug.Log("足下にアイテムはありません。");
+            }
+            else {
+                ChangeGameState(GameState.DisplayFootItemCommandWindow);
+                var c = _footItemCommandWindow.GetComponent<FootItemCommandWindow>();
+                c.Init(fieldItem, (ItemActionType actionType, FieldItem fitem) => {
+                    Debug.LogFormat("--> type:{0} fieldItem:{1}", actionType, fitem);
+
+                    ExecutePlayerFootItemAction(actionType, fitem);
+                });
+                _footItemCommandWindow.SetActive(true);
+            }
+        });
+
         _btnGiveup.onClick.AddListener(() => {
             if (_gameState != GameState.InputWait) return;
             ChangeGameState(GameState.ConfirmGiveup);
@@ -96,18 +129,18 @@ public class MainSystem : MonoBehaviour {
         _gm = new GameManager();
 
         _player = _gm.CreatePlayer(new Loc(3, 3));
-        // _floor = FloorCreator.CreateFloor2(_floorNumber, _player);
 
         var camera = GameObject.Find("Main Camera");
         camera.GetComponent<Camera>().orthographicSize = _cameraManager.CurrentSize;
 
         // Zoom ボタンのクリックイベント
-        var btn = GameObject.Find("Button_Zoom").GetComponent<Button>();
-        btn.onClick.AddListener(() => {
+        var btnZoom = GameObject.Find("Button_Zoom");
+        btnZoom.GetComponent<Button>().onClick.AddListener(() => {
             if (_gameState == GameState.InputWait) {
                 camera.GetComponent<Camera>().orthographicSize = _cameraManager.NextSize();
             }
         });
+        btnZoom.SetActive(false);
 
         ChangeGameState(GameState.NextFloorTransition);
         StartCoroutine(NextFloor());
@@ -265,6 +298,8 @@ public class MainSystem : MonoBehaviour {
         _floor.UpdateMinimapPlayerIconBlink();
 
         if (_gameState == GameState.DisplayItemWindow) return;
+        if (_gameState == GameState.DisplayFootItemCommandWindow) return;
+        if (_gameState == GameState.DisplayFootTrapCommandWindow) return;
 
         if (_gameState == GameState.ConfirmStairsDialog) return;
         if (_gameState == GameState.ConfirmGiveup) return;
@@ -492,10 +527,16 @@ public class MainSystem : MonoBehaviour {
         case GameState.NextFloorTransition:
             break;
 
-        case GameState.DisplayDialog:
+        case GameState.DisplayItemWindow:
             break;
 
-        case GameState.DisplayItemWindow:
+        case GameState.DisplayFootItemCommandWindow:
+            break;
+
+        case GameState.DisplayFootTrapCommandWindow:
+            break;
+
+        case GameState.DisplayDialog:
             break;
 
         default:
@@ -696,6 +737,26 @@ public class MainSystem : MonoBehaviour {
         }
     }
 
+    private void ExecutePlayerFootItemAction(ItemActionType actionType, FieldItem fieldItem) {
+        Assert.IsTrue(_acts.Count == 0);
+
+        switch (actionType) {
+        case ItemActionType.Close:
+            ChangeGameState(GameState.InputWait);
+            break;
+        case ItemActionType.Use:
+            break;
+        case ItemActionType.Throw:
+            break;
+        case ItemActionType.Take:
+            ExecutePlayerTakeFootItem(fieldItem);
+            break;
+        default:
+            Assert.IsTrue(false);
+            break;
+        }
+    }
+
     private void ExecutePlayerUseItem(Item item) {
         Debug.Log("---- Use Item");
         Assert.IsTrue(_acts.Count == 0);
@@ -731,6 +792,14 @@ public class MainSystem : MonoBehaviour {
             Debug.Log("ここにアイテムは置けません");
             ChangeGameState(GameState.InputWait);
         }
+    }
+
+    private void ExecutePlayerTakeFootItem(FieldItem fieldItem) {
+        Assert.IsTrue(_acts.Count == 0);
+
+        // TODO:アイテムが持ちきれない場合
+        _acts.Add(new ActPlayerTakeFootItem(_player, fieldItem));
+        ChangeGameState(GameState.Act);
     }
 
     private void ExecutePlayerThrowItem(Item item) {
@@ -839,16 +908,16 @@ public class MainSystem : MonoBehaviour {
         return FindFieldItem(loc) != null;
     }
 
-    public bool RemoveFieldItem(FieldItem fieldItem) {
+    public void RemoveFieldItem(FieldItem fieldItem) {
         for (int i = 0; i < _fieldItems.Count; i++) {
             if (_fieldItems[i].Loc == fieldItem.Loc) {
                 Assert.IsTrue(System.Object.ReferenceEquals(_fieldItems[i], fieldItem));
                 fieldItem.Destroy();
                 _fieldItems.RemoveAt(i);
-                return true;
+                return;
             }
         }
-        return false;
+        Assert.IsTrue(false);
     }
 
     public IEnumerator Summon(Loc loc) {

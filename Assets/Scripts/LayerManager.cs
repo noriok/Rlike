@@ -20,7 +20,7 @@ public class LayerManager {
     }
 
     public static void CreateLayer(string layerName) {
-        Debug.LogFormat("--> Create layer:{0}", layerName);
+        // Debug.LogFormat("--> Create layer:{0}", layerName);
         new GameObject(layerName);
     }
 
@@ -33,7 +33,7 @@ public class LayerManager {
     public static void RemoveLayer(string layerName) {
         var layer = GameObject.Find(layerName);
         Assert.IsTrue(layer != null);
-        Debug.Log("--> destroy layer = " + layer);
+        // Debug.Log("--> destroy layer = " + layer);
         GameObject.Destroy(layer);
     }
 
