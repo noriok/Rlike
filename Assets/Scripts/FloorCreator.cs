@@ -158,6 +158,7 @@ public static class FloorCreator {
 
         var fobjs = new List<FieldObject>();
         fobjs.Add(FieldObjectFactory.CreateNoticeBoard(new Loc(0, 4), "テスト\n\n画面右上の「ギブアップ」ボタンを押すと\nそのフロアをやり直します。"));
+        fobjs.Add(FieldObjectFactory.CreateTrapHeal(new Loc(2, 4)));
 
         var fitems = new List<FieldItem>();
         fitems.Add(FieldItemFactory.CreateWand(new Loc(2, 3), 3));

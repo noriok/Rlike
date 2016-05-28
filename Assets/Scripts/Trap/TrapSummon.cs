@@ -48,4 +48,16 @@ public class TrapSummon : Trap {
 		    // yield return Anim.Par(sys, Summon(sender.Loc, sys));
         }
 	}
+
+    public override string Name() {
+        return "召喚のワナ";
+    }
+
+    public override string Description() {
+        return "踏むと周囲にモンスターを召喚するぞ。";
+    }
+
+    public override string ImagePath() {
+        return "Images/trap0";
+    }
 }

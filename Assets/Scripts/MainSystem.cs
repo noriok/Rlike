@@ -102,11 +102,9 @@ public class MainSystem : MonoBehaviour {
 
             Debug.Log("足下ボタンが押されました");
 
+            // 足下アイテム
             var fieldItem = FindFieldItem(_player.Loc);
-            if (fieldItem == null) {
-                Debug.Log("足下にアイテムはありません。");
-            }
-            else {
+            if (fieldItem != null) {
                 ChangeGameState(GameState.DisplayFootItemCommandWindow);
                 var c = _footItemCommandWindow.GetComponent<FootItemCommandWindow>();
                 c.Init(fieldItem, (ItemActionType actionType, FieldItem fitem) => {
@@ -115,6 +113,21 @@ public class MainSystem : MonoBehaviour {
                     ExecutePlayerFootItemAction(actionType, fitem);
                 });
                 _footItemCommandWindow.SetActive(true);
+                return;
+            }
+
+            // 足下ワナ
+            var trap = _floor.FindTrap(_player.Loc);
+            if (trap != null) {
+                ChangeGameState(GameState.DisplayFootTrapCommandWindow);
+                var c = _footTrapCommandWindow.GetComponent<FootTrapCommandWindow>();
+                c.Init(trap, (TrapActionType actionType, Trap t) => {
+                    Debug.LogFormat("--> type:{0} trap:{1}", actionType, t);
+                    ExecutePlayerFootTrapAction(actionType, t);
+                });
+
+                _footTrapCommandWindow.SetActive(true);
+                return;
             }
         });
 
@@ -666,6 +679,7 @@ public class MainSystem : MonoBehaviour {
             // 移動先にトラップがあるなら、トラップイベントを発生させる
             Trap trap = _floor.FindTrap(to);
             if (trap != null) {
+                // TODO:Fire確率
                 _acts.Add(new ActTrap(_player, trap));
             }
 
@@ -752,6 +766,24 @@ public class MainSystem : MonoBehaviour {
             break;
         case ItemActionType.Take:
             ExecutePlayerTakeFootItem(fieldItem);
+            break;
+        default:
+            Assert.IsTrue(false);
+            break;
+        }
+    }
+
+    private void ExecutePlayerFootTrapAction(TrapActionType actionType, Trap trap) {
+        Assert.IsTrue(_acts.Count == 0);
+
+        switch (actionType) {
+        case TrapActionType.Close:
+            ChangeGameState(GameState.InputWait);
+            break;
+        case TrapActionType.Fire:
+            _acts.Add(new ActTrap(_player, trap));
+            _acts.AddRange(DetectEnemyAct(_player.Loc));
+            ChangeGameState(GameState.Act);
             break;
         default:
             Assert.IsTrue(false);

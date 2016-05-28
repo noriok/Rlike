@@ -15,4 +15,16 @@ public class TrapHeal : Trap {
 							  () => EffectAnim.PopupGreenDigits(sender, healHp));
 	    sender.HealHp(healHp);
 	}
+
+    public override string Name() {
+        return "回復のワナ";
+    }
+
+    public override string Description() {
+        return "踏むとHPが回復するぞ。";
+    }
+
+    public override string ImagePath() {
+        return "Images/trap1";
+    }
 }

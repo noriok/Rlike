@@ -10,4 +10,8 @@ public abstract class Trap : SimpleFieldObject {
     public override bool IsObstacle() {
         return false;
     }
+
+    public abstract string Name();
+    public abstract string Description();
+    public abstract string ImagePath();
 }

@@ -29,4 +29,16 @@ public class TrapLandmine : Trap {
             }
         }
     }
+
+    public override string Name() {
+        return "地雷のワナ";
+    }
+
+    public override string Description() {
+        return "踏むと周囲にダメージを与えるぞ。自分もダメージを受けるぞ";
+    }
+
+    public override string ImagePath() {
+        return "Images/trap4";
+    }
 }

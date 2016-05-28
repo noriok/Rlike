@@ -9,4 +9,16 @@ public class TrapWarp : Trap {
     public override IEnumerator RunAnimation(CharacterBase sender, MainSystem sys) {
         yield return new SkillWarp().Use(sender, sys);
     }
+
+    public override string Name() {
+        return "ワープのワナ";
+    }
+
+    public override string Description() {
+        return "踏むとワープするぞ。";
+    }
+
+    public override string ImagePath() {
+        return "Images/trap2";
+    }
 }
