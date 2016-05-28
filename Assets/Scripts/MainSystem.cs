@@ -156,7 +156,7 @@ public class MainSystem : MonoBehaviour {
         btnZoom.SetActive(false);
 
         ChangeGameState(GameState.NextFloorTransition);
-        StartCoroutine(NextFloor());
+        StartCoroutine(NextFloor(true));
     }
 
     private void ShowOKDialog(string message, Action ok) {
@@ -366,10 +366,10 @@ public class MainSystem : MonoBehaviour {
         }
     }
 
-    private IEnumerator NextFloor() {
+    private IEnumerator NextFloor(bool isSkipTransition = false) {
         ++_floorNumber;
         if (_floorNumber == 10) _floorNumber = 1;
-        if (_floorNumber > 1) {
+        if (!isSkipTransition) {
             yield return _banner.FadeInAnimation("テストダンジョン", _floorNumber);
         }
 
@@ -389,7 +389,7 @@ public class MainSystem : MonoBehaviour {
         var text = GameObject.Find("Canvas/Header/Text_Floor").GetComponent<Text>();
         text.text = string.Format("{0}F", _floorNumber);
 
-        if (_floorNumber > 1) {
+        if (!isSkipTransition) {
             yield return new WaitForSeconds(1.1f);
             yield return _banner.FadeOutAnimation();
         }
