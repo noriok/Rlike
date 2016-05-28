@@ -2195,6 +2195,7 @@ MonoBehaviour:
   _btnGiveup: {fileID: 1023258233}
   _itemWindow: {fileID: 1864685337}
   _yesNoDialog: {fileID: 72158687}
+  _okDialog: {fileID: 2147261119}
 --- !u!4 &692097239
 Transform:
   m_ObjectHideFlags: 0
