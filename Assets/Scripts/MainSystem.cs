@@ -338,6 +338,9 @@ public class MainSystem : MonoBehaviour {
         yield return null; // TODO:yield return null を入れるとミニマップの位置が更新される
         _player.SyncCameraPosition();
 
+        var text = GameObject.Find("Canvas/Header/Text_Floor").GetComponent<Text>();
+        text.text = string.Format("{0}F", _floorNumber);
+
         if (_floorNumber > 1) {
             yield return new WaitForSeconds(1.1f);
             yield return _banner.FadeOutAnimation();
@@ -470,6 +473,7 @@ public class MainSystem : MonoBehaviour {
             // TODO:直前の行動が移動のみ階段ダイアログを表示する
             // 階段の上ならダイアログ表示
             if (_player.Loc == _floor.StairsLoc) {
+                _player.HideDirection();
                 ChangeGameState(GameState.ConfirmStairsDialog);
             }
             else {
