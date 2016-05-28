@@ -10,7 +10,8 @@
     // フロアに配置可能な敵の最大数
     public const int EnemyMaxCount = 25;
 
-    public const float WalkDuration = 0.35f;
+    // TODO:デバッグでスピード調整できるように
+    public const float WalkDuration = 0.27f;
 
     public const float ThrowItemSpeed = 4.5f;
 }
