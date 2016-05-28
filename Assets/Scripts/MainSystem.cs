@@ -745,8 +745,10 @@ public class MainSystem : MonoBehaviour {
             ChangeGameState(GameState.InputWait);
             break;
         case ItemActionType.Use:
+            ExecutePlayerUseFootItem(fieldItem);
             break;
         case ItemActionType.Throw:
+            ExecutePlayerThrowFootItem(fieldItem);
             break;
         case ItemActionType.Take:
             ExecutePlayerTakeFootItem(fieldItem);
@@ -768,6 +770,19 @@ public class MainSystem : MonoBehaviour {
             _acts.Add(new ActPlayerUseItem(_player, item));
         }
 
+        ChangeGameState(GameState.Act);
+    }
+
+    private void ExecutePlayerUseFootItem(FieldItem fieldItem) {
+        Assert.IsTrue(_acts.Count == 0);
+
+        Item item = fieldItem.Item;
+        if (item.Type == ItemType.Wand) {
+            _acts.Add(new ActPlayerUseWand(_player, item));
+        }
+        else {
+            _acts.Add(new ActPlayerUseFootItem(_player, fieldItem));
+        }
         ChangeGameState(GameState.Act);
     }
 
@@ -827,7 +842,34 @@ public class MainSystem : MonoBehaviour {
                 }
             }
         }
+        ChangeGameState(GameState.Act);
+    }
 
+    private void ExecutePlayerThrowFootItem(FieldItem fieldItem) {
+        // TODO:石を投げる場合は別処理
+        Assert.IsTrue(_acts.Count == 0);
+
+        Loc loc = _player.Loc;
+        bool update = true;
+        while (update) {
+            update = false;
+
+            var next = loc.Forward(_player.Dir);
+            if (_floor.IsWall(next) || _floor.ExistsObstacle(next)) {
+                _acts.Add(new ActPlayerThrowFootItem(_player, fieldItem, next, loc, null));
+            }
+            else {
+                int p = _enemies.FindIndex(e => e.Loc == next);
+                if (p != -1) { // 敵にヒット
+                    var target = _enemies[p];
+                    _acts.Add(new ActPlayerThrowFootItem(_player, fieldItem, next, next, target));
+                }
+                else {
+                    update = true;
+                    loc = next;
+                }
+            }
+        }
         ChangeGameState(GameState.Act);
     }
 
