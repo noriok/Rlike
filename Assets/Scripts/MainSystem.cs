@@ -47,8 +47,6 @@ public class MainSystem : MonoBehaviour {
 
     private List<Act> _acts = new List<Act>();
 
-    private Dialog _dialog;
-
     private int _turnCount = 0;
 
     private KeyPad _keyPad;
@@ -60,7 +58,6 @@ public class MainSystem : MonoBehaviour {
     private int _gold;
 
     void Start() {
-        _floorNumber = 7;
         _okDialog.SetActive(false);
         _yesNoDialog.SetActive(false);
 
@@ -334,7 +331,6 @@ public class MainSystem : MonoBehaviour {
         LayerManager.RemoveAllLayer();
         // 同一フレームで、同じ GameObject に対して Destroy したあとに new GameObject できないようなので
         // yield return null で生成のタイミングをずらす
-
         yield return null;
         LayerManager.CreateAllLayer();
 
