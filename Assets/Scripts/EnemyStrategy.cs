@@ -96,6 +96,7 @@ public static class EnemyStrategy {
         // - プレイヤーとの間に障害物や敵は存在しない
         for (int i = 0; i < enemies.Count; i++) {
             if (used[i]) continue;
+            if (!enemies[i].CanLongDistanceAttack) continue;
 
             if (floor.InSight(enemies[i].Loc, playerNextLoc)) {
                 if (enemies[i].Loc.Row == playerNextLoc.Row ||

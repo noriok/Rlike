@@ -9,6 +9,8 @@ public class Enemy : CharacterBase {
     public bool IsLockedOn { get; private set; }
     public Loc Target { get; private set; }
 
+    public bool CanLongDistanceAttack { get; set; }
+
     public Enemy(Loc loc, GameObject gobj) : base(loc, gobj) {
         // HP バー
         var barRed = (GameObject)GameObject.Instantiate(Resources.Load("Prefabs/HpBar/bar-red"), Vector3.zero, Quaternion.identity);
