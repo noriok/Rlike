@@ -352,7 +352,7 @@ GameObject:
   - 222: {fileID: 72158690}
   - 114: {fileID: 72158689}
   m_Layer: 5
-  m_Name: YesNoDialog
+  m_Name: Dialog_YesNo
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2192,7 +2192,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _btnItem: {fileID: 1393845982}
+  _btnGiveup: {fileID: 1023258233}
   _itemWindow: {fileID: 1864685337}
+  _yesNoDialog: {fileID: 72158687}
 --- !u!4 &692097239
 Transform:
   m_ObjectHideFlags: 0
@@ -5919,7 +5921,7 @@ GameObject:
   - 222: {fileID: 2147261122}
   - 114: {fileID: 2147261121}
   m_Layer: 5
-  m_Name: Dialog
+  m_Name: Dialog_OK
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

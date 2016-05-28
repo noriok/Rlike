@@ -16,9 +16,11 @@ enum GameState {
 
     ConfirmStairsDialog, // 階段を降りますかダイアログ
     ConfirmGiveup, // ギブアップダイアログ
+
     NextFloorTransition,
 
     DisplayItemWindow,
+    DisplayDialog,
 }
 
 public class MainSystem : MonoBehaviour {
@@ -33,6 +35,9 @@ public class MainSystem : MonoBehaviour {
 
     [SerializeField]
     GameObject _yesNoDialog;
+
+    [SerializeField]
+    GameObject _okDialog;
 
     private CameraManager _cameraManager = new CameraManager();
     private GameState _gameState;
@@ -55,6 +60,7 @@ public class MainSystem : MonoBehaviour {
     private int _gold;
 
     void Start() {
+        _okDialog.SetActive(false);
         _yesNoDialog.SetActive(false);
 
         LayerManager.CreateAllLayer();
@@ -88,7 +94,6 @@ public class MainSystem : MonoBehaviour {
 
         DLog.Enable = false;
         _keyPad = new KeyPad();
-        _dialog = new Dialog();
         _banner = new FloorBanner();
         _gm = new GameManager();
 
@@ -110,7 +115,17 @@ public class MainSystem : MonoBehaviour {
         StartCoroutine(NextFloor());
     }
 
+    private void ShowOKDialog(string message, Action ok) {
+        ChangeGameState(GameState.DisplayDialog);
+        new Dialog(_okDialog, message, ok);
+    }
+
+    private void ShowOKDialog(string message) {
+        ShowOKDialog(message, () => { ChangeGameState(GameState.InputWait); });
+    }
+
     private void ShowYesNoDialog(string message, Action yes, Action no) {
+        ChangeGameState(GameState.DisplayDialog);
         new YesNoDialog(_yesNoDialog, message, yes, no);
     }
 
@@ -256,6 +271,8 @@ public class MainSystem : MonoBehaviour {
         if (_gameState == GameState.ConfirmStairsDialog) return;
         if (_gameState == GameState.ConfirmGiveup) return;
 
+        if (_gameState == GameState.DisplayDialog) return;
+
         if (_gameState == GameState.Act) {
             UpdateAct();
             return;
@@ -278,7 +295,7 @@ public class MainSystem : MonoBehaviour {
 */
 
     private void CheckInput() {
-        if (_dialog.IsOpen) return;
+//        if (_dialog.IsOpen) return;
 
         Dir dir;
         if (_keyPad.IsMove(out dir)) {
@@ -476,6 +493,9 @@ public class MainSystem : MonoBehaviour {
         case GameState.NextFloorTransition:
             break;
 
+        case GameState.DisplayDialog:
+            break;
+
         case GameState.DisplayItemWindow:
             break;
 
@@ -638,7 +658,7 @@ public class MainSystem : MonoBehaviour {
         NoticeBoard noticeBoard = _floor.FindNoticeBoard(loc);
         if (noticeBoard != null) {
             // 立て札を読む場合はターンを消費しない
-            ShowDialog(noticeBoard.Msg);
+            ShowOKDialog(noticeBoard.Msg);
             return;
         }
 
@@ -663,7 +683,6 @@ public class MainSystem : MonoBehaviour {
             Assert.IsTrue(false);
             break;
         }
-
     }
 
     private void ExecutePlayerUseItem(Item item) {
@@ -837,10 +856,6 @@ public class MainSystem : MonoBehaviour {
 
     public void HideMinimap()  {
         _floor.HideMinimap();
-    }
-
-    public void ShowDialog(string message) {
-        _dialog.Show(message);
     }
 
     // 部屋内のランダムな位置を返す

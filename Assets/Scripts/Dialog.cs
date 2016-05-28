@@ -1,36 +1,21 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using UnityEngine.Assertions;
 using UnityEngine.UI;
-// using System.Collections;
 
+// TODO: rename OKDialog
 public class Dialog {
-    public bool IsOpen { get; private set; }
 
-    private GameObject _dialog;
-    private GameObject _dialogText;
+    public Dialog(GameObject dialog, string message, Action ok) {
+        dialog.SetActive(true);
+        var text = dialog.transform.Find("Text").GetComponent<Text>();
+        text.text = message;
 
-    public Dialog() {
-        _dialog = GameObject.Find("Canvas/Dialog");
-        _dialogText = GameObject.Find("Canvas/Dialog/Text");
-
-        var btnOK = GameObject.Find("Canvas/Dialog/Button_OK").GetComponent<Button>();
-
+        var btnOK = dialog.transform.Find("Button_OK").GetComponent<Button>();
         btnOK.onClick.RemoveAllListeners();
         btnOK.onClick.AddListener(() => {
-            Assert.IsTrue(IsOpen);
-            IsOpen = false;
-            _dialog.SetActive(false);
+            dialog.SetActive(false);
+            ok();
         });
-
-        _dialog.SetActive(false);
-    }
-
-    public void Show(string message) {
-        Assert.IsFalse(IsOpen);
-
-        IsOpen = true;
-        var text = _dialogText.GetComponent<Text>();
-        text.text = message;
-        _dialog.SetActive(true);
     }
 }
