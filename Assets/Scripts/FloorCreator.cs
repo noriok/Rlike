@@ -260,7 +260,7 @@ public static class FloorCreator {
 ";
 
         var fobjs = new List<FieldObject>();
-        var stairsLoc = new Loc(0, 2);
+        var stairsLoc = new Loc(0, 3);
 
         var playerLoc = new Loc(5, 3);
 
@@ -317,6 +317,7 @@ public static class FloorCreator {
 
         var enemies = new List<Enemy>();
         enemies.Add(EnemyFactory.CreateEnemy(new Loc(2, 4)));
+        enemies.Last().CanLongDistanceAttack = true;
 
         return new Data(map, stairsLoc, playerLoc, fobjs, fitems, enemies);
     }

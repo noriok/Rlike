@@ -23,6 +23,9 @@ enum GameState {
     DisplayFootItemCommandWindow,
     DisplayFootTrapCommandWindow,
     DisplayDialog,
+
+    ChangeDirWaitPress,   // キーが入力されるのを待つ
+    ChangeDirWaitRelease, // キー入力が終了するのを待つ(指が離れるのを待つ)
 }
 
 public class MainSystem : MonoBehaviour {
@@ -31,6 +34,9 @@ public class MainSystem : MonoBehaviour {
 
     [SerializeField]
     Button _btnFoot;
+
+    [SerializeField]
+    Button _btnChangeDir;
 
     [SerializeField]
     Button _btnGiveup;
@@ -134,6 +140,14 @@ public class MainSystem : MonoBehaviour {
         _btnGiveup.onClick.AddListener(() => {
             if (_gameState != GameState.InputWait) return;
             ChangeGameState(GameState.ConfirmGiveup);
+        });
+
+        _btnChangeDir.onClick.AddListener(() => {
+            if (_gameState != GameState.InputWait) return;
+
+            Debug.Log("方向転換します");
+            _player.ShowDirectionAll();
+            ChangeGameState(GameState.ChangeDirWaitPress);
         });
 
         DLog.Enable = false;
@@ -310,6 +324,7 @@ public class MainSystem : MonoBehaviour {
 
         _floor.UpdateMinimapPlayerIconBlink();
 
+        // TODO:switch に変更
         if (_gameState == GameState.DisplayItemWindow) return;
         if (_gameState == GameState.DisplayFootItemCommandWindow) return;
         if (_gameState == GameState.DisplayFootTrapCommandWindow) return;
@@ -318,6 +333,29 @@ public class MainSystem : MonoBehaviour {
         if (_gameState == GameState.ConfirmGiveup) return;
 
         if (_gameState == GameState.DisplayDialog) return;
+
+        if (_gameState == GameState.ChangeDirWaitPress) {
+            Dir dir;
+            if (_keyPad.IsMove(out dir)) {
+                _player.ChangeDir(dir);
+                Debug.Log("--> change dir");
+                ChangeGameState(GameState.ChangeDirWaitRelease);
+                return;
+            }
+            return;
+        }
+        else if (_gameState == GameState.ChangeDirWaitRelease) {
+            Dir dir;
+            if (_keyPad.IsMove(out dir)) {
+                // ボタンが押された状態
+            }
+            else {
+                _player.HideDirection();
+                ChangeGameState(GameState.InputWait);
+            }
+            return;
+        }
+
 
         if (_gameState == GameState.Act) {
             UpdateAct();
@@ -348,10 +386,6 @@ public class MainSystem : MonoBehaviour {
         }
         else if (_keyPad.IsAttack()) {
             ExecutePlayerAttack();
-            return;
-        }
-        else if (_keyPad.IsFireTrap()) {
-            ExecutePlayerFireTrap();
             return;
         }
 
@@ -550,6 +584,12 @@ public class MainSystem : MonoBehaviour {
             break;
 
         case GameState.DisplayDialog:
+            break;
+
+        case GameState.ChangeDirWaitPress:
+            break;
+
+        case GameState.ChangeDirWaitRelease:
             break;
 
         default:

@@ -68,6 +68,12 @@ public class Player : CharacterBase {
         }
     }
 
+    public void ShowDirectionAll() {
+        foreach (var kv in _dirs) {
+            kv.Value.SetActive(true);
+        }
+    }
+
     // TODO:作り直し
     public void UpdateHp(int hp) {
         hp = Utils.Clamp(hp, 0, MaxHp);

@@ -24,7 +24,6 @@ public class KeyPad {
 		_btnNW = GameObject.Find("Canvas/Button_NW").GetComponent<Button2>();
 
 		_btnAction = GameObject.Find("Canvas/Button_Action").GetComponent<Button2>();
-
 	}
 
 	public bool IsAttack() {
@@ -37,11 +36,6 @@ public class KeyPad {
 		// 		return true;
 		// 	}
 		// }
-		return false;
-	}
-
-	public bool IsFireTrap() {
-		if (Input.GetKey(KeyCode.X)) return true;
 		return false;
 	}
 
@@ -59,7 +53,6 @@ public class KeyPad {
 		else buttonPressed = false;
 
 		if (buttonPressed) return true;
-
 
 		bool keyPressed = true;
         if (Input.GetKey(KeyCode.J)) { // 南

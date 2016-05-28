@@ -2,6 +2,7 @@
 using UnityEngine.UI;
 using System.Collections;
 
+// TODO:rename FloorTransition
 public class FloorBanner {
 	private GameObject _banner;
 
