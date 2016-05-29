@@ -822,7 +822,6 @@ public class MainSystem : MonoBehaviour {
             break;
         case TrapActionType.Fire:
             _acts.Add(new ActTrap(_player, trap));
-            _acts.AddRange(DetectEnemyAct(_player.Loc));
             ChangeGameState(GameState.Act);
             break;
         default:
