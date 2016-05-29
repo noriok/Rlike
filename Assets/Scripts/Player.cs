@@ -150,7 +150,7 @@ public class Player : CharacterBase {
     public override void OnTurnEnd() {
         base.OnTurnEnd();
 
-        if (++_counter % 5 == 0) {
+        if (++_counter % 7 == 0) {
             // HP 自然回復
             if (Hp > 0) {
                 int heal = 1;
