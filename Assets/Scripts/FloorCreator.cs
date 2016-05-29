@@ -114,7 +114,7 @@ public static class FloorCreator {
         player.ClearItems();
         player.UpdateHp(player.MaxHp);
 
-        // Data data = D8();
+        // Data data = D3();
         Data data = GetData(floorNumber);
         char[,] mapData = CreateMap(data.Map);
         var map = new Map(mapData);
@@ -154,7 +154,7 @@ public static class FloorCreator {
         var playerLoc = new Loc(2, 3);
 
         var fobjs = new List<FieldObject>();
-        fobjs.Add(FieldObjectFactory.CreateNoticeBoard(new Loc(0, 4), "落ちているアイテムやワナを駆使して\n階段を目指してください。\n\n画面右上の「ギブアップ」ボタンを押すと\nそのフロアをやり直します。"));
+        fobjs.Add(FieldObjectFactory.CreateNoticeBoard(new Loc(0, 4), "落ちているアイテムやワナを駆使して\n階段を目指してください。\nフロアを移動すると、\n所持アイテムはなくなります。\n\n画面右上の「ギブアップ」ボタンを押すと\n現在のフロアをやり直します。"));
         // fobjs.Add(FieldObjectFactory.CreateTrapHeal(new Loc(2, 4)));
 
         var fitems = new List<FieldItem>();

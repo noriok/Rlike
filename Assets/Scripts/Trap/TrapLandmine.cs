@@ -35,7 +35,7 @@ public class TrapLandmine : Trap {
     }
 
     public override string Description() {
-        return "踏むと周囲にダメージを与えるぞ。自分もダメージを受けるぞ";
+        return "踏むとダメージを受けるぞ。周囲に爆風のダメージを与えるぞ。";
     }
 
     public override string ImagePath() {

@@ -32,6 +32,7 @@ public class ActEnemyAttack : Act {
 
         // ターゲットの方を向く
         Actor.ChangeDir(Actor.Loc.Toward(_target.Loc));
+        _target.HideDirection();
 
         // ターゲットは攻撃者の方を向く。ただし以下の場合は振り向かない
         // - 目の前に敵が存在する
@@ -41,7 +42,7 @@ public class ActEnemyAttack : Act {
         }
 
         _target.RemoveStatus(StatusType.Sleep);
-        var dmg = 1 + new System.Random().Next(30);
+        var dmg = 16 + new System.Random().Next(30);
         // yield return _target.DamageAnim(dmg);
         yield return Anim.Par(sys,
                               () => _target.DamageAnim(dmg),
