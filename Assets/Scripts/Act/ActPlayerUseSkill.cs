@@ -6,16 +6,15 @@ public class DamageWait {
     public bool AnimationFinished { get; private set; }
 
     private CharacterBase _target;
+    private int _damage;
 
     private IEnumerator Run(MainSystem sys) {
-        var dmg = 99;
-
         _target.RemoveStatus(StatusType.Sleep);
         yield return Anim.Par(sys,
-                              () => _target.DamageAnim(dmg),
-                              () => EffectAnim.PopupWhiteDigits(_target, dmg));
-        _target.DamageHp(dmg);
-        if (_target.Hp <= 0) {
+                              () => _target.DamageAnim(_damage),
+                              () => EffectAnim.PopupWhiteDigits(_target, _damage));
+        _target.DamageHp(_damage);
+        if (_target.Hp <= 0 && _target is Enemy) {
             var pos = _target.Position;
             _target.Destroy();
             yield return EffectAnim.Dead(pos);
@@ -23,12 +22,14 @@ public class DamageWait {
         AnimationFinished = true;
     }
 
-    public DamageWait(CharacterBase target, MainSystem sys) {
+    public DamageWait(CharacterBase target, int damage, MainSystem sys) {
         _target = target;
+        _damage = damage;
         sys.StartCoroutine(Run(sys));
     }
 }
 
+// TODO:削除
 public class ActPlayerUseSkill : Act {
     private CharacterBase[] _targets;
 
@@ -51,6 +52,7 @@ public class ActPlayerUseSkill : Act {
         }
     }
 
+/*
     protected override IEnumerator RunAnimation(MainSystem sys) {
         yield return EffectAnim.Aura(Actor.Position);
 
@@ -92,6 +94,7 @@ public class ActPlayerUseSkill : Act {
             yield return null;
         }
     }
+*/
 
     public override void Apply(MainSystem sys) {
         DLog.D("{0} skill", Actor);

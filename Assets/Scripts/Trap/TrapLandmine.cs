@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -12,21 +13,20 @@ public class TrapLandmine : Trap {
         yield return EffectAnim.Landmine(sender.Position);
 
         var enemies = sys.CollectNeighborEnemies(sender.Loc);
-        if (enemies.Length > 0) {
-            var damageAnims = new List<DamageWait>();
-            for (int i = 0; i < enemies.Length; i++) {
-                damageAnims.Add(new DamageWait(enemies[i], sys));
+        var damageAnims = new List<DamageWait>();
+        damageAnims.Add(new DamageWait(sender, Math.Max(1, sender.Hp - 1), sys));
+        for (int i = 0; i < enemies.Length; i++) {
+            damageAnims.Add(new DamageWait(enemies[i], 99, sys));
+        }
+
+        while (true) {
+            bool finished = true;
+            foreach (var d in damageAnims) {
+                finished = finished && d.AnimationFinished;
             }
 
-            while (true) {
-                bool finished = true;
-                foreach (var d in damageAnims) {
-                    finished = finished && d.AnimationFinished;
-                }
-
-                if (finished) break;
-                yield return null;
-            }
+            if (finished) break;
+            yield return null;
         }
     }
 

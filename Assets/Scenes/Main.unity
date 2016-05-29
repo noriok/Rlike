@@ -2755,6 +2755,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _btnItem: {fileID: 1393845982}
   _btnFoot: {fileID: 1932001272}
+  _btnChangeDir: {fileID: 1533389082}
   _btnGiveup: {fileID: 1023258233}
   _itemWindow: {fileID: 1864685337}
   _footItemCommandWindow: {fileID: 250357452}

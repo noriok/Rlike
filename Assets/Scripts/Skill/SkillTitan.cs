@@ -48,7 +48,7 @@ public class SkillTitan : Skill {
         var enemies = sys.GetEnemies();
         var damageAnims = new List<DamageWait>();
         for (int i = 0; i < enemies.Length; i++) {
-            damageAnims.Add(new DamageWait(enemies[i], sys));
+            damageAnims.Add(new DamageWait(enemies[i], 99, sys));
         }
 
         while (true) {
