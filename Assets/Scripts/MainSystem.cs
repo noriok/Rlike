@@ -429,7 +429,7 @@ public class MainSystem : MonoBehaviour {
         text.text = string.Format("{0}F", _floorNumber);
 
         if (!isSkipTransition) {
-            yield return new WaitForSeconds(1.1f);
+            yield return new WaitForSeconds(0.7f);
             yield return _banner.FadeOutAnimation();
         }
         ChangeGameState(GameState.TurnStart);
@@ -1055,6 +1055,7 @@ public class MainSystem : MonoBehaviour {
         _floor.HideMinimap();
     }
 
+    // TODO:defaultLoc 削除。部屋のランダムなLocを返す。
     // 部屋内のランダムな位置を返す
     // ただし以下が存在する場合は除く
     // - 敵
@@ -1076,6 +1077,30 @@ public class MainSystem : MonoBehaviour {
             }
         }
         return defaultLoc; // ワープできない場合
+    }
+
+    public Loc Warp(Loc source, bool excludeSourceRoom) {
+        var rand = new System.Random();
+        const int retryCount = 20;
+
+        Room[] rooms = _floor.GetRooms();
+        if (excludeSourceRoom && rooms.Length > 1) {
+            rooms = rooms.Where(e => !e.IsInside(source)).ToArray();
+        }
+
+        for (int i = 0; i < retryCount; i++) {
+            var room = Utils.Choice(rooms);
+
+            int r = rand.Next(room.Row, room.Row + room.Height);
+            int c = rand.Next(room.Col, room.Col + room.Width);
+            var loc = new Loc(r, c);
+            if (_floor.IsWater(loc)) continue;
+            if (_floor.ExistsObstacle(loc)) continue;
+            if (!_enemies.Any(e => e.Loc == loc)) {
+                return loc;
+            }
+        }
+        return source; // ワープできる場所がないなら source にワープ
     }
 
     public void IncGold(int gold) {

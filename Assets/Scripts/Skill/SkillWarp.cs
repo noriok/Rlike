@@ -15,7 +15,7 @@ public class SkillWarp : Skill {
         }
         yield return new WaitForSeconds(0.36f);
 
-        var loc = sys.RandomRoomLoc(sender.Loc);
+        var loc = sys.Warp(sender.Loc, true);
         sender.Position = loc.ToPosition();
         sender.ChangeDir(Dir.S);
         sender.UpdateLoc(loc);
