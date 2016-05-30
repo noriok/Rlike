@@ -74,6 +74,11 @@ public class MainSystem : MonoBehaviour {
 
     private int _gold;
 
+    void Awake() {
+        // iOS でかくつく問題の対策
+        Application.targetFrameRate = 60;
+    }
+
     void Start() {
         _okDialog.SetActive(false);
         _yesNoDialog.SetActive(false);
