@@ -136,6 +136,7 @@ public class MainSystem : MonoBehaviour {
                 return;
             }
 
+            // 足下階段
             if (_player.Loc == _floor.StairsLoc) {
                 ConfirmDownStairs(GameState.InputWait);
                 ChangeGameState(GameState.ConfirmStairsDialog);
@@ -330,15 +331,15 @@ public class MainSystem : MonoBehaviour {
 
         _floor.UpdateMinimapPlayerIconBlink();
 
-        // TODO:switch に変更
-        if (_gameState == GameState.DisplayItemWindow) return;
-        if (_gameState == GameState.DisplayFootItemCommandWindow) return;
-        if (_gameState == GameState.DisplayFootTrapCommandWindow) return;
-
-        if (_gameState == GameState.ConfirmStairsDialog) return;
-        if (_gameState == GameState.ConfirmGiveup) return;
-
-        if (_gameState == GameState.DisplayDialog) return;
+        switch (_gameState) {
+        case GameState.DisplayDialog:
+        case GameState.DisplayItemWindow:
+        case GameState.DisplayFootItemCommandWindow:
+        case GameState.DisplayFootTrapCommandWindow:
+        case GameState.ConfirmStairsDialog:
+        case GameState.ConfirmGiveup:
+            return;
+        }
 
         if (_gameState == GameState.ChangeDirWaitPress) {
             Dir dir;
@@ -362,12 +363,10 @@ public class MainSystem : MonoBehaviour {
             return;
         }
 
-
         if (_gameState == GameState.Act) {
             UpdateAct();
             return;
         }
-
         Assert.IsTrue(_gameState == GameState.InputWait);
         CheckInput();
     }
