@@ -135,6 +135,12 @@ public class MainSystem : MonoBehaviour {
                 _footTrapCommandWindow.SetActive(true);
                 return;
             }
+
+            if (_player.Loc == _floor.StairsLoc) {
+                ConfirmDownStairs(GameState.InputWait);
+                ChangeGameState(GameState.ConfirmStairsDialog);
+                return;
+            }
         });
 
         _btnGiveup.onClick.AddListener(() => {
@@ -187,13 +193,13 @@ public class MainSystem : MonoBehaviour {
         new YesNoDialog(_yesNoDialog, message, yes, no);
     }
 
-    private void ConfirmDownStairs() {
+    private void ConfirmDownStairs(GameState cancelState) {
         Action yes = () => {
             ChangeGameState(GameState.NextFloorTransition);
             StartCoroutine(NextFloor());
         };
         Action no = () => {
-            ChangeGameState(GameState.TurnStart);
+            ChangeGameState(cancelState);
         };
         ShowYesNoDialog("階段をおりますか？", yes, no);
     }
@@ -544,7 +550,6 @@ public class MainSystem : MonoBehaviour {
             SysTurnStart();
 
             _player.HideDirection();
-
             ChangeGameState(GameState.InputWait);
             break;
 
@@ -556,6 +561,7 @@ public class MainSystem : MonoBehaviour {
             // 階段の上ならダイアログ表示
             if (_player.Loc == _floor.StairsLoc) {
                 _player.HideDirection();
+                ConfirmDownStairs(GameState.TurnStart);
                 ChangeGameState(GameState.ConfirmStairsDialog);
             }
             else {
@@ -564,7 +570,6 @@ public class MainSystem : MonoBehaviour {
             break;
 
         case GameState.ConfirmStairsDialog:
-            ConfirmDownStairs();
             break;
 
         case GameState.ConfirmGiveup:
