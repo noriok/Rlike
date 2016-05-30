@@ -76,7 +76,9 @@ public class MainSystem : MonoBehaviour {
 
     void Awake() {
         // iOS でかくつく問題の対策
+#if UNITY_IOS
         Application.targetFrameRate = 60;
+#endif
     }
 
     void Start() {
