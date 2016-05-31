@@ -63,6 +63,7 @@ public class MainSystem : MonoBehaviour {
     private List<FieldItem> _fieldItems = new List<FieldItem>();
 
     private List<Act> _acts = new List<Act>();
+    private MessageManager _mm;
 
     private int _turnCount = 0;
 
@@ -168,6 +169,7 @@ public class MainSystem : MonoBehaviour {
         _keyPad = new KeyPad();
         _banner = new FloorBanner();
         _gm = new GameManager();
+        _mm = new MessageManager(this);
 
         _player = _gm.CreatePlayer(new Loc(3, 3));
 
@@ -334,6 +336,8 @@ public class MainSystem : MonoBehaviour {
     }
 
     void Update() {
+        _mm.Update();
+
         if (_gameState == GameState.NextFloorTransition) return;
 
         _floor.UpdateMinimapPlayerIconBlink();
