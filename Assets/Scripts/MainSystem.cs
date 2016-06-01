@@ -1164,4 +1164,12 @@ public class MainSystem : MonoBehaviour {
     public bool IsWater(Loc loc) {
         return _floor.IsWater(loc);
     }
+
+    public void Message(string msg) {
+        _mm.Message(msg);
+    }
+
+    public void Message(string msg1, string msg2) {
+        _mm.Message(msg1, msg2);
+    }
 }

@@ -48,9 +48,10 @@ public class ActPlayerMove : Act {
         if (_fieldItem != null) {
             Debug.Log("アイテムを拾った");
 
+
             Item item = _fieldItem.Item;
+            sys.Message(string.Format("{0} をひろった", item.Name));
             if (item.Type == ItemType.Gold) {
-                Debug.LogFormat("{0} G 手に入れた", 100);
                 sys.IncGold(100);
             }
             else {
