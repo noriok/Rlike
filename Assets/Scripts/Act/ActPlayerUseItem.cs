@@ -12,13 +12,11 @@ public class ActPlayerUseItem : Act {
 	}
 
 	protected override IEnumerator RunAnimation(MainSystem sys) {
+        sys.Message(string.Format("{0} を使った", _item.Name));
         yield return _item.Use(Actor, sys);
 	}
 
 	public override void Apply(MainSystem sys) {
-		DLog.D("{0} item", Actor);
-
-        Debug.LogFormat("item:{0} を使いました", _item);
         _player.RemoveItem(_item);
 	}
 }
