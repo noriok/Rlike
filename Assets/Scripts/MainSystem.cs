@@ -1172,4 +1172,23 @@ public class MainSystem : MonoBehaviour {
     public void Message(string msg1, string msg2) {
         _mm.Message(msg1, msg2);
     }
+
+    public void Msg_UseItem(Item item) {
+        switch (item.Type) {
+        case ItemType.Herb:
+        case ItemType.Gold:
+            _mm.Message("プレイヤーは", item.Name + " を使った！");
+            break;
+        case ItemType.Magic:
+            _mm.Message("プレイヤーは", item.Name + " を読んだ！");
+            break;
+        default:
+            _mm.Message("プレイヤーは", item.Name + " を使った！");
+            break;
+        }
+    }
+
+    public void Msg_ThrowItem(Item item) {
+        _mm.Message("プレイヤーは", item.Name + " を投げた！");
+    }
 }

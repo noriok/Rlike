@@ -12,7 +12,7 @@ public class ActPlayerUseItem : Act {
 	}
 
 	protected override IEnumerator RunAnimation(MainSystem sys) {
-        sys.Message(string.Format("{0} を使った", _item.Name));
+        sys.Msg_UseItem(_item);
         yield return _item.Use(Actor, sys);
 	}
 

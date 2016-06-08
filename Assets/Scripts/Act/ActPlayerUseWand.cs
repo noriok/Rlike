@@ -11,6 +11,8 @@ public class ActPlayerUseWand : Act {
     }
 
     protected override IEnumerator RunAnimation(MainSystem sys) {
+        sys.Msg_UseItem(_item);
+
         CharacterBase hitTarget;
         Loc to = sys.FindHitTarget(_player.Loc, _player.Dir, out hitTarget);
 
