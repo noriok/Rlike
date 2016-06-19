@@ -53,7 +53,7 @@ public class ActEnemyAttack : Act {
         Actor.Position = src;
     }
 
-    public override void Apply(MainSystem sys) {
+    public override void OnFinished(MainSystem sys) {
         // Actor が _target に攻撃
         DLog.D("{0} attack --> {1}", Actor, _target);
     }

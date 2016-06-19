@@ -36,7 +36,7 @@ public class ActEnemyMove : Act {
         yield return CAction.Walk(Actor, _drow, _dcol, null);
     }
 
-    public override void Apply(MainSystem sys) {
+    public override void OnFinished(MainSystem sys) {
         var nextLoc = Actor.Loc + new Loc(_drow, _dcol);
         DLog.D("{0} move {1} -> {2}", Actor, Actor.Loc, nextLoc);
         Actor.UpdateLoc(nextLoc);

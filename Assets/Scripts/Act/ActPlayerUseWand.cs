@@ -31,7 +31,7 @@ public class ActPlayerUseWand : Act {
         }
     }
 
-    public override void Apply(MainSystem sys) {
+    public override void OnFinished(MainSystem sys) {
 
     }
 

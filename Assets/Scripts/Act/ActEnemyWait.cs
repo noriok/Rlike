@@ -7,7 +7,7 @@ public class ActEnemyWait : Act {
         _animationFinished = true;
     }
 
-    public override void Apply(MainSystem sys) {
+    public override void OnFinished(MainSystem sys) {
         DLog.D("{0} wait", Actor);
     }
 }

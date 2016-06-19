@@ -96,7 +96,7 @@ public class ActPlayerUseSkill : Act {
     }
 */
 
-    public override void Apply(MainSystem sys) {
+    public override void OnFinished(MainSystem sys) {
         DLog.D("{0} skill", Actor);
     }
 }

@@ -16,7 +16,7 @@ public class ActPlayerUseItem : Act {
         yield return _item.Use(Actor, sys);
     }
 
-    public override void Apply(MainSystem sys) {
+    public override void OnFinished(MainSystem sys) {
         _player.RemoveItem(_item);
     }
 }

@@ -7,7 +7,7 @@ public class ActPlayerTakeFootItem : Act {
         _fieldItem = fieldItem;
     }
 
-    public override void Apply(MainSystem sys) {
+    public override void OnFinished(MainSystem sys) {
         Debug.LogFormat("アイテムを拾いました:{0}", _fieldItem);
 
         // TODO:ActPlayerMoveのアイテムを拾う処理と重複

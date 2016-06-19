@@ -57,7 +57,7 @@ public class ActPlayerThrowItem : Act { // TODO : ActPlayer
         }
     }
 
-    public override void Apply(MainSystem sys) {
+    public override void OnFinished(MainSystem sys) {
         _player.RemoveItem(_item);
     }
 }

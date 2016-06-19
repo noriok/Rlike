@@ -35,7 +35,7 @@ public class ActPlayerAttack : Act {
         }
     }
 
-    public override void Apply(MainSystem sys) {
+    public override void OnFinished(MainSystem sys) {
         DLog.D("{0} attack --> {1}", Actor, _target);
     }
 }

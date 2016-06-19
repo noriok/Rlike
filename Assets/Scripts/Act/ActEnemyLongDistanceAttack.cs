@@ -35,7 +35,7 @@ public class ActEnemyLongDistanceAttack : Act {
         yield return new SkillThunder().Hit(Actor, _target, sys);
     }
 
-    public override void Apply(MainSystem sys) {
+    public override void OnFinished(MainSystem sys) {
         Debug.Log("遠距離攻撃を行いました");
     }
 }

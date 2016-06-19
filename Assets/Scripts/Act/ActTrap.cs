@@ -18,7 +18,7 @@ public class ActTrap : Act {
         yield return _trap.RunAnimation(Actor, sys);
     }
 
-    public override void Apply(MainSystem sys) {
+    public override void OnFinished(MainSystem sys) {
         DLog.D("Trap {0}", Actor);
     }
 }

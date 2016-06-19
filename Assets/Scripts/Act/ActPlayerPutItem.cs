@@ -10,7 +10,7 @@ public class ActPlayerPutItem : Act {
         _item = item;
     }
 
-    public override void Apply(MainSystem sys) {
+    public override void OnFinished(MainSystem sys) {
         Debug.Log("アイテムを置きました");
 
         var item = _player.RemoveItem(_item);

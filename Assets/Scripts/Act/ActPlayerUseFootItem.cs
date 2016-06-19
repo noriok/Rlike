@@ -14,7 +14,7 @@ public class ActPlayerUseFootItem : Act {
         yield return item.Use(Actor, sys);
 	}
 
-	public override void Apply(MainSystem sys) {
+	public override void OnFinished(MainSystem sys) {
 		DLog.D("{0} item", Actor);
 	}
 }

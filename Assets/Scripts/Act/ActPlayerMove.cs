@@ -39,7 +39,7 @@ public class ActPlayerMove : Act {
     //     // Actor.HideDirection();
     // }
 
-    public override void Apply(MainSystem sys) {
+    public override void OnFinished(MainSystem sys) {
         var nextLoc = Actor.Loc.Forward(_dir);
         // DLog.D("{0} move {1} -> {2}", Actor, Actor.Loc, nextLoc);
         Debug.LogFormat("--> {0} -> {1}", Actor.Loc, nextLoc);

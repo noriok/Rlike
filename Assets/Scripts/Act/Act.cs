@@ -18,7 +18,7 @@ public abstract class Act {
         yield break;
     }
 
-    public virtual void Apply(MainSystem sys) {
+    public virtual void OnFinished(MainSystem sys) {
     }
 
     // 他の Act の結果により、無効となった Act かどうか
@@ -66,7 +66,7 @@ public abstract class Act {
         //if (AnimationFinished) {
         if (_animationFinished) {
             // TODO:RunEffectで効果を実行。コールはサブクラスで行う
-            Apply(sys);
+            OnFinished(sys);
             Actor.ActCount--;
             Finished = true;
         }

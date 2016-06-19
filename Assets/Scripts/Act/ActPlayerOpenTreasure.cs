@@ -12,7 +12,7 @@ public class ActPlayerOpenTreasure : Act {
 		yield return _treasure.RunAnimation(Actor, sys);
 	}
 
-	public override void Apply(MainSystem sys) {
+	public override void OnFinished(MainSystem sys) {
 		DLog.D("{0} open treasure", Actor);
 	}
 
