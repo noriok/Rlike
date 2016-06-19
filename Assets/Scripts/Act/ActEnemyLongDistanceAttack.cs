@@ -22,7 +22,7 @@ public class ActEnemyLongDistanceAttack : Act {
         return false;
     }
 
-    protected override IEnumerator RunAnimation(MainSystem sys) {
+    protected override IEnumerator Run(MainSystem sys) {
         // ターゲットの方を向く
         Actor.ChangeDir(Actor.Loc.Toward(_targetLoc));
 

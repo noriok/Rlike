@@ -8,7 +8,7 @@ public class ActPlayerOpenTreasure : Act {
 		_treasure = treasure;
 	}
 
-	protected override IEnumerator RunAnimation(MainSystem sys) {
+	protected override IEnumerator Run(MainSystem sys) {
 		yield return _treasure.RunAnimation(Actor, sys);
 	}
 

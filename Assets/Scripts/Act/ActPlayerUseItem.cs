@@ -11,7 +11,7 @@ public class ActPlayerUseItem : Act {
         _item = item;
     }
 
-    protected override IEnumerator RunAnimation(MainSystem sys) {
+    protected override IEnumerator Run(MainSystem sys) {
         sys.Msg_UseItem(_item);
         yield return _item.Use(Actor, sys);
     }

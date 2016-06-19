@@ -8,7 +8,7 @@ public class ActPlayerUseFootItem : Act {
         _fieldItem = fieldItem;
 	}
 
-	protected override IEnumerator RunAnimation(MainSystem sys) {
+	protected override IEnumerator Run(MainSystem sys) {
         Item item = _fieldItem.Item;
         sys.RemoveFieldItem(_fieldItem);
         yield return item.Use(Actor, sys);

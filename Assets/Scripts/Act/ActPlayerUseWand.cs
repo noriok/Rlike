@@ -10,7 +10,7 @@ public class ActPlayerUseWand : Act {
         _item = item;
     }
 
-    protected override IEnumerator RunAnimation(MainSystem sys) {
+    protected override IEnumerator Run(MainSystem sys) {
         sys.Msg_UseItem(_item);
 
         CharacterBase hitTarget;

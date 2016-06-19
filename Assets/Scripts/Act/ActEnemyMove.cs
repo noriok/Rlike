@@ -31,7 +31,7 @@ public class ActEnemyMove : Act {
         return true;
     }
 
-    protected override IEnumerator RunAnimation(MainSystem sys) {
+    protected override IEnumerator Run(MainSystem sys) {
         Actor.ChangeDir(Utils.ToDir(_drow, _dcol));
         yield return CAction.Walk(Actor, _drow, _dcol, null);
     }

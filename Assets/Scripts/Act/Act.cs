@@ -9,12 +9,12 @@ public abstract class Act {
     protected bool _animationFinished;
 
     private IEnumerator StartAnimation(MainSystem sys) {
-        yield return RunAnimation(sys);
+        yield return Run(sys);
         _animationFinished = true;
     }
 
     // TODO:rename
-    protected virtual IEnumerator RunAnimation(MainSystem sys) {
+    protected virtual IEnumerator Run(MainSystem sys) {
         yield break;
     }
 

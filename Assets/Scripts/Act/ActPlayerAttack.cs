@@ -9,7 +9,7 @@ public class ActPlayerAttack : Act {
         _target = target;
     }
 
-    protected override IEnumerator RunAnimation(MainSystem sys) {
+    protected override IEnumerator Run(MainSystem sys) {
         // 攻撃キャラを、ターゲットの中間に移動させる(攻撃アニメーションの代替)
         var src = Actor.Position;
         var dst = src;

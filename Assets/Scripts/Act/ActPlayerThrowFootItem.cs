@@ -21,7 +21,7 @@ public class ActPlayerThrowFootItem : Act {
         Debug.Log("target = " + target);
     }
 
-    protected override IEnumerator RunAnimation(MainSystem sys) {
+    protected override IEnumerator Run(MainSystem sys) {
         // FieldItem を削除して作り直す。
         Item item = _fieldItem.Item;
         sys.RemoveFieldItem(_fieldItem);

@@ -22,7 +22,7 @@ public class ActPlayerThrowItem : Act { // TODO : ActPlayer
         Debug.Log("target = " + target);
     }
 
-    protected override IEnumerator RunAnimation(MainSystem sys) {
+    protected override IEnumerator Run(MainSystem sys) {
         var fitem = FieldItemFactory.CreateFromItem(_item, _player.Loc);
         fitem.BringToFront();
 

@@ -22,7 +22,7 @@ public class ActEnemyAttack : Act {
         return false;
     }
 
-    protected override IEnumerator RunAnimation(MainSystem sys) {
+    protected override IEnumerator Run(MainSystem sys) {
        // 攻撃キャラを、ターゲットとの中間に移動させる(攻撃アニメーションの代替)
         var src = Actor.Position;
         var dst = src;
