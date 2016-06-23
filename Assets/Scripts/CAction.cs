@@ -12,9 +12,9 @@ public static class CAction {
         }
     }
 
-	public static IEnumerator Walk(CharacterBase target, int drow, int dcol, Action<float, float> updateCallback) {
-		var src = target.Position;
-	    float duration = Config.WalkDuration;
+    public static IEnumerator Walk(CharacterBase target, int drow, int dcol, Action<float, float> updateCallback) {
+        var src = target.Position;
+        float duration = Config.WalkDuration;
         float elapsed = 0;
         float dx = dcol * Config.ChipSize;
         float dy = drow * Config.ChipSize;
@@ -25,16 +25,16 @@ public static class CAction {
             target.Position = new Vector3(x, y, 0);
 
 
-			if (updateCallback != null) updateCallback(x, y);
+            if (updateCallback != null) updateCallback(x, y);
             yield return null;
         }
 
-	    // 位置ずれしないように最終位置にセット
+        // 位置ずれしないように最終位置にセット
         float x2 = src.x + dx;
         float y2 = src.y - dy;
         target.Position = new Vector3(x2, y2, 0);
-		if (updateCallback != null) updateCallback(x2, y2);
-	}
+        if (updateCallback != null) updateCallback(x2, y2);
+    }
 
     public static IEnumerator Move(GameObject target, Loc fm, Loc to) {
         var src = fm.ToPosition();
