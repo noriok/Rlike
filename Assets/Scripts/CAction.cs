@@ -3,6 +3,15 @@ using System;
 using System.Collections;
 
 public static class CAction {
+    private  static IEnumerator Do(float duration, Action<float> action) {
+        float elapsed = 0;
+        while (elapsed <= duration) {
+            action(elapsed);
+            elapsed += Time.deltaTime;
+            yield return null;
+        }
+    }
+
 	public static IEnumerator Walk(CharacterBase target, int drow, int dcol, Action<float, float> updateCallback) {
 		var src = target.Position;
 	    float duration = Config.WalkDuration;
@@ -36,18 +45,15 @@ public static class CAction {
             speed *= 1.2f;
         }
 
-        float elapsed = 0;
         float duration = Vector3.Distance(src, dst) / speed;
-        while (elapsed <= duration) {
-            elapsed += Time.deltaTime;
-
+        yield return Do(duration, elapsed => {
             float x = Mathf.Lerp(src.x, dst.x, elapsed / duration);
             float y = Mathf.Lerp(src.y, dst.y, elapsed / duration);
             target.transform.position = new Vector3(x, y, 0);
-            yield return null;
-        }
+        });
         target.transform.position = dst;
     }
+
 
     // カメラ追従
     public static IEnumerator MovePlayer(Player player, Loc to) {
