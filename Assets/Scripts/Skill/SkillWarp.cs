@@ -19,9 +19,6 @@ public class SkillWarp : Skill {
         sender.Position = loc.ToPosition();
         sender.ChangeDir(Dir.S);
         sender.UpdateLoc(loc);
-        if (sender is Player) { // TODO: player のメソッド内で処理する
-            ((Player)sender).SyncCameraPosition();
-        }
         yield return new WaitForSeconds(0.4f);
     }
 

@@ -3,7 +3,7 @@ using System;
 using System.Collections;
 
 public static class CAction {
-    private  static IEnumerator Do(float duration, Action<float> action) {
+    private  static IEnumerator Run(float duration, Action<float> action) {
         float elapsed = 0;
         while (elapsed <= duration) {
             action(elapsed);
@@ -12,72 +12,36 @@ public static class CAction {
         }
     }
 
-    public static IEnumerator Walk(CharacterBase target, int drow, int dcol, Action<float, float> updateCallback) {
-        var src = target.Position;
-        float duration = Config.WalkDuration;
-        float elapsed = 0;
-        float dx = dcol * Config.ChipSize;
-        float dy = drow * Config.ChipSize;
-        while (elapsed <= duration) {
-            elapsed += Time.deltaTime;
-            float x = Mathf.Lerp(src.x, src.x + dx, elapsed / duration);
-            float y = Mathf.Lerp(src.y, src.y - dy, elapsed / duration);
-            target.Position = new Vector3(x, y, 0);
-
-
-            if (updateCallback != null) updateCallback(x, y);
-            yield return null;
-        }
-
-        // 位置ずれしないように最終位置にセット
-        float x2 = src.x + dx;
-        float y2 = src.y - dy;
-        target.Position = new Vector3(x2, y2, 0);
-        if (updateCallback != null) updateCallback(x2, y2);
-    }
-
     public static IEnumerator Move(GameObject target, Loc fm, Loc to) {
         var src = fm.ToPosition();
         var dst = to.ToPosition();
 
-        float speed = Config.ThrowItemSpeed;
-        if (fm.Row != to.Row && fm.Col != to.Col) {
-            speed *= 1.2f;
-        }
-
+        float speed = fm.IsDiagonal(to) ? Config.DiagonalMoveSpeed : Config.MoveSpeed;
         float duration = Vector3.Distance(src, dst) / speed;
-        yield return Do(duration, elapsed => {
-            float x = Mathf.Lerp(src.x, dst.x, elapsed / duration);
-            float y = Mathf.Lerp(src.y, dst.y, elapsed / duration);
+        yield return Run(duration, elapsed => {
+            float r = elapsed / duration;
+            float x = Mathf.Lerp(src.x, dst.x, r);
+            float y = Mathf.Lerp(src.y, dst.y, r);
             target.transform.position = new Vector3(x, y, 0);
         });
         target.transform.position = dst;
     }
-
 
     // カメラ追従
     public static IEnumerator MovePlayer(Player player, Loc to) {
         Loc fm = player.Loc;
         var src = fm.ToPosition();
         var dst = to.ToPosition();
-
-        float speed = Config.ThrowItemSpeed;
-        if (fm.Row != to.Row && fm.Col != to.Col) {
-            speed *= 1.2f;
-        }
-
-        float elapsed = 0;
+        float speed = fm.IsDiagonal(to) ? Config.DiagonalMoveSpeed : Config.MoveSpeed;
         float duration = Vector3.Distance(src, dst) / speed;
-        while (elapsed <= duration) {
-            elapsed += Time.deltaTime;
-
-            float x = Mathf.Lerp(src.x, dst.x, elapsed / duration);
-            float y = Mathf.Lerp(src.y, dst.y, elapsed / duration);
+        yield return Run(duration, elapsed => {
+            float r = elapsed / duration;
+            float x = Mathf.Lerp(src.x, dst.x, r);
+            float y = Mathf.Lerp(src.y, dst.y, r);
 
             player.Position = new Vector3(x, y, 0);
             player.SyncCameraPosition();
-            yield return null;
-        }
+        });
         player.UpdateLoc(to);
     }
 
@@ -86,22 +50,14 @@ public static class CAction {
         var src = fm.ToPosition();
         var dst = to.ToPosition();
 
-        float speed = Config.ThrowItemSpeed;
-        if (fm.Row != to.Row && fm.Col != to.Col) {
-            speed *= 1.2f;
-        }
-
-        float elapsed = 0;
+        float speed = fm.IsDiagonal(to) ? Config.DiagonalMoveSpeed : Config.MoveSpeed;
         float duration = Vector3.Distance(src, dst) / speed;
-        while (elapsed <= duration) {
-            elapsed += Time.deltaTime;
-
-            float x = Mathf.Lerp(src.x, dst.x, elapsed / duration);
-            float y = Mathf.Lerp(src.y, dst.y, elapsed / duration);
-
+        yield return Run(duration, elapsed => {
+            float r = elapsed / duration;
+            float x = Mathf.Lerp(src.x, dst.x, r);
+            float y = Mathf.Lerp(src.y, dst.y, r);
             enemy.Position = new Vector3(x, y, 0);
-            yield return null;
-        }
+        });
         enemy.UpdateLoc(to);
     }
 
@@ -132,14 +88,10 @@ public static class CAction {
         var color = renderer.color;
         color.a = fm;
         renderer.color = color;
-
-        float elapsed = 0f;
-        while (elapsed <= duration) {
-            elapsed += Time.deltaTime;
+        yield return Run(duration, elapsed => {
             float alpha = Mathf.Lerp(fm, to, elapsed / duration);
             color.a = alpha;
             renderer.color = color;
-            yield return null;
-        }
+        });
     }
 }

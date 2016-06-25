@@ -31,11 +31,6 @@ public class ActEnemyMove : Act {
         return true;
     }
 
-    protected override IEnumerator Run(MainSystem sys) {
-        Actor.ChangeDir(Utils.ToDir(_drow, _dcol));
-        yield return CAction.Walk(Actor, _drow, _dcol, null);
-    }
-
     public override void OnFinished(MainSystem sys) {
         var nextLoc = Actor.Loc + new Loc(_drow, _dcol);
         DLog.D("{0} move {1} -> {2}", Actor, Actor.Loc, nextLoc);

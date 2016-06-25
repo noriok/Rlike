@@ -47,8 +47,8 @@ public class Map {
         }
 
         _mapLayer = LayerManager.GetLayer(LayerName.Map);
-        _spotRoomLayer = LayerManager.GetLayer(LayerName.SpotRoom);
-        _spotPassageLayer = LayerManager.GetLayer(LayerName.SpotPassage);
+        _spotRoomLayer = LayerManager.GetLayer(LayerName.SpotlightRoom);
+        _spotPassageLayer = LayerManager.GetLayer(LayerName.SpotlightPassage);
 
         var spotCircle = Resources.Load<GameObject>("Prefabs/Spotlight/spot");
         _spotCircle = spotCircle.Create(new Loc(0, 0).ToPosition());

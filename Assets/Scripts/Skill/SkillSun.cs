@@ -17,7 +17,7 @@ public class SkillSun : Skill {
         yield return CAction.Fade(mask, 0, 1, 0.8f);
 
         // マップ切り替え
-        yield return sys.Sun();
+        yield return sys.Sun(sender.Loc);
 
         yield return new WaitForSeconds(1.0f);
 

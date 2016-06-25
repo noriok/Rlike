@@ -11,7 +11,7 @@ public class Player : CharacterBase {
     private Dictionary<Dir, GameObject> _dirs = new Dictionary<Dir, GameObject>();
 
     public Player(Loc loc, GameObject gobj) : base(loc, gobj) {
-        Hp = MaxHp = 15;
+        Hp = MaxHp = 255;
         var textHp = GameObject.Find("Canvas/Header/Text_HP_Value").GetComponent<Text>();
         textHp.text = string.Format("{0}/{1}", Hp, MaxHp);
 
@@ -218,19 +218,13 @@ public class Player : CharacterBase {
 
     public override void OnStatusAdded(StatusType status) {
         if (status == StatusType.Invisible) {
-            var renderer = _gobj.GetComponent<SpriteRenderer>();
-            var color = renderer.color;
-            color.a = 0.4f;
-            renderer.color = color;
+            _gobj.SetAlpha(0.4f);
         }
     }
 
     public override void OnStatusRemoved(StatusType status) {
         if (status == StatusType.Invisible) {
-            var renderer = _gobj.GetComponent<SpriteRenderer>();
-            var color = renderer.color;
-            color.a = 1.0f;
-            renderer.color = color;
+            _gobj.SetAlpha(1.0f);
         }
     }
 

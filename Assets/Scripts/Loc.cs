@@ -168,4 +168,9 @@ public struct Loc : IEquatable<Loc> {
         float y = -Row * Config.ChipSize;
         return new Vector3(x, y, 0);
     }
+
+    public bool IsDiagonal(Loc loc) {
+        return Row != loc.Row && Col != loc.Col;
+    }
 }
+

@@ -35,13 +35,17 @@ public class Floor {
     }
 
     // 水がれ
-    public IEnumerator Sun() {
+    public IEnumerator Sun(Loc playerLoc) {
         var mapData = _map.MapData;
         LayerManager.RemoveLayer(LayerName.Map);
         LayerManager.RemoveLayer(LayerName.Minimap);
+        LayerManager.RemoveLayer(LayerName.SpotlightPassage);
+        LayerManager.RemoveLayer(LayerName.SpotlightRoom);
         yield return null;
         LayerManager.CreateLayer(LayerName.Map);
         LayerManager.CreateLayer(LayerName.Minimap);
+        LayerManager.CreateLayer(LayerName.SpotlightPassage);
+        LayerManager.CreateLayer(LayerName.SpotlightRoom);
 
         for (int i = 0; i < mapData.GetLength(0); i++) {
             for (int j = 0; j < mapData.GetLength(1); j++) {
@@ -53,6 +57,9 @@ public class Floor {
 
         _map = new Map(mapData);
         _minimap = new Minimap(mapData, _fieldObjects, StairsLoc);
+        _map.UpdatePassageSpotlightPosition(playerLoc.ToPosition());
+        _map.UpdateSpot(playerLoc);
+
     }
 
     private T FindFieldObject<T>(Loc loc) where T : FieldObject {

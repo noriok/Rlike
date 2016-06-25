@@ -114,8 +114,8 @@ public static class FloorCreator {
         player.ClearItems();
         player.UpdateHp(player.MaxHp);
 
-        // Data data = D3();
-        Data data = GetData(floorNumber);
+        Data data = D1_0();
+        // Data data = GetData(floorNumber);
         char[,] mapData = CreateMap(data.Map);
         var map = new Map(mapData);
 
@@ -140,6 +140,22 @@ public static class FloorCreator {
 
     // ------ フロアデータ
 
+    private static Data D1_0() {
+        const string map = TestMap;
+
+        var stairsLoc = new Loc(4, 3);
+        var playerLoc = new Loc(5, 3);
+
+        var fobjs = new List<FieldObject>();
+        var fitems = new List<FieldItem>();
+        fitems.Add(FieldItemFactory.CreateMagic(new Loc(6, 3), 4));
+
+        var enemies = new List<Enemy>();
+        enemies.Add(EnemyFactory.CreateEnemy(new Loc(5, 5)));
+
+        return new Data(map, stairsLoc, playerLoc, fobjs, fitems, enemies);
+    }
+
     private static Data D1() {
         const string map = @"
 .......
@@ -158,12 +174,14 @@ public static class FloorCreator {
         // fobjs.Add(FieldObjectFactory.CreateTrapHeal(new Loc(2, 4)));
 
         var fitems = new List<FieldItem>();
-        /*
-        fitems.Add(FieldItemFactory.CreateWand(new Loc(2, 3), 3));
-        fitems.Add(FieldItemFactory.CreateWand(new Loc(3, 2), 3));
-        fitems.Add(FieldItemFactory.CreateWand(new Loc(3, 3), 3));
-        fitems.Add(FieldItemFactory.CreateWand(new Loc(3, 4), 3));
-        */
+
+        // fitems.Add(FieldItemFactory.CreateWand(new Loc(2, 3), 3));
+        // fitems.Add(FieldItemFactory.CreateWand(new Loc(3, 2), 0));
+        // fitems.Add(FieldItemFactory.CreateWand(new Loc(3, 3), 1));
+        // fitems.Add(FieldItemFactory.CreateWand(new Loc(3, 4), 2));
+
+
+        fitems.Add(FieldItemFactory.CreateHerb(new Loc(2, 3), 0));
         var enemies = new List<Enemy>();
 
         return new Data(map, stairsLoc, playerLoc, fobjs, fitems, enemies);

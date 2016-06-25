@@ -1,8 +1,9 @@
 ﻿using UnityEngine;
 using UnityEngine.Assertions;
-// using System.Collections;
+using System.Collections.Generic;
 
 public class LayerManager {
+    private static Dictionary<string, GameObject> _layerDictionary = new Dictionary<string, GameObject>();
 
     private static string[] _layerNames = new[] {
         LayerName.Enemy,
@@ -11,8 +12,8 @@ public class LayerManager {
         LayerName.Trap,
         LayerName.Map,
         LayerName.Minimap,
-        LayerName.SpotRoom,
-        LayerName.SpotPassage,
+        LayerName.SpotlightPassage,
+        LayerName.SpotlightRoom,
     };
 
     public static void CreateAllLayer() {
@@ -22,25 +23,31 @@ public class LayerManager {
     }
 
     public static void CreateLayer(string layerName) {
-        // Debug.LogFormat("--> Create layer:{0}", layerName);
-        new GameObject(layerName);
+        Assert.IsTrue(!_layerDictionary.ContainsKey(layerName));
+        var layer = new GameObject(layerName);
+        _layerDictionary[layerName] = layer;
     }
 
     public static void RemoveAllLayer() {
-        foreach (var name in _layerNames) {
-            RemoveLayer(name);
+        foreach (var layer in _layerDictionary.Values) {
+            Assert.IsTrue(layer != null);
+            GameObject.Destroy(layer);
         }
+        _layerDictionary.Clear();
     }
 
     public static void RemoveLayer(string layerName) {
-        var layer = GameObject.Find(layerName);
-        Assert.IsTrue(layer != null);
-        // Debug.Log("--> destroy layer = " + layer);
-        GameObject.Destroy(layer);
+        if (_layerDictionary.ContainsKey(layerName)) {
+            var layer = _layerDictionary[layerName];
+            Assert.IsTrue(layer != null);
+            GameObject.Destroy(layer);
+            _layerDictionary.Remove(layerName);
+        }
     }
 
     public static GameObject GetLayer(string layerName) {
-        var layer = GameObject.Find(layerName);
+
+        var layer = _layerDictionary[layerName];
         Assert.IsTrue(layer != null);
         return layer;
     }

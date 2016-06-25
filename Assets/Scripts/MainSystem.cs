@@ -1139,8 +1139,8 @@ public class MainSystem : MonoBehaviour {
     // }
 
     // 水がれ
-    public IEnumerator Sun() {
-        yield return _floor.Sun();
+    public IEnumerator Sun(Loc playerLoc) {
+        yield return _floor.Sun(playerLoc);
     }
 
     public CharacterBase[] GetEnemies() {
