@@ -52,7 +52,7 @@ public class Map {
 
         var spotCircle = Resources.Load<GameObject>("Prefabs/Spotlight/spot");
         _spotCircle = spotCircle.Create(new Loc(0, 0).ToPosition());
-        _spotCircle.SetAlpha(0.8f);
+        _spotCircle.SetAlpha(Config.SpotLightAlpha);
         _spotCircle.transform.SetParent(_spotPassageLayer.transform);
 
         var black40x40 = Resources.Load<GameObject>("Prefabs/Spotlight/black40x40");
@@ -114,13 +114,7 @@ public class Map {
 
     private GameObject CreateSpot(GameObject prefab, int row, int col) {
         var spot = prefab.Create(new Loc(row, col).ToPosition());
-        spot.SetAlpha(0.8f);
-        /*
-        var renderer = spot.GetComponent<SpriteRenderer>();
-        var color = renderer.color;
-        color.a = 0.8f;
-        renderer.color = color;
-        */
+        spot.SetAlpha(Config.SpotLightAlpha);
         spot.transform.SetParent(_spotRoomLayer.transform);
         return spot;
     }
@@ -293,7 +287,6 @@ public class Map {
     }
 
     private void UpdateSpotLight(Room room, bool on) {
-        // Debug.LogFormat("spot {0} room:{1}", on ? "on" : "off", room.Id);
         int rowFm = Math.Max(0, room.Row - 1);
         int rowTo = Math.Min(room.Row + room.Height, Rows - 1);
         int colFm = Math.Max(0, room.Col - 1);

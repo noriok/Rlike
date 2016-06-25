@@ -14,4 +14,6 @@
     public const float WalkDuration = 0.27f;
 
     public const float ThrowItemSpeed = 4.5f;
+
+    public const float SpotLightAlpha = 0.65f;
 }
