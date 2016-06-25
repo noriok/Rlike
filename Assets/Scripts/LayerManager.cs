@@ -11,6 +11,8 @@ public class LayerManager {
         LayerName.Trap,
         LayerName.Map,
         LayerName.Minimap,
+        LayerName.SpotRoom,
+        LayerName.SpotPassage,
     };
 
     public static void CreateAllLayer() {

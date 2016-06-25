@@ -1,8 +1,9 @@
 ﻿using UnityEngine;
+using UnityEngine.Assertions;
 using System;
 // using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
+// using System.Linq;
 
 public class Map {
     private const int NoRoom = -1;
@@ -12,14 +13,21 @@ public class Map {
     public int Cols { get { return MapData.GetLength(1); } }
 
     private GameObject _mapLayer;
+    private GameObject _spotRoomLayer;
+    private GameObject _spotPassageLayer;
 
     private Room[] _rooms; // TODOプロパティに変更
     private int[,] _roomMap;
+
+    private GameObject[,] _spots;
+    private GameObject _spotCircle;
 
     public Map(char[,] mapData) {
         MapData = mapData;
         int rows = mapData.GetLength(0);
         int cols = mapData.GetLength(1);
+
+        _spots = new GameObject[rows, cols];
 
         _rooms = GetRooms();
         // _roomMap に各マスがどの部屋に所属しているのか、部屋番号を格納する
@@ -39,11 +47,20 @@ public class Map {
         }
 
         _mapLayer = LayerManager.GetLayer(LayerName.Map);
+        _spotRoomLayer = LayerManager.GetLayer(LayerName.SpotRoom);
+        _spotPassageLayer = LayerManager.GetLayer(LayerName.SpotPassage);
 
+        var spotCircle = Resources.Load<GameObject>("Prefabs/Spotlight/spot");
+        _spotCircle = spotCircle.Create(new Loc(0, 0).ToPosition());
+        _spotCircle.SetAlpha(0.8f);
+        _spotCircle.transform.SetParent(_spotPassageLayer.transform);
+
+        var black40x40 = Resources.Load<GameObject>("Prefabs/Spotlight/black40x40");
         var flat = Resources.Load("Prefabs/MapChip/pipo-map001_0");
         var mountain = Resources.Load("Prefabs/MapChip/pipo-map001_at-yama2_0");
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < cols; j++) {
+                _spots[i, j] = CreateSpot(black40x40, i, j);
 
                 if (MapData[i, j] == MapChar.Water || MapData[i, j] == MapChar.Sand) {
                     var dir = Dir.N;
@@ -93,6 +110,19 @@ public class Map {
         var gobj = (GameObject)GameObject.Instantiate(obj, loc.ToPosition(), Quaternion.identity);
         gobj.transform.SetParent(layer.transform);
         return gobj;
+    }
+
+    private GameObject CreateSpot(GameObject prefab, int row, int col) {
+        var spot = prefab.Create(new Loc(row, col).ToPosition());
+        spot.SetAlpha(0.8f);
+        /*
+        var renderer = spot.GetComponent<SpriteRenderer>();
+        var color = renderer.color;
+        color.a = 0.8f;
+        renderer.color = color;
+        */
+        spot.transform.SetParent(_spotRoomLayer.transform);
+        return spot;
     }
 
     private char GetMapChar(Loc loc) {
@@ -184,6 +214,11 @@ public class Map {
         return null;
     }
 
+    private Room GetRoom(int roomId) {
+        Assert.IsTrue(0 <= roomId && roomId < _rooms.Length);
+        return _rooms[roomId];
+    }
+
     public Room[] GetRooms() {
         if (_rooms != null) return _rooms;
 
@@ -241,7 +276,8 @@ public class Map {
 
                     int width = maxC - minC + 1;
                     int height = maxR - minR + 1;
-                    var room = new Room(minR, minC, width, height, entrances);
+                    int id = rooms.Count;
+                    var room = new Room(id, minR, minC, width, height, entrances);
                     rooms.Add(room);
                 }
 
@@ -250,5 +286,45 @@ public class Map {
 
         _rooms = rooms.ToArray();
         return _rooms;
+    }
+
+    public void UpdatePassageSpotlightPosition(Vector3 pos) {
+        _spotCircle.transform.position = pos;
+    }
+
+    private void UpdateSpotLight(Room room, bool on) {
+        // Debug.LogFormat("spot {0} room:{1}", on ? "on" : "off", room.Id);
+        int rowFm = Math.Max(0, room.Row - 1);
+        int rowTo = Math.Min(room.Row + room.Height, Rows - 1);
+        int colFm = Math.Max(0, room.Col - 1);
+        int colTo = Math.Min(room.Col + room.Width, Cols - 1);
+        for (int r = rowFm; r <= rowTo; r++) {
+            for (int c = colFm; c <= colTo; c++) {
+                _spots[r, c].gameObject.SetActive(!on);
+            }
+        }
+    }
+
+    private int _prevVisitedRoomId = -1; // 前回入った部屋
+    public void UpdateSpot(Loc loc) {
+        Room room = FindRoom(loc);
+        if (room == null) {
+            _spotRoomLayer.SetActive(false);
+            _spotPassageLayer.SetActive(true);
+        }
+        else {
+            // 差分更新
+            if (_prevVisitedRoomId != room.Id) {
+                // 前回入った部屋と異なるなら、前回の部屋のスポットを消す
+                if (_prevVisitedRoomId != -1) {
+                    UpdateSpotLight(GetRoom(_prevVisitedRoomId), false);
+                }
+                // 新しく入った部屋のスポットを付ける
+                UpdateSpotLight(room, true);
+                _prevVisitedRoomId = room.Id;
+            }
+            _spotPassageLayer.SetActive(false);
+            _spotRoomLayer.SetActive(true);
+        }
     }
 }

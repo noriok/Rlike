@@ -3,13 +3,15 @@ using System;
 using System.Collections.Generic;
 
 public class Room {
+    public int Id { get; private set; }
 	public int Row { get; private set; }
 	public int Col { get; private set; }
 	public int Width { get; private set; }
 	public int Height { get; private set; }
 	public Loc[] Entrances { get; private set; }
 
-	public Room(int row, int col, int width, int height, List<Loc> entrances) {
+	public Room(int id, int row, int col, int width, int height, List<Loc> entrances) {
+        Id = id;
 		Row = row;
 		Col = col;
 		Width = width;

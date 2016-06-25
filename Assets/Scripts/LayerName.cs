@@ -6,4 +6,8 @@
 	public const string Trap = "Trap Layer";
 	public const string Enemy = "Enemy Layer";
 	public const string Item = "Item Layer";
+    public const string SpotRoom = "Spot Room Layer";
+    public const string SpotPassage = "Spot Passage Layer";
+
 }
+

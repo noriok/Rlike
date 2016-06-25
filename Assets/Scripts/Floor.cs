@@ -188,4 +188,12 @@ public class Floor {
             }
         }
     }
+
+    public void UpdateSpot(Loc loc) {
+        _map.UpdateSpot(loc);
+    }
+
+    public void UpdatePassageSpotlightPosition(Vector3 pos) {
+        _map.UpdatePassageSpotlightPosition(pos);
+    }
 }

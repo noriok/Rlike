@@ -62,6 +62,7 @@ public class ActPlayerMove : Act {
         }
 
         sys.UpdateMinimap();
+        sys.UpdateSpot(nextLoc);
     }
 
     public override bool IsManualUpdate() {
@@ -81,6 +82,8 @@ public class ActPlayerMove : Act {
         Actor.Position = new Vector3(x, y, 0);
 
         _player.SyncCameraPosition();
+        sys.UpdatePassageSpotlightPosition(Actor.Position);
+
         if (_elapsed >= Config.WalkDuration) {
             _animationFinished = true;
             // 位置ずれ防止

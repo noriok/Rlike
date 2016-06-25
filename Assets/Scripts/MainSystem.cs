@@ -435,6 +435,8 @@ public class MainSystem : MonoBehaviour {
         _floor = FloorCreator.CreateFloor(_floorNumber, _player, this);
         yield return null; // TODO:yield return null を入れるとミニマップの位置が更新される
         _player.SyncCameraPosition();
+        UpdatePassageSpotlightPosition(_player.Position);
+        UpdateSpot(_player.Loc);
 
         var text = GameObject.Find("Canvas/Header/Text_Floor").GetComponent<Text>();
         text.text = string.Format("{0}F", _floorNumber);
@@ -1190,5 +1192,13 @@ public class MainSystem : MonoBehaviour {
 
     public void Msg_ThrowItem(Item item) {
         _mm.Message("プレイヤーは", item.Name + " を投げた！");
+    }
+
+    public void UpdateSpot(Loc loc) {
+        _floor.UpdateSpot(loc);
+    }
+
+    public void UpdatePassageSpotlightPosition(Vector3 pos) {
+        _floor.UpdatePassageSpotlightPosition(pos);
     }
 }
