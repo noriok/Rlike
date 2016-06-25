@@ -2,7 +2,7 @@
 using UnityEngine.UI;
 using UnityEngine.Assertions;
 using System;
-using System.Collections;
+// using System.Collections;
 using System.Collections.Generic;
 
 public class ScrollController : MonoBehaviour {

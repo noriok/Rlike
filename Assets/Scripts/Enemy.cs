@@ -13,17 +13,17 @@ public class Enemy : CharacterBase {
 
     public Enemy(Loc loc, GameObject gobj) : base(loc, gobj) {
         // HP バー
-        var barRed = (GameObject)GameObject.Instantiate(Resources.Load("Prefabs/HpBar/bar-red"), Vector3.zero, Quaternion.identity);
+        var barRed = Res.Bless("Prefabs/HpBar/bar-red");
         barRed.transform.SetParent(gobj.transform);
         barRed.transform.localPosition = new Vector3(0, 0.18f, 0);
 
-        var barYellow = (GameObject)GameObject.Instantiate(Resources.Load("Prefabs/HpBar/bar-yellow"), Vector3.zero, Quaternion.identity);
+        var barYellow = Res.Bless("Prefabs/HpBar/bar-yellow");
         barYellow.transform.SetParent(gobj.transform);
         barYellow.transform.localPosition = new Vector3(-0.15f, 0.18f, 0);
         barYellow.transform.localScale = new Vector3(HP_GAUGE_MAX_SCALE, 1, 1);
         _barYellow = barYellow;
 
-        var barGreen = (GameObject)GameObject.Instantiate(Resources.Load("Prefabs/HpBar/bar-green"), Vector3.zero, Quaternion.identity);
+        var barGreen = Res.Bless("Prefabs/HpBar/bar-green");
         barGreen.transform.SetParent(gobj.transform);
         barGreen.transform.localPosition = new Vector3(-0.15f, 0.18f, 0);
         barGreen.transform.localScale = new Vector3(HP_GAUGE_MAX_SCALE, 1, 1);
@@ -53,16 +53,11 @@ public class Enemy : CharacterBase {
         yield return new WaitForSeconds(0.43f);
 
         float duration = 0.3f;
-        float elapsed = 0;
-        while (elapsed <= duration) {
-            elapsed += Time.deltaTime;
-
-            // float p = Mathf.Lerp(fm, to, elapsed / duration);
-            float p = UTween.Ease(EaseType.OutQuad, fm, to, elapsed / duration);
+        yield return CAction.Run(duration, elapsed => {
+           float p = UTween.Ease(EaseType.OutQuad, fm, to, elapsed / duration);
             float scale = p * HP_GAUGE_MAX_SCALE / MaxHp;
             _barYellow.transform.localScale = new Vector3(scale, 1, 1);
-            yield return null;
-        }
+        });
     }
 
     public override string ToString() {

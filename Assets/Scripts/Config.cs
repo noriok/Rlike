@@ -13,7 +13,9 @@
     // TODO:デバッグでスピード調整できるように
     public const float WalkDuration = 0.27f;
 
-    public const float ThrowItemSpeed = 4.5f;
+    public const float ItemThrowSpeed = 4.5f;
+    public const float ItemThrowDiagonalSpeed = ItemThrowSpeed  * 1.2f;
+
     public const float MoveSpeed = 4.5f;
     public const float DiagonalMoveSpeed = MoveSpeed * 1.2f;
 

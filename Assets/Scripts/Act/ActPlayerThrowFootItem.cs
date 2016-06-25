@@ -31,22 +31,11 @@ public class ActPlayerThrowFootItem : Act {
 
         Vector3 src = _player.Loc.ToPosition();
         Vector3 dst = _targetLoc.ToPosition();
-        float speed = Config.ThrowItemSpeed;
-
-        if (_player.Dir.IsDiagonal()) { // 斜め方向はスピードを速める
-            speed *= 1.2f;
-        }
+        float speed = _player.Dir.IsDiagonal() ? Config.ItemThrowDiagonalSpeed : Config.ItemThrowSpeed;
         float duration = Vector3.Distance(src, dst) / speed;
-
-        float elapsed = 0;
-        while (elapsed <= duration) {
-            elapsed += Time.deltaTime;
-
-            float x = Mathf.Lerp(src.x, dst.x, elapsed / duration);
-            float y = Mathf.Lerp(src.y, dst.y, elapsed / duration);
-            fitem.UpdatePosition(new Vector3(x, y, 0));
-            yield return null;
-        }
+        yield return CAction.Lerp(duration, src, dst, pos => {
+            fitem.Position = pos;
+        });
 
         fitem.ResetZOrder();
 
@@ -63,6 +52,4 @@ public class ActPlayerThrowFootItem : Act {
     public override void OnFinished(MainSystem sys) {
 
     }
-
-
 }

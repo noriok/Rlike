@@ -243,7 +243,7 @@ public class MainSystem : MonoBehaviour {
         for (int i = 0; i < n; i++) {
             const int tryCount = 10;
             for (int j = 0; j < tryCount; j++) {
-                var loc = Utils.RandomRoomLoc(Utils.Choice(rooms));
+                var loc = Utils.RandomRoomLoc(rooms.Choice());
 
                 // TODO:敵を配置可能か調べるメソッド
                 if (_floor.ExistsObstacle(loc)) continue;
@@ -267,7 +267,7 @@ public class MainSystem : MonoBehaviour {
         for (int i = 0; i < n; i++) {
             const int tryCount = 10;
             for (int j = 0; j < tryCount; j++) {
-                var loc = Utils.RandomRoomLoc(Utils.Choice(rooms));
+                var loc = Utils.RandomRoomLoc(rooms.Choice());
 
                 // 既にアイテム配置済みなら置けない
                 if (_fieldItems.Where(e => e.Loc == loc).Any()) continue;
@@ -1074,7 +1074,7 @@ public class MainSystem : MonoBehaviour {
         var rand = new System.Random();
         const int retryCount = 20;
         for (int i = 0; i < retryCount; i++) {
-            var room = Utils.Choice(_floor.GetRooms());
+            var room = _floor.GetRooms().Choice();
 
             int r = rand.Next(room.Row, room.Row + room.Height);
             int c = rand.Next(room.Col, room.Col + room.Width);
@@ -1098,7 +1098,7 @@ public class MainSystem : MonoBehaviour {
         }
 
         for (int i = 0; i < retryCount; i++) {
-            var room = Utils.Choice(rooms);
+            var room = rooms.Choice();
 
             int r = rand.Next(room.Row, room.Row + room.Height);
             int c = rand.Next(room.Col, room.Col + room.Width);

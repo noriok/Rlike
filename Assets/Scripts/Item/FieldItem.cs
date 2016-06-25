@@ -1,9 +1,13 @@
 ﻿using UnityEngine;
-using System.Collections;
 
 public class FieldItem {
 	public Item Item { get; private set; }
 	public Loc Loc { get; private set; }
+    public Vector3 Position {
+        get { return _gobj.transform.position; }
+        set { _gobj.transform.position = value; }
+    }
+
 	private GameObject _gobj;
 
 	public FieldItem(Item item, Loc loc, GameObject gobj) {
@@ -17,13 +21,9 @@ public class FieldItem {
 		GameObject.Destroy(_gobj);
 	}
 
-    public void UpdatePosition(Vector3 pos) {
-        _gobj.transform.position = pos;
-    }
-
     public void UpdateLoc(Loc loc) {
         Loc = loc;
-        UpdatePosition(loc.ToPosition());
+        Position = loc.ToPosition();
     }
 
     private void ChangeSortingLayerName(string sortingLayerName) {

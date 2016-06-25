@@ -92,26 +92,5 @@ public class MapSpotlight {
             UpdateRoomSpotlight(room, true);
             _prevVisitedRoom = room;
         }
-
-/*
-        Room room = FindRoom(loc);
-        if (room == null) {
-            _spotRoomLayer.SetActive(false);
-            _spotPassageLayer.SetActive(true);
-        }
-        else {
-            // 差分更新
-            if (_prevVisitedRoomId != room.Id) {
-                // 前回入った部屋と異なるなら、前回の部屋のスポットを消す
-                if (_prevVisitedRoomId != -1) {
-                    UpdateSpotLight(GetRoom(_prevVisitedRoomId), false);
-                }
-                // 新しく入った部屋のスポットを付ける
-                UpdateSpotLight(room, true);
-                _prevVisitedRoomId = room.Id;
-            }
-            _spotPassageLayer.SetActive(false);
-            _spotRoomLayer.SetActive(true);
-        }*/
     }
 }

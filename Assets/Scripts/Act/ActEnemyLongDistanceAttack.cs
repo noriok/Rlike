@@ -27,10 +27,9 @@ public class ActEnemyLongDistanceAttack : Act {
         Actor.ChangeDir(Actor.Loc.Toward(_targetLoc));
 
         // 魔法弾を飛ばす
-        var obj = Resources.Load("Prefabs/Effect/magic-ball");
-        var gobj = (GameObject)GameObject.Instantiate(obj);
-        yield return CAction.Move(gobj, Actor.Loc, _targetLoc);
-        GameObject.Destroy(gobj);
+        var obj = Res.Bless("Prefabs/Effect/magic-ball");
+        yield return CAction.Move(obj, Actor.Loc, _targetLoc);
+        GameObject.Destroy(obj);
         // いかずち
         yield return new SkillThunder().Hit(Actor, _target, sys);
     }

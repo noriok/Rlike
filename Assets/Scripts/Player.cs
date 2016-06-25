@@ -10,6 +10,9 @@ public class Player : CharacterBase {
     private List<Item> _items = new List<Item>();
     private Dictionary<Dir, GameObject> _dirs = new Dictionary<Dir, GameObject>();
 
+    private Camera _camera;
+    private GameObject _minimapLayer;
+
     public Player(Loc loc, GameObject gobj) : base(loc, gobj) {
         Hp = MaxHp = 255;
         var textHp = GameObject.Find("Canvas/Header/Text_HP_Value").GetComponent<Text>();
@@ -46,15 +49,18 @@ public class Player : CharacterBase {
     }
 
     public void SyncCameraPosition() {
-        var camera = GameObject.Find("Main Camera").GetComponent<Camera>();
-        var minimapLayer = GameObject.Find(LayerName.Minimap);
+        if (_camera == null) {
+            _camera = GameObject.Find("Main Camera").GetComponent<Camera>();
+        }
+        if (_minimapLayer == null) {
+            _minimapLayer = GameObject.Find(LayerName.Minimap);
+        }
 
-        float cameraZ = camera.transform.position.z;
+        float cameraZ = _camera.transform.position.z;
         float x = Position.x;
         float y = Position.y;
-        camera.transform.position = new Vector3(x, y + Config.CameraOffsetY, cameraZ);
-
-        minimapLayer.transform.localPosition = new Vector3(x + Config.MinimapOffsetX, y + Config.MinimapOffsetY, 0);
+        _camera.transform.position = new Vector3(x, y + Config.CameraOffsetY, cameraZ);
+        _minimapLayer.transform.localPosition = new Vector3(x + Config.MinimapOffsetX, y + Config.MinimapOffsetY, 0);
     }
 
     public override void ShowDirection(Dir dir) {

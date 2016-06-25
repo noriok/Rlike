@@ -13,7 +13,6 @@ public abstract class Act {
         _animationFinished = true;
     }
 
-    // TODO:rename
     protected virtual IEnumerator Run(MainSystem sys) {
         yield break;
     }
@@ -63,7 +62,6 @@ public abstract class Act {
             Update(sys);
         }
 
-        //if (AnimationFinished) {
         if (_animationFinished) {
             // TODO:RunEffectで効果を実行。コールはサブクラスで行う
             OnFinished(sys);

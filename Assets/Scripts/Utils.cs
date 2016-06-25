@@ -15,11 +15,6 @@ public static class Utils {
         }
     }
 
-    public static T Choice<T>(T[] xs) {
-        Assert.IsTrue(xs.Length > 0);
-        return xs[_rand.Next(xs.Length)];
-    }
-
     public static Loc RandomRoomLoc(Room room) {
         int r = room.Row + _rand.Next(room.Height);
         int c = room.Col + _rand.Next(room.Width);
@@ -87,7 +82,7 @@ public static class Utils {
         return gobj;
     }
 
-    public static T[,] CreateArray2D<T>(int rows, int cols, T val) {
+    public static T[,] CreateArray2D<T>(int rows, int cols, T val = default(T)) {
         var ary = new T[rows, cols];
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < cols; j++) {

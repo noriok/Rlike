@@ -206,11 +206,11 @@ public static class EnemyStrategy {
                         Assert.IsTrue(room != null && room.Entrances.Length > 0);
                         Loc[] entrances = room.Entrances;
                         if (entrances.Length > 1) {
-                            // 隣接する入り口には向かわない(通路から部屋に入って、また通路に戻るパターン)
+                            // 隣接する入り口には向かわない(通路から部屋に入って、また通路に戻るパターンは除外)
                             entrances = entrances.Where(e => !e.IsNeighbor(enemy.Loc)).ToArray();
                         }
 
-                        Loc target = Utils.Choice(entrances);
+                        Loc target = entrances.Choice();
                         enemy.LockOn(target);
                         foreach (var loc in Approach(enemy.Loc, enemy.Target)) {
                             Dir dir = enemy.Loc.Toward(loc);
@@ -336,11 +336,11 @@ public static class EnemyStrategy {
 
                         Loc[] entrances = room.Entrances;
                         if (entrances.Length > 1) {
-                            // 隣接する入り口には向かわない(通路から部屋に入って、また通路に戻るパターン)
+                            // 隣接する入り口には向かわない(通路から部屋に入って、また通路に戻るパターンは除外)
                             entrances = entrances.Where(e => !e.IsNeighbor(enemy.Loc)).ToArray();
                         }
 
-                        Loc target = Utils.Choice(entrances);
+                        Loc target = entrances.Choice();
                         enemy.LockOn(target);
                         foreach (var loc in Approach(enemy.Loc, enemy.Target)) {
                             Dir dir = enemy.Loc.Toward(loc);

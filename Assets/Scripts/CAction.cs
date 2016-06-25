@@ -3,7 +3,7 @@ using System;
 using System.Collections;
 
 public static class CAction {
-    private  static IEnumerator Run(float duration, Action<float> action) {
+    public static IEnumerator Run(float duration, Action<float> action) {
         float elapsed = 0;
         while (elapsed <= duration) {
             action(elapsed);
@@ -18,11 +18,8 @@ public static class CAction {
 
         float speed = fm.IsDiagonal(to) ? Config.DiagonalMoveSpeed : Config.MoveSpeed;
         float duration = Vector3.Distance(src, dst) / speed;
-        yield return Run(duration, elapsed => {
-            float r = elapsed / duration;
-            float x = Mathf.Lerp(src.x, dst.x, r);
-            float y = Mathf.Lerp(src.y, dst.y, r);
-            target.transform.position = new Vector3(x, y, 0);
+        yield return Lerp(duration, src, dst, pos => {
+            target.transform.position = pos;
         });
         target.transform.position = dst;
     }
@@ -34,12 +31,8 @@ public static class CAction {
         var dst = to.ToPosition();
         float speed = fm.IsDiagonal(to) ? Config.DiagonalMoveSpeed : Config.MoveSpeed;
         float duration = Vector3.Distance(src, dst) / speed;
-        yield return Run(duration, elapsed => {
-            float r = elapsed / duration;
-            float x = Mathf.Lerp(src.x, dst.x, r);
-            float y = Mathf.Lerp(src.y, dst.y, r);
-
-            player.Position = new Vector3(x, y, 0);
+        yield return Lerp(duration, src, dst, pos => {
+            player.Position = pos;
             player.SyncCameraPosition();
         });
         player.UpdateLoc(to);
@@ -52,11 +45,8 @@ public static class CAction {
 
         float speed = fm.IsDiagonal(to) ? Config.DiagonalMoveSpeed : Config.MoveSpeed;
         float duration = Vector3.Distance(src, dst) / speed;
-        yield return Run(duration, elapsed => {
-            float r = elapsed / duration;
-            float x = Mathf.Lerp(src.x, dst.x, r);
-            float y = Mathf.Lerp(src.y, dst.y, r);
-            enemy.Position = new Vector3(x, y, 0);
+        yield return Lerp(duration, src, dst, pos => {
+            enemy.Position = pos;
         });
         enemy.UpdateLoc(to);
     }
@@ -93,5 +83,29 @@ public static class CAction {
             color.a = alpha;
             renderer.color = color;
         });
+    }
+
+    public static IEnumerator Lerp(float duration, Vector3 src, Vector3 dst, Action<Vector3> action) {
+        Vector3 v = Vector3.zero;
+        float elapsed = 0;
+        while (elapsed <= duration) {
+            float r = elapsed / duration;
+            v.x = Mathf.Lerp(src.x, dst.x, r);
+            v.y = Mathf.Lerp(src.y, dst.y, r);
+            action(v);
+            elapsed += Time.deltaTime;
+            yield return null;
+        }
+        action(dst);
+    }
+
+    public static IEnumerator Lerp(float duration, float fm, float to, Action<float> action) {
+        float elapsed = 0;
+        while (elapsed <= duration) {
+            action(Mathf.Lerp(fm, to, elapsed / duration));
+            elapsed += Time.deltaTime;
+            yield return null;
+        }
+        action(to);
     }
 }

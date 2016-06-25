@@ -59,7 +59,6 @@ public class Floor {
         _minimap = new Minimap(mapData, _fieldObjects, StairsLoc);
         _map.UpdatePassageSpotlightPosition(playerLoc.ToPosition());
         _map.UpdateSpotlight(playerLoc);
-
     }
 
     private T FindFieldObject<T>(Loc loc) where T : FieldObject {

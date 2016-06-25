@@ -46,7 +46,6 @@ public class LayerManager {
     }
 
     public static GameObject GetLayer(string layerName) {
-
         var layer = _layerDictionary[layerName];
         Assert.IsTrue(layer != null);
         return layer;

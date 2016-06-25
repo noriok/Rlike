@@ -2,13 +2,9 @@
 // using System.Collections;
 
 public static class UnityUtils {
-	// public static GameObject Inst(string path, Vector3 pos) {
-	// 	var obj = Resources.Load(path);
-
-	// 	var gobj = (GameObject)GameObject.Instantiate(obj);
-	// 	gobj.transform.position = pos;
-	// 	return gobj;
-	// }
+    public static GameObject Create(this GameObject prefab) {
+        return prefab.Create(Vector3.zero);
+    }
 
     public static GameObject Create(this GameObject prefab, Vector3 pos) {
         var o = (GameObject)GameObject.Instantiate(prefab, pos, Quaternion.identity);
