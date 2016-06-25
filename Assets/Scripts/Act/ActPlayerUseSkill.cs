@@ -31,10 +31,10 @@ public class DamageWait {
 
 // TODO:削除
 public class ActPlayerUseSkill : Act {
-    private CharacterBase[] _targets;
+    // private CharacterBase[] _targets;
 
     public ActPlayerUseSkill(Player player, CharacterBase[] targets) : base(player) {
-        _targets = targets;
+        // _targets = targets;
     }
 
     private IEnumerator MaskFade(GameObject obj, float alphaFrom, float alphaTo) {

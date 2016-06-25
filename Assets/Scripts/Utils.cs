@@ -86,4 +86,14 @@ public static class Utils {
         gobj.transform.position = pos;
         return gobj;
     }
+
+    public static T[,] CreateArray2D<T>(int rows, int cols, T val) {
+        var ary = new T[rows, cols];
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < cols; j++) {
+                ary[i, j] = val;
+            }
+        }
+        return ary;
+    }
 }

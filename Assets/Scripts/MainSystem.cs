@@ -405,15 +405,11 @@ public class MainSystem : MonoBehaviour {
             return;
         }
 
-        if (Input.GetKey(KeyCode.A)) {
-            // ExecutePlayerUseItem();
-        }
-        else if (Input.GetKey(KeyCode.S)) {
-            // ExecutePlayerUseSkill();
-        }
-        else if (Input.GetKey(KeyCode.Period)) { // 何もせずターン終了
-            ExecutePlayerWait();
-        }
+        // if (Input.GetKey(KeyCode.A)) {
+        // }
+        // else if (Input.GetKey(KeyCode.Period)) { // 何もせずターン終了
+        //     ExecutePlayerWait();
+        // }
     }
 
     private IEnumerator NextFloor(bool isSkipTransition = false) {
@@ -1122,21 +1118,6 @@ public class MainSystem : MonoBehaviour {
         var text = GameObject.Find("Canvas/Header/Text_G_Value").GetComponent<Text>();
         text.text = _gold.ToString();
     }
-
-    // // loc から front に向かって最初にヒットする CharacterBase を返す
-    // public CharacterBase FindHitTarget(Loc loc, Dir front) {
-    //     int distance = 100; // 探索する距離
-    //     for (int i = 0; i < distance; i++) {
-    //         Loc next = loc.Forward(front);
-
-    //         if (_floor.IsWall(next) || _floor.ExistsObstacle(next)) break;
-
-    //         int p = _enemies.FindIndex(e => e.Loc == next);
-    //         if (p != -1) return _enemies[p];
-    //         loc = next;
-    //     }
-    //     return null;
-    // }
 
     // 水がれ
     public IEnumerator Sun(Loc playerLoc) {

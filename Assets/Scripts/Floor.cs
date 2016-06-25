@@ -58,7 +58,7 @@ public class Floor {
         _map = new Map(mapData);
         _minimap = new Minimap(mapData, _fieldObjects, StairsLoc);
         _map.UpdatePassageSpotlightPosition(playerLoc.ToPosition());
-        _map.UpdateSpot(playerLoc);
+        _map.UpdateSpotlight(playerLoc);
 
     }
 
@@ -99,16 +99,16 @@ public class Floor {
         Loc to = fm.Forward(dir);
         if (!(_map.IsRoomOrPassage(fm) && _map.IsRoomOrPassage(to))) return false;
 
-        // 障害物が配置されているか
+        // 障害物が配置されているなら進めない
         if (ExistsObstacle(to)) return false;
 
-        if (fm.Row != to.Row && fm.Col != to.Col) { // 斜め移動
+        if (fm.IsDiagonal(to)) { // 斜め移動のときは、左右に障害物があるなら進めない
             if (_map.IsWall(fm.Row, to.Col) || _map.IsWall(to.Row, fm.Col)) {
                 return false;
             }
             return true;
         }
-        return true;
+        return true; // to に移動できる
 	}
 
     // FieldObject かつ Obstacle なオブジェクト
@@ -197,7 +197,7 @@ public class Floor {
     }
 
     public void UpdateSpot(Loc loc) {
-        _map.UpdateSpot(loc);
+        _map.UpdateSpotlight(loc);
     }
 
     public void UpdatePassageSpotlightPosition(Vector3 pos) {
