@@ -52,7 +52,7 @@ public class Map {
 
         var spotCircle = Resources.Load<GameObject>("Prefabs/Spotlight/spot");
         _spotCircle = spotCircle.Create(new Loc(0, 0).ToPosition());
-        _spotCircle.SetAlpha(Config.SpotLightAlpha);
+        _spotCircle.SetAlpha(Config.SpotlightAlpha);
         _spotCircle.transform.SetParent(_spotPassageLayer.transform);
 
         var black40x40 = Resources.Load<GameObject>("Prefabs/Spotlight/black40x40");
@@ -114,7 +114,7 @@ public class Map {
 
     private GameObject CreateSpot(GameObject prefab, int row, int col) {
         var spot = prefab.Create(new Loc(row, col).ToPosition());
-        spot.SetAlpha(Config.SpotLightAlpha);
+        spot.SetAlpha(Config.SpotlightAlpha);
         spot.transform.SetParent(_spotRoomLayer.transform);
         return spot;
     }
