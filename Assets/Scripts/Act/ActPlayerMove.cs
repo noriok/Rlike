@@ -7,6 +7,7 @@ public class ActPlayerMove : Act {
     private float _elapsed;
     private Vector3 _srcPos;
     private Vector3 _dstPos;
+    private Loc _nextLoc;
 
     private bool _isFirst = true;
     private Player _player;
@@ -15,6 +16,7 @@ public class ActPlayerMove : Act {
     public ActPlayerMove(Player player, Dir dir, FieldItem fieldItem) : base(player) {
         _dir = dir;
         _player = player;
+        _nextLoc = player.Loc.Forward(dir);
         _fieldItem = fieldItem;
 
         _elapsed = 0;
@@ -62,7 +64,6 @@ public class ActPlayerMove : Act {
         }
 
         sys.UpdateMinimap();
-        sys.UpdateSpot(nextLoc);
     }
 
     public override bool IsManualUpdate() {
@@ -72,6 +73,7 @@ public class ActPlayerMove : Act {
     public override void Update(MainSystem sys) {
         if (_isFirst) {
             Actor.ChangeDir(_dir);
+            sys.UpdateSpot(_nextLoc);
             _isFirst = false;
         }
 
