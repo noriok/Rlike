@@ -10,4 +10,8 @@ public class Res {
         var prefab = Resources.Load<GameObject>(path);
         return prefab.Create(pos);
     }
+
+    public static GameObject Load(string path) {
+        return Resources.Load<GameObject>(path);
+    }
 }

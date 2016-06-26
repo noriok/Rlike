@@ -2,6 +2,8 @@
 using System.Collections;
 using System.Collections.Generic;
 
+// TODO: めぐすりを使う。-> 部屋の入り口にモンスターがくる。このときモンスターを表示する
+
 public class Floor {
 	private Map _map;
 	private Minimap _minimap;

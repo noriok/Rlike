@@ -1,13 +1,14 @@
 ﻿using UnityEngine;
 using System;
 // using System.Collections;
-// using System.Linq;
+using System.Linq;
 
 public class MapSpotlight {
     private enum SpotlightState {
         None,    // スポットライトなし
         Passage, // 通路のスポットライト表示中
         Room,    // 部屋のスポットライト表示中
+        // Blind,   // めつぶし状態
     }
 
     private SpotlightState _state = SpotlightState.None;
@@ -29,8 +30,7 @@ public class MapSpotlight {
         _spotlightRoomLayer.transform.SetParent(parentLayer.transform);
 
         // 通路のスポットライト
-        var res = Resources.Load<GameObject>("Prefabs/Spotlight/spot");
-        _passageSpotlight = res.Create(new Loc(0, 0).ToPosition());
+        _passageSpotlight = Res.Create("Prefabs/Spotlight/spot", Loc.Zero.ToPosition());
         _passageSpotlight.SetAlpha(Config.SpotlightAlpha);
         _passageSpotlight.transform.SetParent(_spotlightPassageLayer.transform);
 
@@ -38,21 +38,18 @@ public class MapSpotlight {
         _roomSpotlights = new GameObject[rows, cols];
         _roomCornerSpotlights = new GameObject[rows, cols];
 
-        // スポットライト 4 隅
-        var nw = Resources.Load<GameObject>("Prefabs/Spotlight/round1");
-        var ne = Resources.Load<GameObject>("Prefabs/Spotlight/round2");
-        var se = Resources.Load<GameObject>("Prefabs/Spotlight/round3");
-        var sw = Resources.Load<GameObject>("Prefabs/Spotlight/round4");
+        // スポットライト 4 隅(NW, NE, SE, SW)
+        var corners = Enumerable.Range(1, 4).Select(no => Res.Load("Prefabs/Spotlight/round" + no));
         foreach (Room room in rooms) {
-            foreach (var a in room.OutsideCorners.Zip(new[] { nw, ne, se, sw }, (loc, obj) => new { loc, obj })) {
-                _roomCornerSpotlights[a.loc.Row, a.loc.Col] = CreateRoomSpotlight(a.obj, a.loc.Row, a.loc.Col);
+            foreach (var a in room.OutsideCorners.Zip(corners, (loc, obj) => new { loc, obj })) {
+                _roomCornerSpotlights[a.loc.Row, a.loc.Col] = CreateRoomSpotlight(a.obj, a.loc);
             }
         }
 
-        var black40x40 = Resources.Load<GameObject>("Prefabs/Spotlight/black40x40");
+        var black40x40 = Res.Load("Prefabs/Spotlight/black40x40");
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < cols; j++) {
-                _roomSpotlights[i, j] = CreateRoomSpotlight(black40x40, i, j);
+                _roomSpotlights[i, j] = CreateRoomSpotlight(black40x40, new Loc(i, j));
 
                 if (_roomCornerSpotlights[i, j] != null) {
                     _roomCornerSpotlights[i, j].gameObject.SetActive(false);
@@ -61,8 +58,8 @@ public class MapSpotlight {
         }
     }
 
-    private GameObject CreateRoomSpotlight(GameObject prefab, int row, int col) {
-        var spot = prefab.Create(new Loc(row, col).ToPosition());
+    private GameObject CreateRoomSpotlight(GameObject prefab, Loc loc) {
+        var spot = prefab.Create(loc.ToPosition());
         spot.SetAlpha(Config.SpotlightAlpha);
         spot.transform.SetParent(_spotlightRoomLayer.transform);
         return spot;
