@@ -19,5 +19,5 @@
     public const float MoveSpeed = 4.5f;
     public const float DiagonalMoveSpeed = MoveSpeed * 1.2f;
 
-    public const float SpotlightAlpha = 0.65f;
+    public const float SpotlightAlpha = 0.55f;
 }

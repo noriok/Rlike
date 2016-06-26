@@ -984,13 +984,6 @@ public class MainSystem : MonoBehaviour {
         return Loc.Zero;
     }
 
-    private void ExecutePlayerUseSkill() {
-        Assert.IsTrue(_acts.Count == 0);
-
-        _acts.Add(new ActPlayerUseSkill(_player, _enemies.ToArray()));
-        ChangeGameState(GameState.Act);
-    }
-
     private void ExecutePlayerFireTrap() {
         Assert.IsTrue(_acts.Count == 0);
 
@@ -1089,9 +1082,7 @@ public class MainSystem : MonoBehaviour {
     }
 
     public Loc Warp(Loc source, bool excludeSourceRoom) {
-        var rand = new System.Random();
         const int retryCount = 20;
-
         Room[] rooms = _floor.GetRooms();
         if (excludeSourceRoom && rooms.Length > 1) {
             rooms = rooms.Where(e => !e.IsInside(source)).ToArray();
@@ -1100,8 +1091,8 @@ public class MainSystem : MonoBehaviour {
         for (int i = 0; i < retryCount; i++) {
             var room = rooms.Choice();
 
-            int r = rand.Next(room.Row, room.Row + room.Height);
-            int c = rand.Next(room.Col, room.Col + room.Width);
+            int r = Rand.Next(room.Row, room.EndRow + 1);
+            int c = Rand.Next(room.Col, room.EndCol + 1);
             var loc = new Loc(r, c);
             if (_floor.IsWater(loc)) continue;
             if (_floor.ExistsObstacle(loc)) continue;
@@ -1157,22 +1148,22 @@ public class MainSystem : MonoBehaviour {
     }
 
     public void Msg_UseItem(Item item) {
+        string doing = "使った！";
         switch (item.Type) {
+        default:
         case ItemType.Herb:
         case ItemType.Gold:
-            _mm.Message("プレイヤーは", item.Name + " を使った！");
+            doing = "使った！";
             break;
         case ItemType.Magic:
-            _mm.Message("プレイヤーは", item.Name + " を読んだ！");
-            break;
-        default:
-            _mm.Message("プレイヤーは", item.Name + " を使った！");
+            doing = "読んだ！";
             break;
         }
+        _mm.Message("プレイヤーは", string.Format("{0} を{1}", item.Name, doing));
     }
 
     public void Msg_ThrowItem(Item item) {
-        _mm.Message("プレイヤーは", item.Name + " を投げた！");
+        _mm.Message("プレイヤーは", string.Format("{0} を{1}", item.Name, "投げた！"));
     }
 
     public void UpdateSpot(Loc loc) {
