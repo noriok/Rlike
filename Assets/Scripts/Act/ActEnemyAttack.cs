@@ -43,13 +43,11 @@ public class ActEnemyAttack : Act {
 
         _target.RemoveStatus(StatusType.Sleep);
         var dmg = 16 + new System.Random().Next(30);
-        // yield return _target.DamageAnim(dmg);
         yield return Anim.Par(sys,
                               () => _target.DamageAnim(dmg),
                               () => EffectAnim.PopupWhiteDigits(_target, dmg));
 
         _target.DamageHp(dmg);
-        // yield return EffectAnim.PopupWhiteDigits(_target, dmg);
         Actor.Position = src;
     }
 

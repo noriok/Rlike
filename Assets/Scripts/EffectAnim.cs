@@ -4,6 +4,11 @@ using System.Collections;
 using System.Collections.Generic;
 
 public static class EffectAnim {
+    private static IEnumerator StartAnimation(string path, Vector3 pos) {
+        var obj = Res.Bless(path, pos);
+        while (obj != null) yield return null;
+    }
+
     public static IEnumerator PopupWhiteDigits(CharacterBase target, int n) {
         var pos = target.Position;
         pos.y -= 0.09f;
@@ -73,21 +78,11 @@ public static class EffectAnim {
     }
 
     public static IEnumerator Dead(Vector3 pos) {
-        var obj = Resources.Load("Prefabs/Animations/dead");
-        var gobj = (GameObject)GameObject.Instantiate(obj, pos, Quaternion.identity);
-        while (gobj != null) {
-            yield return null;
-        }
+        return StartAnimation("Prefabs/Animations/dead", pos);
     }
 
     public static IEnumerator Heal(Vector3 pos) {
-        var obj = Resources.Load("Prefabs/Animations/heal_heart");
-        var gobj = (GameObject)GameObject.Instantiate(obj, pos, Quaternion.identity);
-        var p = gobj.transform.position;
-        gobj.transform.position = p;
-        while (gobj != null) {
-            yield return null;
-        }
+        return StartAnimation("Prefabs/Animations/heal_heart", pos);
     }
 
     // TODO:rename
@@ -103,11 +98,7 @@ public static class EffectAnim {
     }
 
     public static IEnumerator Aura(Vector3 pos) {
-        var obj = Resources.Load("Prefabs/Animations/aura");
-        var gobj = (GameObject)GameObject.Instantiate(obj, pos, Quaternion.identity);
-        while (gobj != null) {
-            yield return null;
-        }
+        return StartAnimation("Prefabs/Animations/aura", pos);
     }
 
     public static IEnumerator Aura2(Vector3 pos) {
@@ -122,26 +113,14 @@ public static class EffectAnim {
     }
 
     public static IEnumerator Skill(Vector3 pos) {
-        var obj2 = Resources.Load("Prefabs/Animations/skill");
-        var gobj2 = (GameObject)GameObject.Instantiate(obj2, pos, Quaternion.identity);
-        while (gobj2 != null) {
-            yield return null;
-        }
+        return StartAnimation("Prefabs/Animations/skill", pos);
     }
 
     public static IEnumerator Thunder(Vector3 pos) {
-        var obj2 = Resources.Load("Prefabs/Animations/thunder");
-        var gobj2 = (GameObject)GameObject.Instantiate(obj2, pos, Quaternion.identity);
-        while (gobj2 != null) {
-            yield return null;
-        }
+        return StartAnimation("Prefabs/Animations/thunder", pos);
     }
 
     public static IEnumerator Landmine(Vector3 pos) {
-        var obj2 = Resources.Load("Prefabs/Animations/landmine");
-        var gobj2 = (GameObject)GameObject.Instantiate(obj2, pos, Quaternion.identity);
-        while (gobj2 != null) {
-            yield return null;
-        }
+        return StartAnimation("Prefabs/Animations/landmine", pos);
     }
 }
