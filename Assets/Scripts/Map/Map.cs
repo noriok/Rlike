@@ -23,10 +23,9 @@ public class Map {
         MapData = mapData;
         int rows = mapData.GetLength(0);
         int cols = mapData.GetLength(1);
-
-        _spotlight = new MapSpotlight(rows, cols);
-
         _rooms = GetRooms();
+        _spotlight = new MapSpotlight(rows, cols, _rooms);
+
         // _roomMap に各マスがどの部屋に所属しているのかを記録する
         _roomMap = Utils.CreateArray2D(rows, cols, NoRoom);
         foreach (var room in _rooms) {

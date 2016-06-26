@@ -1,14 +1,35 @@
 ﻿// using UnityEngine;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 public class Room {
     public int Id { get; private set; }
-	public int Row { get; private set; }
-	public int Col { get; private set; }
+	public int Row { get; private set; } // 上端
+	public int Col { get; private set; } // 左端
+    public int EndRow { get { return Row + Height - 1; } } // 下端
+    public int EndCol { get { return Col + Width - 1; } }  // 右端
 	public int Width { get; private set; }
 	public int Height { get; private set; }
 	public Loc[] Entrances { get; private set; }
+    public Loc[] Corners {
+        get {
+            // 左上から時計回り
+            return new[] {
+                new Loc(Row, Col),
+                new Loc(Row, EndCol),
+                new Loc(EndRow, EndCol),
+                new Loc(EndRow, Col),
+            };
+        }
+    }
+
+    // 四隅の一マス外側の座標
+    public Loc[] OutsideCorners {
+        get {
+            return Corners.Zip(new[] { Dir.NW, Dir.NE, Dir.SE, Dir.SW }, (loc, dir) => loc.Forward(dir)).ToArray();
+        }
+    }
 
 	public Room(int id, int row, int col, int width, int height, List<Loc> entrances) {
         Id = id;

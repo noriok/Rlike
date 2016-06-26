@@ -152,6 +152,7 @@ public static class FloorCreator {
 
         var enemies = new List<Enemy>();
         enemies.Add(EnemyFactory.CreateEnemy(new Loc(5, 5)));
+        enemies.Last().AddStatus(StatusType.Sleep);
 
         return new Data(map, stairsLoc, playerLoc, fobjs, fitems, enemies);
     }
