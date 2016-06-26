@@ -1191,6 +1191,21 @@ public class MainSystem : MonoBehaviour {
         return _floor.FindRoom(loc);
     }
 
+    // 次ターンでのモンスターの表示を更新する
+    private void UpdateEnemyVisible(Room room, Loc playerLoc) {
+        bool isBlind = _player.IsBlind();
+        if (room == null) { // プレイヤーは通路上
+           foreach (var enemy in _enemies) {
+                enemy.Visible = !isBlind && playerLoc.IsNeighbor(enemy.NextLoc);
+            }
+        }
+        else { // プレイヤーは部屋内
+           foreach (var enemy in _enemies) {
+                enemy.Visible = !isBlind && room.IsInside(enemy.NextLoc, true);
+            }
+        }
+    }
+
     public void OnRoomEntering(Room room, Loc playerNextLoc) {
         Debug.Log("部屋に入りました (入る直前)");
 
@@ -1202,14 +1217,7 @@ public class MainSystem : MonoBehaviour {
         }
 
         // 視界内のモンスターのみ表示する
-        foreach (var enemy in _enemies) {
-            if (room.IsInside(enemy.NextLoc, true)) {
-                enemy.Visible = true;
-            }
-            else {
-                enemy.Visible = false;
-            }
-        }
+        UpdateEnemyVisible(room, playerNextLoc);
         _floor.UpdateMinimapEnemyIcon(_enemies);
     }
 
@@ -1223,15 +1231,7 @@ public class MainSystem : MonoBehaviour {
         Debug.Log("部屋から出ました (出る直前)");
 
         // 視界内のモンスターのみ表示する
-        foreach (var enemy in _enemies) {
-            if (playerNextLoc.IsNeighbor(enemy.NextLoc)) {
-                // プレイヤーに隣接しているなら常に表示
-                enemy.Visible = true;
-            }
-            else {
-                enemy.Visible = false;
-            }
-        }
+        UpdateEnemyVisible(null, playerNextLoc);
         _floor.UpdateMinimapEnemyIcon(_enemies);
     }
 
@@ -1241,14 +1241,7 @@ public class MainSystem : MonoBehaviour {
 
     public void OnRoomMoving(Room room, Loc playerNextLoc) {
         // 視界内のモンスターのみ表示する
-        foreach (var enemy in _enemies) {
-            if (room.IsInside(enemy.NextLoc, true)) {
-                enemy.Visible = true;
-            }
-            else {
-                enemy.Visible = false;
-            }
-        }
+        UpdateEnemyVisible(room, playerNextLoc);
         _floor.UpdateMinimapEnemyIcon(_enemies);
     }
 
@@ -1258,15 +1251,7 @@ public class MainSystem : MonoBehaviour {
 
     public void OnPassageMoving(Loc playerNextLoc) {
         // 視界内のモンスターのみ表示する
-        foreach (var enemy in _enemies) {
-            if (playerNextLoc.IsNeighbor(enemy.NextLoc)) {
-                // プレイヤーに隣接しているなら常に表示
-                enemy.Visible = true;
-            }
-            else {
-                enemy.Visible = false;
-            }
-        }
+        UpdateEnemyVisible(null, playerNextLoc);
     }
 
     public void OnPassageMoved(Loc playerLoc) {
