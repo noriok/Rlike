@@ -12,8 +12,7 @@ public class LayerManager {
         LayerName.Trap,
         LayerName.Map,
         LayerName.Minimap,
-        LayerName.SpotlightPassage,
-        LayerName.SpotlightRoom,
+        LayerName.Spotlight,
     };
 
     public static void CreateAllLayer() {

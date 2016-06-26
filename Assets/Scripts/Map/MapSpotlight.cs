@@ -22,8 +22,11 @@ public class MapSpotlight {
     private Room _prevVisitedRoom;
 
     public MapSpotlight(int rows, int cols, Room[] rooms) {
-        _spotlightPassageLayer = LayerManager.GetLayer(LayerName.SpotlightPassage);
-        _spotlightRoomLayer = LayerManager.GetLayer(LayerName.SpotlightRoom);
+        var parentLayer = LayerManager.GetLayer(LayerName.Spotlight);
+        _spotlightPassageLayer = new GameObject("Passage");
+        _spotlightPassageLayer.transform.SetParent(parentLayer.transform);
+        _spotlightRoomLayer = new GameObject("Room");
+        _spotlightRoomLayer.transform.SetParent(parentLayer.transform);
 
         // 通路のスポットライト
         var res = Resources.Load<GameObject>("Prefabs/Spotlight/spot");

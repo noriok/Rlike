@@ -43,13 +43,11 @@ public class Floor {
         var mapData = _map.MapData;
         LayerManager.RemoveLayer(LayerName.Map);
         LayerManager.RemoveLayer(LayerName.Minimap);
-        LayerManager.RemoveLayer(LayerName.SpotlightPassage);
-        LayerManager.RemoveLayer(LayerName.SpotlightRoom);
+        LayerManager.RemoveLayer(LayerName.Spotlight);
         yield return null;
         LayerManager.CreateLayer(LayerName.Map);
         LayerManager.CreateLayer(LayerName.Minimap);
-        LayerManager.CreateLayer(LayerName.SpotlightPassage);
-        LayerManager.CreateLayer(LayerName.SpotlightRoom);
+        LayerManager.CreateLayer(LayerName.Spotlight);
 
         for (int i = 0; i < mapData.GetLength(0); i++) {
             for (int j = 0; j < mapData.GetLength(1); j++) {
