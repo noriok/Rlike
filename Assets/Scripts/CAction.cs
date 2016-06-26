@@ -67,7 +67,6 @@ public static class CAction {
                 layer.transform.position = pos;
                 yield return new WaitForSeconds(0.014f);
                 elapsed += Time.deltaTime;
-
             }
         }
         layer.transform.position = src;

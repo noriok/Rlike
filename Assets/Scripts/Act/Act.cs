@@ -63,7 +63,6 @@ public abstract class Act {
         }
 
         if (_animationFinished) {
-            // TODO:RunEffectで効果を実行。コールはサブクラスで行う
             OnFinished(sys);
             Actor.ActCount--;
             Finished = true;
