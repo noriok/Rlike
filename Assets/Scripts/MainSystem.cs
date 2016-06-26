@@ -405,11 +405,14 @@ public class MainSystem : MonoBehaviour {
             return;
         }
 
-        // if (Input.GetKey(KeyCode.A)) {
-        // }
-        // else if (Input.GetKey(KeyCode.Period)) { // 何もせずターン終了
-        //     ExecutePlayerWait();
-        // }
+        if (Input.GetKey(KeyCode.A)) {
+            foreach (var e in _enemies) {
+                e.AddStatus(StatusType.Sleep);
+            }
+        }
+        else if (Input.GetKey(KeyCode.Period)) { // 何もせずターン終了
+            ExecutePlayerWait();
+        }
     }
 
     private IEnumerator NextFloor(bool isSkipTransition = false) {
