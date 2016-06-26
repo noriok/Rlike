@@ -117,6 +117,9 @@ public abstract class CharacterBase {
             // 状態異常マークはないので null を格納
             _status.Add(status, new StatusOne(null, depth));
         }
+        else if (status == StatusType.VisibleAll) {
+            _status.Add(status, new StatusOne(null, depth));
+        }
 
         OnStatusAdded(status);
     }
@@ -200,6 +203,10 @@ public abstract class CharacterBase {
 
     public bool IsBlind() {
         return _status.ContainsKey(StatusType.Blind);
+    }
+
+    public bool IsVisibleAll() {
+        return _status.ContainsKey(StatusType.VisibleAll);
     }
 
     public bool IsInvisible() {

@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Assertions;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -12,6 +13,9 @@ public class Player : CharacterBase {
 
     private Camera _camera;
     private GameObject _minimapLayer;
+
+    Action<StatusType> _onStatusAdded;
+    Action<StatusType> _onStatusRemoved;
 
     public Player(Loc loc, GameObject gobj) : base(loc, gobj) {
         Hp = MaxHp = 255;
@@ -41,6 +45,11 @@ public class Player : CharacterBase {
             kv.Value.transform.SetParent(gobj.transform);
             kv.Value.SetActive(false);
         }
+    }
+
+    public void setCallback(Action<StatusType> onStatusAdded, Action<StatusType> onStatusRemoved) {
+        _onStatusAdded = onStatusAdded;
+        _onStatusRemoved = onStatusRemoved;
     }
 
     public override void UpdateLoc(Loc loc) {
@@ -226,11 +235,19 @@ public class Player : CharacterBase {
         if (status == StatusType.Invisible) {
             _gobj.SetAlpha(0.4f);
         }
+
+        if (_onStatusAdded != null) {
+            _onStatusAdded(status);
+        }
     }
 
     public override void OnStatusRemoved(StatusType status) {
         if (status == StatusType.Invisible) {
             _gobj.SetAlpha(1.0f);
+        }
+
+        if (_onStatusRemoved != null) {
+            _onStatusRemoved(status);
         }
     }
 

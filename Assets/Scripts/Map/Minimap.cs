@@ -87,15 +87,19 @@ public class Minimap {
         }
 
         // アイテムアイコンの更新
+        int p = 0;
         for (int i = 0; i < items.Count; i++) {
-            if (i >= _itemIcons.Count) { // 追加
+            if (!items[i].Visible) continue;
+
+            if (p ==  _itemIcons.Count) { // 追加
                 var loc = items[i].Loc;
                 _itemIcons.Add(CreateItemIcon(loc.Row, loc.Col));
             }
             else {
-                _itemIcons[i].SetActive(true);
-                _itemIcons[i].transform.localPosition = ToMinimapPosition(items[i].Loc);
+                _itemIcons[p].SetActive(true);
+                _itemIcons[p].transform.localPosition = ToMinimapPosition(items[i].Loc);
             }
+            p++;
         }
     }
 

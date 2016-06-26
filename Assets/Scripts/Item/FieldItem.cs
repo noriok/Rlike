@@ -68,5 +68,9 @@ public class FieldItem {
             Visible = _discovered;
         }
     }
+
+    public void ResetVisible() {
+        Visible = _discovered;
+    }
 }
 

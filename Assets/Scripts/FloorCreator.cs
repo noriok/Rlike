@@ -151,6 +151,7 @@ public static class FloorCreator {
 
         var fitems = new List<FieldItem>();
         fitems.Add(FieldItemFactory.CreateMagic(new Loc(6, 3), 4)); // 水がれ
+        fitems.Add(FieldItemFactory.CreateMagic(new Loc(12, 3), 4)); // 水がれ
         fitems.Add(FieldItemFactory.CreateHerb(new Loc(6, 4), 1)); // 睡眠草
         fitems.Add(FieldItemFactory.CreateHerb(new Loc(6, 5), 4)); // 目薬草
 

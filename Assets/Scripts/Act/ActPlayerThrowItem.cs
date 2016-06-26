@@ -23,6 +23,7 @@ public class ActPlayerThrowItem : Act { // TODO : ActPlayer
     }
 
     protected override IEnumerator Run(MainSystem sys) {
+        sys.Msg_ThrowItem(_item);
         var fitem = FieldItemFactory.CreateFromItem(_item, _player.Loc);
         fitem.OnDiscovered(_player.IsBlind());
         fitem.BringToFront();

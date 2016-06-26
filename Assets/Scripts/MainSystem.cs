@@ -172,6 +172,7 @@ public class MainSystem : MonoBehaviour {
         _mm = new MessageManager(this);
 
         _player = _gm.CreatePlayer(new Loc(3, 3));
+        _player.setCallback(OnPlayerStatusAdded, OnPlayerStatusRemoved);
 
         var camera = GameObject.Find("Main Camera");
         camera.GetComponent<Camera>().orthographicSize = _cameraManager.CurrentSize;
@@ -1141,6 +1142,7 @@ public class MainSystem : MonoBehaviour {
 
     // めぐすり
     public void Eyedrops() {
+        _player.AddStatus(StatusType.VisibleAll, 3);
         _floor.Eyedrops();
     }
 
@@ -1196,15 +1198,35 @@ public class MainSystem : MonoBehaviour {
 
     // 次ターンでのモンスターの表示を更新する
     private void UpdateEnemyVisible(Room room, Loc playerLoc) {
-        bool isBlind = _player.IsBlind();
-        if (room == null) { // プレイヤーは通路上
-           foreach (var enemy in _enemies) {
-                enemy.Visible = !isBlind && playerLoc.IsNeighbor(enemy.NextLoc);
+        if (_player.IsVisibleAll()) {
+            foreach (var enemy in _enemies) {
+                enemy.Visible = true;
             }
         }
-        else { // プレイヤーは部屋内
-           foreach (var enemy in _enemies) {
-                enemy.Visible = !isBlind && room.IsInside(enemy.NextLoc, true);
+        else {
+            bool isBlind = _player.IsBlind();
+            if (room == null) { // プレイヤーは通路上
+                foreach (var enemy in _enemies) {
+                    enemy.Visible = !isBlind && playerLoc.IsNeighbor(enemy.NextLoc);
+                }
+            }
+            else { // プレイヤーは部屋内
+                foreach (var enemy in _enemies) {
+                    enemy.Visible = !isBlind && room.IsInside(enemy.NextLoc, true);
+                }
+            }
+        }
+        _floor.UpdateMinimapEnemyIcon(_enemies);
+    }
+
+    private void UpdateFieldItemVisible() {
+        bool isVisibleAll = _player.IsVisibleAll();
+        foreach (var item in _fieldItems) {
+            if (isVisibleAll) {
+                item.Visible = true;
+            }
+            else {
+                item.ResetVisible();
             }
         }
     }
@@ -1221,7 +1243,6 @@ public class MainSystem : MonoBehaviour {
 
         // 視界内のモンスターのみ表示する
         UpdateEnemyVisible(room, playerNextLoc);
-        _floor.UpdateMinimapEnemyIcon(_enemies);
     }
 
     public void OnRoomEntered(Room room, Loc playerLoc) {
@@ -1235,7 +1256,6 @@ public class MainSystem : MonoBehaviour {
 
         // 視界内のモンスターのみ表示する
         UpdateEnemyVisible(null, playerNextLoc);
-        _floor.UpdateMinimapEnemyIcon(_enemies);
     }
 
     public void OnRoomExited(Room room, Loc playerLoc) {
@@ -1245,7 +1265,6 @@ public class MainSystem : MonoBehaviour {
     public void OnRoomMoving(Room room, Loc playerNextLoc) {
         // 視界内のモンスターのみ表示する
         UpdateEnemyVisible(room, playerNextLoc);
-        _floor.UpdateMinimapEnemyIcon(_enemies);
     }
 
     public void OnRoomMoved(Room room, Loc playerNextLoc) {
@@ -1259,5 +1278,23 @@ public class MainSystem : MonoBehaviour {
 
     public void OnPassageMoved(Loc playerLoc) {
 
+    }
+
+    public void OnPlayerStatusAdded(StatusType statusType) {
+        switch (statusType) {
+        case StatusType.VisibleAll:
+            UpdateEnemyVisible(FindRoom(_player.Loc), _player.Loc);
+            UpdateFieldItemVisible();
+            break;
+        }
+    }
+
+    public void OnPlayerStatusRemoved(StatusType statusType) {
+        switch (statusType) {
+        case StatusType.VisibleAll:
+            UpdateEnemyVisible(FindRoom(_player.Loc), _player.Loc);
+            UpdateFieldItemVisible();
+            break;
+        }
     }
 }
