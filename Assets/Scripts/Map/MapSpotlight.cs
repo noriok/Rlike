@@ -49,7 +49,7 @@ public class MapSpotlight {
         var black40x40 = Resources.Load<GameObject>("Prefabs/Spotlight/black40x40");
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < cols; j++) {
-                 _roomSpotlights[i, j] = CreateRoomSpotlight(black40x40, i, j);
+                _roomSpotlights[i, j] = CreateRoomSpotlight(black40x40, i, j);
 
                 if (_roomCornerSpotlights[i, j] != null) {
                     _roomCornerSpotlights[i, j].gameObject.SetActive(false);
