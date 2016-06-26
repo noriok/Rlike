@@ -27,7 +27,7 @@ public class ActEnemyLongDistanceAttack : Act {
         Actor.ChangeDir(Actor.Loc.Toward(_targetLoc));
 
         // 魔法弾を飛ばす
-        var obj = Res.Bless("Prefabs/Effect/magic-ball");
+        var obj = Res.Create("Prefabs/Effect/magic-ball");
         yield return CAction.Move(obj, Actor.Loc, _targetLoc);
         GameObject.Destroy(obj);
         // いかずち

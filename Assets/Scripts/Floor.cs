@@ -18,8 +18,12 @@ public class Floor {
         StairsLoc = stairsLoc;
 	}
 
-    public void UpdateMinimap(Loc playerLoc, List<Enemy> enemies, List<FieldItem> items) {
-        _minimap.UpdateIcon(playerLoc, enemies, items);
+    public void UpdateMinimapIconAll(Loc playerLoc, List<Enemy> enemies, List<FieldItem> items) {
+        _minimap.UpdateIconAll(playerLoc, enemies, items);
+    }
+
+    public void UpdateMinimapEnemyIcon(List<Enemy> enemies) {
+        _minimap.UpdateEnemyIcon(enemies);
     }
 
     public void UpdateMinimapPlayerIconBlink() {

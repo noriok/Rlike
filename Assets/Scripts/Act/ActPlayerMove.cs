@@ -40,11 +40,17 @@ public class ActPlayerMove : Act {
 
             Room prev = sys.FindRoom(_player.Loc);
             Room next = sys.FindRoom(_nextLoc);
-            if (prev == null && next != null) { // 部屋に入った
-                sys.OnRoomEntering(next);
+            if (prev != null && next != null) { // 部屋内を移動した
+                sys.OnRoomMoving(next, _nextLoc);
+            }
+            else if (prev == null && next != null) { // 部屋に入った
+                sys.OnRoomEntering(next, _nextLoc);
             }
             else if (prev != null && next == null) { // 部屋から通路に出た
-                sys.OnRoomExiting(prev);
+                sys.OnRoomExiting(prev, _nextLoc);
+            }
+            else {
+                sys.OnPassageMoving(_nextLoc); // 通路を移動した
             }
         }
 
@@ -66,17 +72,25 @@ public class ActPlayerMove : Act {
     }
 
     public override void OnFinished(MainSystem sys) {
-        Room prev = sys.FindRoom(_player.Loc);
+        Loc prevLoc = _player.Loc;
+        Actor.UpdateLoc(_nextLoc);
+
+        Room prev = sys.FindRoom(prevLoc);
         Room next = sys.FindRoom(_nextLoc);
+        Debug.LogFormat("--> {0} -> {1}", prevLoc, _nextLoc);
+
+        if (prev != null && next != null) { // 部屋内の移動
+            sys.OnRoomMoved(next, _nextLoc);
+        }
         if (prev == null && next != null) { // 部屋に入った
-            sys.OnRoomEntered(next);
+            sys.OnRoomEntered(next, _nextLoc);
         }
         else if (prev != null && next == null) { // 部屋から通路に出た
-            sys.OnRoomExited(prev);
+            sys.OnRoomExited(prev, _nextLoc);
         }
-        // DLog.D("{0} move {1} -> {2}", Actor, Actor.Loc, nextLoc);
-        Debug.LogFormat("--> {0} -> {1}", Actor.Loc, _nextLoc);
-        Actor.UpdateLoc(_nextLoc);
+        else {
+            sys.OnPassageMoved(_nextLoc); // 通路を移動した
+        }
 
         if (_fieldItem != null) {
             Item item = _fieldItem.Item;

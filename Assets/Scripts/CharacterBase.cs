@@ -46,6 +46,9 @@ public abstract class CharacterBase {
     protected string _triggerName = "ToS";
     protected GameObject _gobj;
 
+    // TODO:アニメーションの一時停止処理
+    private float _animationSpeed;
+
 //    private Dictionary<Status, GameObject> _status = new Dictionary<Status, GameObject>();
     private Dictionary<StatusType, StatusOne> _status = new Dictionary<StatusType, StatusOne>();
 
@@ -55,6 +58,7 @@ public abstract class CharacterBase {
         _gobj = gobj;
         _gobj.transform.position = loc.ToPosition();
         _visible = true;
+        _animationSpeed = _gobj.GetComponent<Animator>().speed;
 
         Hp = MaxHp = 40;
     }
@@ -142,12 +146,12 @@ public abstract class CharacterBase {
 
     public void PlayAnimation() {
         var anim = _gobj.GetComponent<Animator>();
-        anim.enabled = true;
+        anim.speed = _animationSpeed;
     }
 
     public void StopAnimation() {
         var anim = _gobj.GetComponent<Animator>();
-        anim.enabled = false;
+        anim.speed = 0;
     }
 
     // TODO:UpdateLoc に揃えて UpdateDir にする
@@ -155,6 +159,7 @@ public abstract class CharacterBase {
         // if (_dir == dir) return; // TODO:斜めの画像がある場合は dir で判定する
         // TODO:敵が消えている場合の処理。プレイヤー追跡ロジックの動作がおかしい。
         if (IsInvisible()) return;
+        if (!Visible) return;
 
         _dir = dir;
 

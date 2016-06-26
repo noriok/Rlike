@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 public static class EffectAnim {
     private static IEnumerator StartAnimation(string path, Vector3 pos) {
-        var obj = Res.Bless(path, pos);
+        var obj = Res.Create(path, pos);
         while (obj != null) yield return null;
     }
 

@@ -56,22 +56,17 @@ public class Minimap {
         CreateTrapIcon(loc.Row, loc.Col);
     }
 
-    public void UpdateIcon(Loc playerLoc, List<Enemy> enemies, List<FieldItem> items) {
-        _playerIcon.transform.localPosition = ToMinimapPosition(playerLoc);
-
+    public void UpdateEnemyIcon(List<Enemy> enemies) {
         // いったん敵アイコンを全てオフにする
         for (int i = 0; i < _enemyIcons.Count; i++) {
             _enemyIcons[i].SetActive(false);
-        }
-        // いったんアイテムアイコンを全てオフにする
-        for (int i = 0; i < _itemIcons.Count; i++) {
-            _itemIcons[i].SetActive(false);
         }
 
         // 敵アイコンの更新
         int p = 0;
         for (int i = 0; i < enemies.Count; i++) {
-            if (enemies[i].IsInvisible()) continue;
+            // if (enemies[i].IsInvisible()) continue;
+            if (!enemies[i].Visible) continue;
 
             if (p == _enemyIcons.Count) { // 追加
                 var loc = enemies[i].Loc;
@@ -82,6 +77,13 @@ public class Minimap {
                 _enemyIcons[p].transform.localPosition = ToMinimapPosition(enemies[i].Loc);
             }
             p++;
+        }
+    }
+
+    public void UpdateItemIcon(List<FieldItem> items) {
+        // いったんアイテムアイコンを全てオフにする
+        for (int i = 0; i < _itemIcons.Count; i++) {
+            _itemIcons[i].SetActive(false);
         }
 
         // アイテムアイコンの更新
@@ -95,6 +97,13 @@ public class Minimap {
                 _itemIcons[i].transform.localPosition = ToMinimapPosition(items[i].Loc);
             }
         }
+    }
+
+    public void UpdateIconAll(Loc playerLoc, List<Enemy> enemies, List<FieldItem> items) {
+        _playerIcon.transform.localPosition = ToMinimapPosition(playerLoc);
+
+        UpdateEnemyIcon(enemies);
+        UpdateItemIcon(items);
     }
 
     // プレイヤーアイコンの点滅更新
@@ -121,7 +130,7 @@ public class Minimap {
 
     private GameObject CreateIcon(string path, int row, int col) {
         var pos = ToMinimapPosition(new Loc(row, col));
-        var obj = Res.Bless(path, pos);
+        var obj = Res.Create(path, pos);
         obj.transform.SetParent(_layer.transform, false);
         return obj;
     }

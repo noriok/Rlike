@@ -436,8 +436,8 @@ public class MainSystem : MonoBehaviour {
 
         var room = FindRoom(_player.Loc);
         if (room != null) {
-            OnRoomEntering(room);
-            OnRoomEntered(room);
+            OnRoomEntering(room, _player.Loc);
+            OnRoomEntered(room, _player.Loc);
         }
 
         var text = GameObject.Find("Canvas/Header/Text_Floor").GetComponent<Text>();
@@ -723,7 +723,7 @@ public class MainSystem : MonoBehaviour {
     }
 
     public void UpdateMinimap() {
-        _floor.UpdateMinimap(_player.Loc, _enemies, _fieldItems);
+        _floor.UpdateMinimapIconAll(_player.Loc, _enemies, _fieldItems);
     }
 
     // プレイヤーの行動
@@ -1191,7 +1191,7 @@ public class MainSystem : MonoBehaviour {
         return _floor.FindRoom(loc);
     }
 
-    public void OnRoomEntering(Room room) {
+    public void OnRoomEntering(Room room, Loc playerNextLoc) {
         Debug.Log("部屋に入りました (入る直前)");
 
         // これまで見えていなかったアイテムを表示する
@@ -1201,24 +1201,75 @@ public class MainSystem : MonoBehaviour {
             }
         }
 
-        // 視界内のモンスターを表示する
+        // 視界内のモンスターのみ表示する
+        foreach (var enemy in _enemies) {
+            if (room.IsInside(enemy.NextLoc, true)) {
+                enemy.Visible = true;
+            }
+            else {
+                enemy.Visible = false;
+            }
+        }
+        _floor.UpdateMinimapEnemyIcon(_enemies);
     }
 
-    public void OnRoomEntered(Room room) {
+    public void OnRoomEntered(Room room, Loc playerLoc) {
         Debug.Log("部屋に入りました (入った直後)");
 
         // モンスターハウスイベント
     }
 
-    public void OnRoomExiting(Room room) {
+    public void OnRoomExiting(Room room, Loc playerNextLoc) {
         Debug.Log("部屋から出ました (出る直前)");
 
+        // 視界内のモンスターのみ表示する
+        foreach (var enemy in _enemies) {
+            if (playerNextLoc.IsNeighbor(enemy.NextLoc)) {
+                // プレイヤーに隣接しているなら常に表示
+                enemy.Visible = true;
+            }
+            else {
+                enemy.Visible = false;
+            }
+        }
+        _floor.UpdateMinimapEnemyIcon(_enemies);
+    }
 
+    public void OnRoomExited(Room room, Loc playerLoc) {
+        Debug.Log("部屋から出ました (出た直後)");
+    }
+
+    public void OnRoomMoving(Room room, Loc playerNextLoc) {
+        // 視界内のモンスターのみ表示する
+        foreach (var enemy in _enemies) {
+            if (room.IsInside(enemy.NextLoc, true)) {
+                enemy.Visible = true;
+            }
+            else {
+                enemy.Visible = false;
+            }
+        }
+        _floor.UpdateMinimapEnemyIcon(_enemies);
+    }
+
+    public void OnRoomMoved(Room room, Loc playerNextLoc) {
 
     }
 
-    public void OnRoomExited(Room room) {
-        Debug.Log("部屋から出ました (出た直後)");
+    public void OnPassageMoving(Loc playerNextLoc) {
+        // 視界内のモンスターのみ表示する
+        foreach (var enemy in _enemies) {
+            if (playerNextLoc.IsNeighbor(enemy.NextLoc)) {
+                // プレイヤーに隣接しているなら常に表示
+                enemy.Visible = true;
+            }
+            else {
+                enemy.Visible = false;
+            }
+        }
+    }
+
+    public void OnPassageMoved(Loc playerLoc) {
 
     }
 }

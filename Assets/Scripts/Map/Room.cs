@@ -53,11 +53,22 @@ public class Room {
         return string.Format("Room row:{0} col:{1} width:{2} height:{3}", Row, Col, Width, Height);
     }
 
-    public bool IsInside(Loc loc) {
+    public bool IsInside(Loc loc, bool isContainsOuter = false) {
         if (Row <= loc.Row && loc.Row <= EndRow &&
             Col <= loc.Col && loc.Col <= EndCol)
         {
             return true;
+        }
+
+        // 部屋の周囲一マスも部屋の中と見なす
+        if (isContainsOuter) {
+            // 部屋のスポットライトは、外周一マスなので
+            if (Row <= loc.Row && loc.Row <= EndRow) {
+                return loc.Col == Col - 1 || loc.Col == EndCol + 1;
+            }
+            else if (Col <= loc.Col && loc.Col <= EndCol) {
+                return loc.Row == Row - 1 || loc.Row == EndRow + 1;
+            }
         }
         return false;
     }

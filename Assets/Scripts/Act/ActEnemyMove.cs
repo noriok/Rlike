@@ -3,8 +3,9 @@ using UnityEngine.Assertions;
 using System.Collections;
 
 public class ActEnemyMove : Act {
-    private int _drow;
+    private int _drow; // TODO:削除
     private int _dcol;
+    // private Loc _nextLoc;
 
     private Vector3 _srcPos;
     private Vector3 _dstPos;
@@ -14,7 +15,9 @@ public class ActEnemyMove : Act {
     // nextLoc = 移動後の位置
     public ActEnemyMove(Enemy enemy, Loc nextLoc) : base(enemy) {
         Assert.IsTrue(enemy.Loc.IsNeighbor(nextLoc));
+        enemy.UpdateNextLoc(nextLoc); // 次の移動予定座標
 
+        // _nextLoc = nextLoc;
         _drow = nextLoc.Row - enemy.Row;
         _dcol = nextLoc.Col - enemy.Col;
 
