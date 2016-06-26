@@ -18,6 +18,16 @@ public abstract class CharacterBase {
     public int Col { get { return _loc.Col; } }
     public Loc Loc { get { return _loc; } }
     public Dir Dir { get { return _dir; } }
+    public bool Visible {
+        get { return _visible; }
+        set {
+            if (_visible != value) {
+                _gobj.SetActive(value);
+                _visible = value;
+            }
+        }
+    }
+    private bool _visible;
 
     public int Hp { get; protected set; }
     public int MaxHp { get; protected set; }
@@ -44,6 +54,7 @@ public abstract class CharacterBase {
         _loc = loc;
         _gobj = gobj;
         _gobj.transform.position = loc.ToPosition();
+        _visible = true;
 
         Hp = MaxHp = 40;
     }
@@ -180,6 +191,10 @@ public abstract class CharacterBase {
 
     public bool IsFreeze() {
         return _status.ContainsKey(StatusType.Freeze);
+    }
+
+    public bool IsBlind() {
+        return _status.ContainsKey(StatusType.Blind);
     }
 
     public bool IsInvisible() {

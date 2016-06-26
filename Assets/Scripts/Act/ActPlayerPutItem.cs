@@ -14,6 +14,8 @@ public class ActPlayerPutItem : Act {
         Debug.Log("アイテムを置きました");
 
         var item = _player.RemoveItem(_item);
-        sys.AddFieldItem(FieldItemFactory.CreateFromItem(item, _player.Loc));
+        var fitem = FieldItemFactory.CreateFromItem(item, _player.Loc);
+        fitem.OnDiscovered(_player.IsBlind());
+        sys.AddFieldItem(fitem);
     }
 }

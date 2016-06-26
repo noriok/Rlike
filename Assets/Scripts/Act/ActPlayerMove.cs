@@ -24,57 +24,28 @@ public class ActPlayerMove : Act {
         _dstPos = player.Loc.Forward(dir).ToPosition();
     }
 
-    public override bool IsMoveAct() {
-        return true;
-    }
-
-    // protected override IEnumerator RunAnimation(MainSystem sys) {
-    //     Actor.ChangeDir(Utils.ToDir(_drow, _dcol));
-
-    //     // TODO: 一歩一歩が連続していないので矢印が点滅してしまう
-    //     //Actor.ShowDirection(Utils.ToDir(_drow, _dcol));
-
-    //     yield return CAction.Walk(Actor, _drow, _dcol, (x, y) => {
-    //         _player.SyncCameraPosition();
-    //     });
-
-    //     // Actor.HideDirection();
-    // }
-
-    public override void OnFinished(MainSystem sys) {
-        var nextLoc = Actor.Loc.Forward(_dir);
-        // DLog.D("{0} move {1} -> {2}", Actor, Actor.Loc, nextLoc);
-        Debug.LogFormat("--> {0} -> {1}", Actor.Loc, nextLoc);
-        Actor.UpdateLoc(nextLoc);
-
-        if (_fieldItem != null) {
-            Debug.Log("アイテムを拾った");
-
-
-            Item item = _fieldItem.Item;
-            sys.Message(string.Format("{0} をひろった", item.Name));
-            if (item.Type == ItemType.Gold) {
-                sys.IncGold(100);
-            }
-            else {
-                // TODO:持ち物がいっぱいなら拾えない
-                _player.AddItem(item);
-            }
-            sys.RemoveFieldItem(_fieldItem);
-        }
-
-        sys.UpdateMinimap();
-    }
-
     public override bool IsManualUpdate() {
         return true;
     }
 
-    public override void Update(MainSystem sys) {
+    public override bool IsMoveAct() {
+        return true;
+    }
+
+   public override void Update(MainSystem sys) {
         if (_isFirst) {
+            _isFirst = false;
             Actor.ChangeDir(_dir);
             sys.UpdateSpot(_nextLoc);
-            _isFirst = false;
+
+            Room prev = sys.FindRoom(_player.Loc);
+            Room next = sys.FindRoom(_nextLoc);
+            if (prev == null && next != null) { // 部屋に入った
+                sys.OnRoomEntering(next);
+            }
+            else if (prev != null && next == null) { // 部屋から通路に出た
+                sys.OnRoomExiting(prev);
+            }
         }
 
         _elapsed += Time.deltaTime;
@@ -92,5 +63,34 @@ public class ActPlayerMove : Act {
             Actor.Position = _dstPos;
             _player.SyncCameraPosition();
         }
+    }
+
+    public override void OnFinished(MainSystem sys) {
+        Room prev = sys.FindRoom(_player.Loc);
+        Room next = sys.FindRoom(_nextLoc);
+        if (prev == null && next != null) { // 部屋に入った
+            sys.OnRoomEntered(next);
+        }
+        else if (prev != null && next == null) { // 部屋から通路に出た
+            sys.OnRoomExited(prev);
+        }
+        // DLog.D("{0} move {1} -> {2}", Actor, Actor.Loc, nextLoc);
+        Debug.LogFormat("--> {0} -> {1}", Actor.Loc, _nextLoc);
+        Actor.UpdateLoc(_nextLoc);
+
+        if (_fieldItem != null) {
+            Item item = _fieldItem.Item;
+            sys.Msg_TakeItem(item);
+            if (item.Type == ItemType.Gold) {
+                sys.IncGold(100);
+            }
+            else {
+                // TODO:持ち物がいっぱいなら拾えない
+                _player.AddItem(item);
+            }
+            sys.RemoveFieldItem(_fieldItem);
+        }
+
+        sys.UpdateMinimap();
     }
 }

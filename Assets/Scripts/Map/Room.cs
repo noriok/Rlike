@@ -54,8 +54,8 @@ public class Room {
     }
 
     public bool IsInside(Loc loc) {
-        if (Row <= loc.Row && loc.Row < Row + Height &&
-            Col <= loc.Col && loc.Col < Col + Width)
+        if (Row <= loc.Row && loc.Row <= EndRow &&
+            Col <= loc.Col && loc.Col <= EndCol)
         {
             return true;
         }

@@ -24,6 +24,7 @@ public class ActPlayerThrowItem : Act { // TODO : ActPlayer
 
     protected override IEnumerator Run(MainSystem sys) {
         var fitem = FieldItemFactory.CreateFromItem(_item, _player.Loc);
+        fitem.OnDiscovered(_player.IsBlind());
         fitem.BringToFront();
 
         Vector3 src = _player.Loc.ToPosition();

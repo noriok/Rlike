@@ -147,8 +147,10 @@ public static class FloorCreator {
         var playerLoc = new Loc(5, 3);
 
         var fobjs = new List<FieldObject>();
+        fobjs.Add(FieldObjectFactory.CreateTrapHeal(new Loc(6, 6)));
+
         var fitems = new List<FieldItem>();
-        fitems.Add(FieldItemFactory.CreateMagic(new Loc(6, 3), 4));
+        fitems.Add(FieldItemFactory.CreateMagic(new Loc(6, 3), 4)); // 水がれ
 
         var enemies = new List<Enemy>();
         enemies.Add(EnemyFactory.CreateEnemy(new Loc(5, 5)));

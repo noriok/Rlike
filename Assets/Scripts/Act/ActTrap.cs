@@ -14,7 +14,7 @@ public class ActTrap : Act {
 
     protected override IEnumerator Run(MainSystem sys) {
         Actor.HideDirection();
-        _trap.Visible = true;
+        _trap.OnDiscovered(Actor.IsBlind());
         yield return _trap.RunAnimation(Actor, sys);
     }
 

@@ -434,6 +434,12 @@ public class MainSystem : MonoBehaviour {
         UpdatePassageSpotlightPosition(_player.Position);
         UpdateSpot(_player.Loc);
 
+        var room = FindRoom(_player.Loc);
+        if (room != null) {
+            OnRoomEntering(room);
+            OnRoomEntered(room);
+        }
+
         var text = GameObject.Find("Canvas/Header/Text_Floor").GetComponent<Text>();
         text.text = string.Format("{0}F", _floorNumber);
 
@@ -1158,12 +1164,19 @@ public class MainSystem : MonoBehaviour {
         case ItemType.Magic:
             doing = "読んだ！";
             break;
+        case ItemType.Wand:
+            doing = "振った！";
+            break;
         }
-        _mm.Message("プレイヤーは", string.Format("{0} を{1}", item.Name, doing));
+        _mm.Message(string.Format("{0} を{1}", item.Name, doing));
     }
 
     public void Msg_ThrowItem(Item item) {
-        _mm.Message("プレイヤーは", string.Format("{0} を{1}", item.Name, "投げた！"));
+        _mm.Message(string.Format("{0} を{1}", item.Name, "投げた！"));
+    }
+
+    public void Msg_TakeItem(Item item) {
+        _mm.Message(string.Format("{0} を{1}", item.Name, "ひろった"));
     }
 
     public void UpdateSpot(Loc loc) {
@@ -1172,5 +1185,40 @@ public class MainSystem : MonoBehaviour {
 
     public void UpdatePassageSpotlightPosition(Vector3 pos) {
         _floor.UpdatePassageSpotlightPosition(pos);
+    }
+
+    public Room FindRoom(Loc loc) {
+        return _floor.FindRoom(loc);
+    }
+
+    public void OnRoomEntering(Room room) {
+        Debug.Log("部屋に入りました (入る直前)");
+
+        // これまで見えていなかったアイテムを表示する
+        foreach (var item in _fieldItems) {
+            if (room.IsInside(item.Loc)) {
+                item.OnDiscovered(_player.IsBlind());
+            }
+        }
+
+        // 視界内のモンスターを表示する
+    }
+
+    public void OnRoomEntered(Room room) {
+        Debug.Log("部屋に入りました (入った直後)");
+
+        // モンスターハウスイベント
+    }
+
+    public void OnRoomExiting(Room room) {
+        Debug.Log("部屋から出ました (出る直前)");
+
+
+
+    }
+
+    public void OnRoomExited(Room room) {
+        Debug.Log("部屋から出ました (出た直後)");
+
     }
 }
