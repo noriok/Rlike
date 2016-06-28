@@ -11,7 +11,7 @@ public class Enemy : CharacterBase {
 
     public bool IsLockedOn { get; private set; }
     public Loc Target { get; private set; }
-    public Loc NextLoc { get; private set; }
+    public Loc NextLoc { get; private set; } // 次のターンにおけるモンスターの座標
 
     public bool CanLongDistanceAttack { get; set; }
 
@@ -60,7 +60,7 @@ public class Enemy : CharacterBase {
 
         float duration = 0.3f;
         yield return CAction.Run(duration, elapsed => {
-           float p = UTween.Ease(EaseType.OutQuad, fm, to, elapsed / duration);
+            float p = UTween.Ease(EaseType.OutQuad, fm, to, elapsed / duration);
             float scale = p * HP_GAUGE_MAX_SCALE / MaxHp;
             _barYellow.transform.localScale = new Vector3(scale, 1, 1);
         });
