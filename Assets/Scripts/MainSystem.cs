@@ -454,71 +454,6 @@ public class MainSystem : MonoBehaviour {
         ChangeGameState(GameState.TurnStart);
     }
 
-    private List<GameObject> D(int n) {
-        string pathPrefix = "Prefabs/Digits/digits_green_";
-
-        var pos = _player.Position;
-        float fontWidth = 0.14f;
-        var digits = new List<GameObject>();
-        var ds = Utils.Digits(n);
-        float x = pos.x - fontWidth * ds.Length / 2.0f + fontWidth / 2;
-        foreach (var d in ds) {
-            var obj = Resources.Load(pathPrefix + d);
-            var gobj = (GameObject)GameObject.Instantiate(obj, new Vector3(x, pos.y, pos.z), Quaternion.identity);
-            digits.Add(gobj);
-            x += fontWidth;
-        }
-        return digits;
-    }
-
-    private IEnumerator Test() {
-        int fm = 0;
-        int to = 35;
-
-        List<GameObject> digits = null;
-
-        float duration = 0.33f;
-        float elapsed = 0;
-        // カウントアップ
-        while (elapsed <= duration) {
-            elapsed += Time.deltaTime;
-            int x = (int)UTween.Ease(EaseType.OutQuad, fm, to, elapsed / duration);
-            if (digits != null) {
-                foreach (var d in digits) Destroy(d);
-            }
-            digits = D(x);
-            yield return null;
-        }
-        yield return new WaitForSeconds(0.4f);
-
-        elapsed = 0;
-        duration = 0.32f;
-
-        var src = _player.Position;
-        var dst = _player.Position + new Vector3(0, 0.23f, 0);
-
-        while (elapsed <= duration) {
-            elapsed += Time.deltaTime;
-            float y = Mathf.Lerp(src.y, dst.y, elapsed / duration);
-            foreach (var d in digits) {
-                var p = d.transform.position;
-                d.transform.position = new Vector3(p.x, y, p.z);
-
-                var renderer = d.GetComponent<SpriteRenderer>();
-                var color = renderer.color;
-                var a = UTween.Ease(EaseType.InQuint, 1.0f, 0, elapsed / duration);
-                color.a = a;
-                renderer.color = color;
-
-            }
-            yield return null;
-        }
-
-        foreach (var d in digits) {
-            Destroy(d);
-        }
-    }
-
     public float OrthographicSize {
         get {
             var camera = GameObject.Find("Main Camera");
@@ -1067,6 +1002,7 @@ public class MainSystem : MonoBehaviour {
         _floor.HideMinimap();
     }
 
+    // TODO: RandomWarpLoc
     // TODO:defaultLoc 削除。部屋のランダムなLocを返す。
     // 部屋内のランダムな位置を返す
     // ただし以下が存在する場合は除く
@@ -1090,6 +1026,7 @@ public class MainSystem : MonoBehaviour {
         }
         return defaultLoc; // ワープできない場合
     }
+
 
     public Loc Warp(Loc source, bool excludeSourceRoom) {
         const int retryCount = 20;
@@ -1196,7 +1133,8 @@ public class MainSystem : MonoBehaviour {
         return _floor.FindRoom(loc);
     }
 
-    // 次ターンでのモンスターの表示を更新する
+    // モンスターの Visible を更新する
+    // スポットライトのあるフロアの移動時や、目薬、めつぶしステータス付与/解除時に呼ばれる
     private void UpdateEnemyVisible(Room room, Loc playerLoc) {
         if (_player.IsVisibleAll()) {
             foreach (var enemy in _enemies) {

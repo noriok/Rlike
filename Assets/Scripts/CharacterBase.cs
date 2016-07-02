@@ -49,7 +49,6 @@ public abstract class CharacterBase {
     // TODO:アニメーションの一時停止処理
     private float _animationSpeed;
 
-//    private Dictionary<Status, GameObject> _status = new Dictionary<Status, GameObject>();
     private Dictionary<StatusType, StatusOne> _status = new Dictionary<StatusType, StatusOne>();
 
     public CharacterBase(Loc loc, GameObject gobj) {
