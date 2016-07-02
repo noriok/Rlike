@@ -228,7 +228,7 @@ public class MainSystem : MonoBehaviour {
     }
 
     private Enemy MakeEnemy(Loc loc, int sleepDepth) {
-        var e = EnemyFactory.CreateEnemy(loc);
+        var e = EnemyFactory.Create(loc);
         if (sleepDepth > 0) {
             e.AddStatus(StatusType.Sleep, sleepDepth);
         }
@@ -253,7 +253,7 @@ public class MainSystem : MonoBehaviour {
                 if (_enemies.Any(e => e.Loc == loc)) continue;
                 if (_player.Loc == loc) continue;
 
-                _enemies.Add(EnemyFactory.CreateEnemy(loc));
+                _enemies.Add(EnemyFactory.Create(loc));
                 break;
             }
         }
@@ -985,7 +985,7 @@ public class MainSystem : MonoBehaviour {
 
     public IEnumerator Summon(Loc loc) {
         // TODO: assert(loc に敵がいない)
-        var e = EnemyFactory.CreateEnemy(loc);
+        var e = EnemyFactory.Create(loc);
         _enemies.Add(e);
 
         yield return Anim.Par(this,

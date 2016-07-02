@@ -65,8 +65,8 @@ public class Minimap {
         // 敵アイコンの更新
         int p = 0;
         for (int i = 0; i < enemies.Count; i++) {
-            // if (enemies[i].IsInvisible()) continue;
-            if (!enemies[i].Visible) continue;
+            bool visible = DebugConfig.Minimap_ForceVisibleEnemy || enemies[i].Visible;
+            if (!visible) continue;
 
             if (p == _enemyIcons.Count) { // 追加
                 var loc = enemies[i].Loc;

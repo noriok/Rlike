@@ -1,7 +1,5 @@
-﻿using UnityEngine;
-using System.Collections;
+﻿public static class DebugConfig {
+	public const bool NoEnemy = false;
 
-public static class DebugConfig {
-	public static bool NoEnemy = false;
-
+    public const bool Minimap_ForceVisibleEnemy = true;
 }

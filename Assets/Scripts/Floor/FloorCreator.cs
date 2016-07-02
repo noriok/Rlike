@@ -155,10 +155,10 @@ public static class FloorCreator {
         fitems.Add(FieldItemFactory.CreateHerb(new Loc(6, 4), 1)); // 睡眠草
         fitems.Add(FieldItemFactory.CreateHerb(new Loc(6, 5), 4)); // 目薬草
 
-
         var enemies = new List<Enemy>();
-        enemies.Add(EnemyFactory.CreateEnemy(new Loc(5, 5)));
+        enemies.Add(EnemyFactory.Create(new Loc(5, 5)));
         enemies.Last().AddStatus(StatusType.Sleep);
+        enemies.Add(EnemyFactory.Create(new Loc(13, 5)));
 
         return new Data(map, stairsLoc, playerLoc, fobjs, fitems, enemies);
     }
@@ -239,8 +239,8 @@ public static class FloorCreator {
         fitems.Add(FieldItemFactory.CreateWand(new Loc(3, 1), 3));
 
         var enemies = new List<Enemy>();
-        enemies.Add(EnemyFactory.CreateEnemy(new Loc(2, 5)));
-        enemies.Add(EnemyFactory.CreateEnemy(new Loc(1, 1)));
+        enemies.Add(EnemyFactory.Create(new Loc(2, 5)));
+        enemies.Add(EnemyFactory.Create(new Loc(1, 1)));
 
         return new Data(map, stairsLoc, playerLoc, fobjs, fitems, enemies);
     }
@@ -265,8 +265,8 @@ public static class FloorCreator {
         fitems.Add(FieldItemFactory.CreateWand(new Loc(2, 2), 0));
 
         var enemies = new List<Enemy>();
-        enemies.Add(EnemyFactory.CreateEnemy(new Loc(2, 4)));
-        enemies.Add(EnemyFactory.CreateEnemy(new Loc(2, 8)));
+        enemies.Add(EnemyFactory.Create(new Loc(2, 4)));
+        enemies.Add(EnemyFactory.Create(new Loc(2, 8)));
 
         foreach (var e in enemies) {
             e.ChangeDir(Dir.W);
@@ -295,9 +295,9 @@ public static class FloorCreator {
         fitems.Add(FieldItemFactory.CreateWand(new Loc(5, 5), 4));
 
         var enemies = new List<Enemy>();
-        enemies.Add(EnemyFactory.CreateEnemy(new Loc(3, 2)));
-        enemies.Add(EnemyFactory.CreateEnemy(new Loc(3, 3)));
-        enemies.Add(EnemyFactory.CreateEnemy(new Loc(3, 4)));
+        enemies.Add(EnemyFactory.Create(new Loc(3, 2)));
+        enemies.Add(EnemyFactory.Create(new Loc(3, 3)));
+        enemies.Add(EnemyFactory.Create(new Loc(3, 4)));
         return new Data(map, stairsLoc, playerLoc, fobjs, fitems, enemies);
     }
 
@@ -342,7 +342,7 @@ public static class FloorCreator {
         var fitems = new List<FieldItem>();
 
         var enemies = new List<Enemy>();
-        enemies.Add(EnemyFactory.CreateEnemy(new Loc(2, 4)));
+        enemies.Add(EnemyFactory.Create(new Loc(2, 4)));
         enemies.Last().CanLongDistanceAttack = true;
 
         return new Data(map, stairsLoc, playerLoc, fobjs, fitems, enemies);
@@ -374,14 +374,14 @@ public static class FloorCreator {
         fitems.Add(FieldItemFactory.CreateHerb(new Loc(5, 4), 4));
 
         var enemies = new List<Enemy>();
-        enemies.Add(EnemyFactory.CreateEnemy(new Loc(4, 8)));
-        enemies.Add(EnemyFactory.CreateEnemy(new Loc(4, 0)));
-        enemies.Add(EnemyFactory.CreateEnemy(new Loc(1, 1)));
-        enemies.Add(EnemyFactory.CreateEnemy(new Loc(1, 7)));
-        enemies.Add(EnemyFactory.CreateEnemy(new Loc(7, 1)));
-        enemies.Add(EnemyFactory.CreateEnemy(new Loc(7, 7)));
-        enemies.Add(EnemyFactory.CreateEnemy(new Loc(0, 4)));
-        enemies.Add(EnemyFactory.CreateEnemy(new Loc(8, 4)));
+        enemies.Add(EnemyFactory.Create(new Loc(4, 8)));
+        enemies.Add(EnemyFactory.Create(new Loc(4, 0)));
+        enemies.Add(EnemyFactory.Create(new Loc(1, 1)));
+        enemies.Add(EnemyFactory.Create(new Loc(1, 7)));
+        enemies.Add(EnemyFactory.Create(new Loc(7, 1)));
+        enemies.Add(EnemyFactory.Create(new Loc(7, 7)));
+        enemies.Add(EnemyFactory.Create(new Loc(0, 4)));
+        enemies.Add(EnemyFactory.Create(new Loc(8, 4)));
 
         return new Data(map, stairsLoc, playerLoc, fobjs, fitems, enemies);
     }
@@ -444,7 +444,7 @@ public static class FloorCreator {
         fitems.Add(FieldItemFactory.CreateWand(new Loc(2, 4), 2));
 
         var enemies = new List<Enemy>();
-        enemies.Add(EnemyFactory.CreateEnemy(new Loc(6, 5)));
+        enemies.Add(EnemyFactory.Create(new Loc(6, 5)));
 
         return new Data(map, stairsLoc, playerLoc, fobjs, fitems, enemies);
     }
