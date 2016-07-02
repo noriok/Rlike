@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-// using UnityEngine;
-using UnityEngine.Assertions;
 
 public static class Utils {
     public static void Shuffle<T>(List<T> xs) {
@@ -11,12 +9,6 @@ public static class Utils {
             xs[i] = xs[p];
             xs[p] = t;
         }
-    }
-
-    public static Loc RandomRoomLoc(Room room) {
-        int r = room.Row + Rand.Next(room.Height);
-        int c = room.Col + Rand.Next(room.Width);
-        return new Loc(r, c);
     }
 
     public static Dir ToDir(int drow, int dcol) {

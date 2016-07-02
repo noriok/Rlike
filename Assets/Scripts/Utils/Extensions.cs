@@ -1,6 +1,4 @@
-﻿// using UnityEngine;
-using UnityEngine.Assertions;
-using System;
+﻿using System;
 using System.Collections.Generic;
 
 public static class Extensions {

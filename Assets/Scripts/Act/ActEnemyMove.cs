@@ -1,6 +1,4 @@
 ﻿using UnityEngine;
-using UnityEngine.Assertions;
-using System.Collections;
 
 public class ActEnemyMove : Act {
     private int _drow; // TODO:削除

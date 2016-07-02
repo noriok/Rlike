@@ -17,11 +17,9 @@ public class ActPlayerUseWand : Act {
         Loc to = sys.FindHitTarget(_player.Loc, _player.Dir, out hitTarget);
 
         // 魔法弾を飛ばす
-        var obj = Resources.Load("Prefabs/Effect/magic-ball");
-        var gobj = (GameObject)GameObject.Instantiate(obj);
-        yield return CAction.Move(gobj, _player.Loc, to);
-
-        GameObject.Destroy(gobj);
+        var obj = Res.Create("Prefabs/Effect/magic-ball");
+        yield return CAction.Move(obj, _player.Loc, to);
+        GameObject.Destroy(obj);
 
         if (hitTarget == null) {
             yield return _item.Hit(_player, to, sys);

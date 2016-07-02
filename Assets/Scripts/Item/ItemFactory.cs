@@ -1,8 +1,4 @@
-﻿// using UnityEngine;
-using UnityEngine.Assertions;
-// using System.Collections;
-
-public static class ItemFactory {
+﻿public static class ItemFactory {
     private static readonly Skill SkillNone = new SkillNone();
 
     public static Item CreateGold() {

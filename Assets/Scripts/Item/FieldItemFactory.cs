@@ -1,6 +1,4 @@
 ﻿using UnityEngine;
-using UnityEngine.Assertions;
-using System.Collections;
 
 public static class FieldItemFactory {
 

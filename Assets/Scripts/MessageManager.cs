@@ -43,4 +43,30 @@ public class MessageManager {
         _text2.GetComponent<Text>().text = msg2;
         _lastUpdateTime = Time.time;
     }
+
+    public void UseItem(Item item) {
+        string doing = "使った！";
+        switch (item.Type) {
+        default:
+        case ItemType.Herb:
+        case ItemType.Gold:
+            doing = "使った！";
+            break;
+        case ItemType.Magic:
+            doing = "読んだ！";
+            break;
+        case ItemType.Wand:
+            doing = "振った！";
+            break;
+        }
+        Message(string.Format("{0} を{1}", item.Name, doing));
+    }
+
+    public void ThrowItem(Item item) {
+        Message(string.Format("{0} を{1}", item.Name, "投げた！"));
+    }
+
+    public void TakeItem(Item item) {
+        Message(string.Format("{0} を{1}", item.Name, "ひろった"));
+    }
 }

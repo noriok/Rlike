@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using UnityEngine.Assertions;
 using UnityEngine.UI;
 
 using System;
@@ -241,11 +240,11 @@ public class MainSystem : MonoBehaviour {
         Assert.IsTrue(_enemies.Count == 0);
         if (DebugConfig.NoEnemy) return;
 
-        Room[] rooms = _floor.GetRooms();
+        Room[] rooms = _floor.Rooms;
         for (int i = 0; i < n; i++) {
             const int tryCount = 10;
             for (int j = 0; j < tryCount; j++) {
-                var loc = Utils.RandomRoomLoc(rooms.Choice());
+                var loc = rooms.Choice().RandomLoc();
 
                 // TODO:敵を配置可能か調べるメソッド
                 if (_floor.ExistsObstacle(loc)) continue;
@@ -265,11 +264,11 @@ public class MainSystem : MonoBehaviour {
         Assert.IsTrue(_fieldItems.Count == 0);
 
         var rand = new System.Random();
-        Room[] rooms = _floor.GetRooms();
+        Room[] rooms = _floor.Rooms;
         for (int i = 0; i < n; i++) {
             const int tryCount = 10;
             for (int j = 0; j < tryCount; j++) {
-                var loc = Utils.RandomRoomLoc(rooms.Choice());
+                var loc = rooms.Choice().RandomLoc();
 
                 // 既にアイテム配置済みなら置けない
                 if (_fieldItems.Where(e => e.Loc == loc).Any()) continue;
@@ -630,7 +629,6 @@ public class MainSystem : MonoBehaviour {
             ChangeGameState(GameState.Act);
         }
         else {
-            // Debug.Log("進めません");
             _player.UpdateDir(dir);
         }
     }
@@ -957,7 +955,7 @@ public class MainSystem : MonoBehaviour {
         var rand = new System.Random();
         const int retryCount = 20;
         for (int i = 0; i < retryCount; i++) {
-            var room = _floor.GetRooms().Choice();
+            var room = _floor.Rooms.Choice();
 
             int r = rand.Next(room.Row, room.Row + room.Height);
             int c = rand.Next(room.Col, room.Col + room.Width);
@@ -973,7 +971,7 @@ public class MainSystem : MonoBehaviour {
 
     public Loc Warp(Loc source, bool excludeSourceRoom) {
         const int retryCount = 20;
-        Room[] rooms = _floor.GetRooms();
+        Room[] rooms = _floor.Rooms;
         if (excludeSourceRoom && rooms.Length > 1) {
             rooms = rooms.Where(e => !e.IsInside(source)).ToArray();
         }
@@ -1039,29 +1037,15 @@ public class MainSystem : MonoBehaviour {
     }
 
     public void Msg_UseItem(Item item) {
-        string doing = "使った！";
-        switch (item.Type) {
-        default:
-        case ItemType.Herb:
-        case ItemType.Gold:
-            doing = "使った！";
-            break;
-        case ItemType.Magic:
-            doing = "読んだ！";
-            break;
-        case ItemType.Wand:
-            doing = "振った！";
-            break;
-        }
-        _mm.Message(string.Format("{0} を{1}", item.Name, doing));
+        _mm.UseItem(item);
     }
 
     public void Msg_ThrowItem(Item item) {
-        _mm.Message(string.Format("{0} を{1}", item.Name, "投げた！"));
+        _mm.ThrowItem(item);
     }
 
     public void Msg_TakeItem(Item item) {
-        _mm.Message(string.Format("{0} を{1}", item.Name, "ひろった"));
+        _mm.TakeItem(item);
     }
 
     public void UpdateSpot(Loc loc) {
@@ -1078,6 +1062,8 @@ public class MainSystem : MonoBehaviour {
 
     // モンスターの Visible を更新する
     // スポットライトのあるフロアの移動時や、目薬、めつぶしステータス付与/解除時に呼ばれる
+    // room = プレイヤーがいる部屋
+    // playerLoc = プレイヤーの座標
     private void UpdateEnemyVisible(Room room, Loc playerLoc) {
         if (_player.IsVisibleAll()) {
             foreach (var enemy in _enemies) {

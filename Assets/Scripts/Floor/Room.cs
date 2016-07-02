@@ -72,4 +72,10 @@ public class Room {
         }
         return false;
     }
+
+    public Loc RandomLoc() {
+        int r = Row + Rand.Next(Height);
+        int c = Col + Rand.Next(Width);
+        return new Loc(r, c);
+    }
 }

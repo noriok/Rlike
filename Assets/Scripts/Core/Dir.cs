@@ -1,6 +1,4 @@
-﻿using UnityEngine.Assertions;
-
-// 方向
+﻿// 方向
 public enum Dir {
     N,  // 北
     NE, // 北東

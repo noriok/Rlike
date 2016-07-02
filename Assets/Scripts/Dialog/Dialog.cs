@@ -1,6 +1,5 @@
 ﻿using System;
 using UnityEngine;
-using UnityEngine.Assertions;
 using UnityEngine.UI;
 
 // TODO: rename OKDialog

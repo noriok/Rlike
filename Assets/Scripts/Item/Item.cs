@@ -1,7 +1,4 @@
-﻿// using UnityEngine;
-using UnityEngine.Assertions;
-
-// using System;
+﻿// using System;
 using System.Collections;
 
 public class Item {

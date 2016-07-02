@@ -1,9 +1,6 @@
 ﻿using UnityEngine;
-using UnityEngine.Assertions;
 using System;
-// using System.Collections;
 using System.Collections.Generic;
-// using System.Linq;
 
 public class Map {
     private const int NoRoom = -1;
@@ -14,7 +11,14 @@ public class Map {
 
     private GameObject _mapLayer;
 
-    private Room[] _rooms; // TODOプロパティに変更
+    public Room[] Rooms {
+        get {
+            Assert.IsTrue(_rooms != null);
+            return _rooms;
+        }
+    }
+
+    private Room[] _rooms;
     private int[,] _roomMap;
 
     private MapSpotlight _spotlight;
@@ -185,7 +189,7 @@ public class Map {
         return _rooms[roomId];
     }
 
-    public Room[] GetRooms() {
+    private Room[] GetRooms() {
         if (_rooms != null) return _rooms;
 
         var rooms = new List<Room>();

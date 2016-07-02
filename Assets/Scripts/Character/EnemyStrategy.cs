@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using UnityEngine.Assertions;
 
 public static class EnemyStrategy {
     // to に近づく
@@ -66,9 +65,10 @@ public static class EnemyStrategy {
         var q = new List<Act>();
 
         var locs = new bool[floor.Rows, floor.Cols]; // キャラクターの位置
+        locs[playerNextLoc.Row, playerNextLoc.Col] = true;
+
         var size = floor.Size;
         Func<Loc, bool> existsEnemy = loc => size.IsInside(loc) && locs[loc.Row, loc.Col];
-
         var used = new bool[enemies.Count];
         for (int i = 0; i < enemies.Count; i++) {
             if (enemies[i].ActCount <= 0) { // 行動済み
@@ -80,7 +80,6 @@ public static class EnemyStrategy {
             Loc loc = enemies[i].Loc;
             locs[loc.Row, loc.Col] = true;
         }
-        locs[playerNextLoc.Row, playerNextLoc.Col] = true;
 
         // 遠距離攻撃をする敵
         // - プレイヤーと同じ部屋にいる

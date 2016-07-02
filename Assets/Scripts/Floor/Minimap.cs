@@ -1,6 +1,4 @@
 ﻿using UnityEngine;
-// using UnityEngine.Assertions;
-// using System.Collections;
 using System.Collections.Generic;
 
 // TODO:ワナアイコンの Visible 管理

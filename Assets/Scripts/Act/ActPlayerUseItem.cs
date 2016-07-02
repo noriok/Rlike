@@ -1,5 +1,4 @@
-﻿using UnityEngine;
-// using UnityEngine.Assertions;
+﻿// using UnityEngine;
 using System.Collections;
 
 public class ActPlayerUseItem : Act {

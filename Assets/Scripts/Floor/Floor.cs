@@ -129,9 +129,7 @@ public class Floor {
         return _map.FindRoom(loc);
     }
 
-    public Room[] GetRooms() {
-        return _map.GetRooms();
-    }
+    public Room[] Rooms { get { return _map.Rooms; } }
 
     // fm から to が見えるか
     public bool InSight(Loc fm, Loc to) {

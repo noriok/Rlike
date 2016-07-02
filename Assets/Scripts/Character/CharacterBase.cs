@@ -91,7 +91,7 @@ public abstract class CharacterBase {
     }
 
     private GameObject CreateStatusSymbol(string pathName) {
-        var st = (GameObject)GameObject.Instantiate(Resources.Load(pathName), Vector3.zero, Quaternion.identity);
+        var st = Res.Create(pathName);
         st.transform.SetParent(_gobj.transform);
         st.transform.localPosition = new Vector3(0, 0.18f, 0);
         return st;

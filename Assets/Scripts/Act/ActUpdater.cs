@@ -19,7 +19,7 @@ public class ActUpdater {
     }
 
     public bool Update(MainSystem sys, Player player, List<Enemy> enemies, Floor floor) {
-       // HP がゼロの敵は削除する
+       // HP がゼロの敵は削除する。TODO:HP がゼロに鳴るタイミングは固定なので Update でチェックする必要はない。
         bool updated = true;
         while (updated) {
             updated = false;
@@ -35,7 +35,8 @@ public class ActUpdater {
         // 移動するキャラのタスクを先に実行する
         bool moveFinished = true;
         foreach (var act in _acts) {
-            if (act.Actor.Hp <= 0) continue;
+            Assert.IsTrue(act.Actor.Hp > 0);
+            // if (act.Actor.Hp <= 0) continue;
             if (act.IsMoveAct() && !act.Finished) {
                 act.UpdateAct(sys);
                 moveFinished = moveFinished && act.Finished;
