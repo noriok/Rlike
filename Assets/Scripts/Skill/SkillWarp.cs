@@ -17,7 +17,7 @@ public class SkillWarp : Skill {
 
         var loc = sys.Warp(sender.Loc, true);
         sender.Position = loc.ToPosition();
-        sender.ChangeDir(Dir.S);
+        sender.UpdateDir(Dir.S);
         sender.UpdateLoc(loc);
         yield return new WaitForSeconds(0.4f);
     }

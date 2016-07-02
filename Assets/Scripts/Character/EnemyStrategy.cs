@@ -49,6 +49,8 @@ public static class EnemyStrategy {
         // TODO:プレイヤーが見えない場合の行動
         Assert.IsFalse(player.IsInvisible()); // 未実装
 
+        int actMoveCount = 0;
+
         // 敵をプレイヤーに近い距離順にソートする
         // TODO:プレイヤーから逃げる行動をとる場合は、プレイヤーから遠い順に行動を決める
         enemies.Sort((a, b) => {
@@ -131,6 +133,7 @@ public static class EnemyStrategy {
                 if (floor.InSight(enemy.Loc, playerNextLoc)) { // プレイヤーが視界内
                     // 敵が部屋にいて、プレイヤーが部屋の入り口にいるならターゲットとして追尾
                     if (floor.IsRoom(enemy.Loc) && floor.IsEntrance(playerNextLoc)) {
+                        Debug.Log("ロックオンします");
                         enemy.LockOn(playerNextLoc);
                     }
                     else {
@@ -142,6 +145,7 @@ public static class EnemyStrategy {
                         Dir dir = enemy.Loc.Toward(loc);
                         if (!existsEnemy(loc) && floor.CanAdvance(enemy.Loc, dir)) {
                             q.Add(new ActEnemyMove(enemy, loc));
+                            actMoveCount++;
                             locs[loc.Row, loc.Col] = true;
                             locs[enemy.Row, enemy.Col] = false;
                             updated = true;
@@ -154,10 +158,11 @@ public static class EnemyStrategy {
                     // 巡回モード
 
                     if (enemy.IsLockedOn) {
-                         foreach (var loc in Approach(enemy.Loc, enemy.Target)) {
+                         foreach (var loc in Approach(enemy.Loc, enemy.TargetLoc)) {
                             Dir dir = enemy.Loc.Toward(loc);
                             if (!existsEnemy(loc) && floor.CanAdvance(enemy.Loc, dir)) {
                                 q.Add(new ActEnemyMove(enemy, loc));
+                                actMoveCount++;
                                 locs[loc.Row, loc.Col] = true;
                                 locs[enemy.Row, enemy.Col] = false;
                                 updated = true;
@@ -174,6 +179,7 @@ public static class EnemyStrategy {
                             Dir dir = enemy.Loc.Toward(loc);
                             if (!existsEnemy(loc) && floor.CanAdvance(enemy.Loc, dir)) {
                                 q.Add(new ActEnemyMove(enemy, loc));
+                                actMoveCount++;
                                 locs[loc.Row, loc.Col] = true;
                                 locs[enemy.Row, enemy.Col] = false;
                                 updated = true;
@@ -199,10 +205,11 @@ public static class EnemyStrategy {
 
                         Loc target = entrances.Choice();
                         enemy.LockOn(target);
-                        foreach (var loc in Approach(enemy.Loc, enemy.Target)) {
+                        foreach (var loc in Approach(enemy.Loc, enemy.TargetLoc)) {
                             Dir dir = enemy.Loc.Toward(loc);
                             if (!existsEnemy(loc) && floor.CanAdvance(enemy.Loc, dir)) {
                                 q.Add(new ActEnemyMove(enemy, loc));
+                                actMoveCount++;
                                 locs[loc.Row, loc.Col] = true;
                                 locs[enemy.Row, enemy.Col] = false;
                                 updated = true;
@@ -235,6 +242,7 @@ public static class EnemyStrategy {
     }
 
     // TODO:削除。プレイヤーが透明状態の場合の行動ロジック
+    /*
     public static List<Act> Detect2(List<Enemy> enemies, Player player, Loc playerNextLoc, Floor floor) {
 
         // 敵をプレイヤーに近い距離順にソートする
@@ -285,7 +293,7 @@ public static class EnemyStrategy {
                     // 巡回モード
 
                     if (enemy.IsLockedOn) {
-                         foreach (var loc in Approach(enemy.Loc, enemy.Target)) {
+                         foreach (var loc in Approach(enemy.Loc, enemy.TargetLoc)) {
                             Dir dir = enemy.Loc.Toward(loc);
                             if (!existsEnemy(loc) && floor.CanAdvance(enemy.Loc, dir)) {
                                 q.Add(new ActEnemyMove(enemy, loc));
@@ -330,7 +338,7 @@ public static class EnemyStrategy {
 
                         Loc target = entrances.Choice();
                         enemy.LockOn(target);
-                        foreach (var loc in Approach(enemy.Loc, enemy.Target)) {
+                        foreach (var loc in Approach(enemy.Loc, enemy.TargetLoc)) {
                             Dir dir = enemy.Loc.Toward(loc);
                             if (!existsEnemy(loc) && floor.CanAdvance(enemy.Loc, dir)) {
                                 q.Add(new ActEnemyMove(enemy, loc));
@@ -355,4 +363,5 @@ public static class EnemyStrategy {
 
         return q;
     }
+    */
 }

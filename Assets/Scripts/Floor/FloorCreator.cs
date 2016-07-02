@@ -134,7 +134,7 @@ public static class FloorCreator {
 
         var floor = new Floor(map, minimap, data.FieldObjects, data.StairsLoc);
         player.UpdateLoc(data.PlayerLoc); // TODO:プレイヤーの初期位置設定
-        player.ChangeDir(Dir.S);
+        player.UpdateDir(Dir.S);
         return floor;
     }
 
@@ -269,7 +269,7 @@ public static class FloorCreator {
         enemies.Add(EnemyFactory.Create(new Loc(2, 8)));
 
         foreach (var e in enemies) {
-            e.ChangeDir(Dir.W);
+            e.UpdateDir(Dir.W);
         }
         return new Data(map, stairsLoc, playerLoc, fobjs, fitems, enemies);
     }

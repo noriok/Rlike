@@ -42,7 +42,7 @@ public class ActEnemyMove : Act {
 
     public override void Update(MainSystem sys) {
         if (_isFirst) {
-            Actor.ChangeDir(Utils.ToDir(_drow, _dcol));
+            Actor.UpdateDir(Utils.ToDir(_drow, _dcol));
             _isFirst = false;
         }
 

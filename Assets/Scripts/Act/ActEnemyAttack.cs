@@ -31,14 +31,14 @@ public class ActEnemyAttack : Act {
         Actor.Position = dst;
 
         // ターゲットの方を向く
-        Actor.ChangeDir(Actor.Loc.Toward(_target.Loc));
+        Actor.UpdateDir(Actor.Loc.Toward(_target.Loc));
         _target.HideDirection();
 
         // ターゲットは攻撃者の方を向く。ただし以下の場合は振り向かない
         // - 目の前に敵が存在する
         // - 攻撃者が透明状態
         if (!sys.ExistsEnemy(_target.Front()) && !Actor.IsInvisible()) {
-            _target.ChangeDir(_target.Loc.Toward(Actor.Loc));
+            _target.UpdateDir(_target.Loc.Toward(Actor.Loc));
         }
 
         _target.RemoveStatus(StatusType.Sleep);

@@ -1,5 +1,7 @@
 ﻿public static class DebugConfig {
-	public const bool NoEnemy = false;
+	public static readonly bool NoEnemy = false;
 
-    public const bool Minimap_ForceVisibleEnemy = true;
+    // public const bool Floor_ForceVisibleEnemy = true;
+    public static readonly bool Minimap_ForceVisibleEnemy = true;
+
 }

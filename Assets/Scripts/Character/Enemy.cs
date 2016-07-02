@@ -10,7 +10,7 @@ public class Enemy : CharacterBase {
     private GameObject _barYellow;
 
     public bool IsLockedOn { get; private set; }
-    public Loc Target { get; private set; }
+    public Loc TargetLoc { get; private set; }
     public Loc NextLoc { get; private set; } // 次のターンにおけるモンスターの座標
 
     public bool CanLongDistanceAttack { get; set; }
@@ -78,7 +78,7 @@ public class Enemy : CharacterBase {
         base.OnTurnEnd();
 
         if (IsLockedOn) {
-            if (Loc == Target) {
+            if (Loc == TargetLoc) {
                 CancelTarget();
             }
         }
@@ -91,12 +91,14 @@ public class Enemy : CharacterBase {
         NextLoc = nextLoc;
     }
 
-    public void LockOn(Loc target) {
+    public void LockOn(Loc targetLoc) {
+        // Debug.LogFormat("--- ロックオン: {0}", targetLoc);
         IsLockedOn = true;
-        Target = target;
+        TargetLoc = targetLoc;
     }
 
     public void CancelTarget() {
+        // Debug.LogFormat("--- ロックオン解除: {0} Dir:{1}", TargetLoc, Dir);
         IsLockedOn = false;
     }
 

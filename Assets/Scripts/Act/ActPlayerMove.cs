@@ -35,7 +35,7 @@ public class ActPlayerMove : Act {
    public override void Update(MainSystem sys) {
         if (_isFirst) {
             _isFirst = false;
-            Actor.ChangeDir(_dir);
+            Actor.UpdateDir(_dir);
             sys.UpdateSpot(_nextLoc);
 
             Room prev = sys.FindRoom(_player.Loc);

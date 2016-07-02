@@ -62,7 +62,8 @@ public class MainSystem : MonoBehaviour {
     private List<Enemy> _enemies = new List<Enemy>();
     private List<FieldItem> _fieldItems = new List<FieldItem>();
 
-    private List<Act> _acts = new List<Act>();
+    private ActUpdater _actUpdater = new ActUpdater();
+
     private MessageManager _mm;
 
     private int _turnCount = 0;
@@ -356,7 +357,7 @@ public class MainSystem : MonoBehaviour {
         if (_gameState == GameState.ChangeDirWaitPress) {
             Dir dir;
             if (_keyPad.IsMove(out dir)) {
-                _player.ChangeDir(dir);
+                _player.UpdateDir(dir);
                 ChangeGameState(GameState.ChangeDirWaitRelease);
                 return;
             }
@@ -498,7 +499,7 @@ public class MainSystem : MonoBehaviour {
             break;
 
         case GameState.TurnStart:
-            Debug.Log("### Turn Start ");
+            Debug.Log("---------- Turn Start ----------");
             SysTurnStart();
 
             _player.HideDirection();
@@ -506,7 +507,7 @@ public class MainSystem : MonoBehaviour {
             break;
 
         case GameState.TurnEnd:
-            Debug.Log("### Turn Finish ");
+            // Debug.Log("### Turn Finish ");
             SysTurnEnd();
 
             // TODO:直前の行動が移動のみ階段ダイアログを表示する
@@ -559,7 +560,7 @@ public class MainSystem : MonoBehaviour {
         if (_player.Hp <= 0) {
             // ゲームオーバーダイアログを表示して、フロアをやり直す。
             Action ok = () => {
-                _acts.Clear();
+                _actUpdater.Clear();
                 _floorNumber--;
                 ChangeGameState(GameState.NextFloorTransition);
                 StartCoroutine(NextFloor());
@@ -570,64 +571,9 @@ public class MainSystem : MonoBehaviour {
 
         Assert.IsTrue(_player.Hp > 0);
 
-       // HP がゼロの敵は削除する
-        bool updated = true;
-        while (updated) {
-            updated = false;
-            for (int i = 0; i < _enemies.Count; i++) {
-                if (_enemies[i].Hp <= 0) {
-                    _enemies.RemoveAt(i);
-                    updated = true;
-                    break;
-                }
-            }
-        }
-
-        // 移動するキャラのタスクを先に実行する
-        bool moveFinished = true;
-        foreach (var act in _acts) {
-            if (act.Actor.Hp <= 0) continue;
-            if (act.IsMoveAct() && !act.Finished) {
-                act.UpdateAct(this);
-                moveFinished = moveFinished && act.Finished;
-            }
-        }
-
-        if (!moveFinished) return; // 移動タスクが完了するまで待機
-
-        bool trapFinished = true;
-        foreach (var act in _acts) {
-            if (act.IsTrapAct() && !act.Finished) {
-                act.UpdateAct(this);
-                trapFinished = trapFinished && act.Finished;
-            }
-        }
-
-        if (!trapFinished) return; // トラップタスクが完了するまで待機
-
-        // 移動タスク、トラップタスクが完了したら、それ以外の行動を一つずつ実行していく
-        // TODO: act.IsInvalid() で無効になったキャラがいるなら、
-        //       ただちに Detect で行動順を決めないと、攻撃の後に移動処理がくることになるはず。
-        bool actFinished = true;
-        foreach (var act in _acts) {
-            if (act.Actor.Hp <= 0 || act.IsInvalid()) continue;
-            if (act.Finished || act.IsMoveAct()) continue;
-
-            act.UpdateAct(this);
-            actFinished = false;
-            break; // 行動処理は 1 体ずつ行う
-        }
-
-        // 予約されている全てのタスクが終了した
+        bool actFinished = _actUpdater.Update(this, _player, _enemies, _floor);
         if (actFinished) {
-            // 行動していないキャラの Act を取得
-            var acts = DetectEnemyAct(_player.Loc);
-            if (acts.Count == 0) { // 全てのキャラの行動が終了した
-                ChangeGameState(GameState.TurnEnd);
-            }
-            else {
-                _acts.AddRange(acts); // Act を追加
-            }
+            ChangeGameState(GameState.TurnEnd);
         }
     }
 
@@ -648,7 +594,7 @@ public class MainSystem : MonoBehaviour {
 
     // ターン終了後
     private void SysTurnEnd() {
-        _acts.Clear();
+        _actUpdater.Clear();
 
         var text = GameObject.Find("Canvas/Text").GetComponent<Text>();
         text.text = DLog.ToText();
@@ -666,38 +612,38 @@ public class MainSystem : MonoBehaviour {
 
     // プレイヤーの行動
     private void ExecutePlayerMove(Dir dir) {
-        Assert.IsTrue(_acts.Count == 0);
+        Assert.IsTrue(_actUpdater.IsEmpty());
 
         Loc to = _player.Loc.Forward(dir);
         if (_floor.CanAdvance(_player.Loc, dir) && !ExistsEnemy(to)) {
             _player.ShowDirection(dir);
-            _acts.Add(new ActPlayerMove(_player, dir, FindFieldItem(to)));
+            _actUpdater.Add(new ActPlayerMove(_player, dir, FindFieldItem(to)));
 
             // 移動先にトラップがあるなら、トラップイベントを発生させる
             Trap trap = _floor.FindTrap(to);
             if (trap != null) {
                 // TODO:Fire確率
-                _acts.Add(new ActTrap(_player, trap));
+                _actUpdater.Add(new ActTrap(_player, trap));
             }
 
-            _acts.AddRange(DetectEnemyAct(to));
+            _actUpdater.AddRange(DetectEnemyAct(to));
             ChangeGameState(GameState.Act);
         }
         else {
             // Debug.Log("進めません");
-            _player.ChangeDir(dir);
+            _player.UpdateDir(dir);
         }
     }
 
     private void ExecutePlayerWait() {
-        Assert.IsTrue(_acts.Count == 0);
+        Assert.IsTrue(_actUpdater.IsEmpty());
 
-        _acts.Add(new ActPlayerWait(_player));
+        _actUpdater.Add(new ActPlayerWait(_player));
         ChangeGameState(GameState.Act);
     }
 
     private void ExecutePlayerAttack() {
-        Assert.IsTrue(_acts.Count == 0);
+        Assert.IsTrue(_actUpdater.IsEmpty());
 
         Dir dir = _player.Dir;
         Loc loc = _player.Loc.Forward(dir);
@@ -705,7 +651,7 @@ public class MainSystem : MonoBehaviour {
         Enemy enemy = FindEnemy(loc);
         if (enemy != null && _floor.CanAdvance(_player.Loc, dir)) {
             // 敵へ攻撃する
-            _acts.Add(new ActPlayerAttack(_player, enemy));
+            _actUpdater.Add(new ActPlayerAttack(_player, enemy));
             ChangeGameState(GameState.Act);
             return;
         }
@@ -713,7 +659,7 @@ public class MainSystem : MonoBehaviour {
         Treasure treasure = _floor.FindTreasure(loc);
         if (treasure != null) {
             // 宝箱を開ける
-            _acts.Add(new ActPlayerOpenTreasure(_player, treasure));
+            _actUpdater.Add(new ActPlayerOpenTreasure(_player, treasure));
             ChangeGameState(GameState.Act);
             return;
         }
@@ -729,8 +675,7 @@ public class MainSystem : MonoBehaviour {
     }
 
     private void ExecutePlayerItemAction(ItemActionType actionType, Item item) {
-        Debug.Log("Count = " + _acts.Count);
-        Assert.IsTrue(_acts.Count == 0);
+        Assert.IsTrue(_actUpdater.IsEmpty());
 
         switch (actionType) {
         case ItemActionType.Use:
@@ -749,7 +694,7 @@ public class MainSystem : MonoBehaviour {
     }
 
     private void ExecutePlayerFootItemAction(ItemActionType actionType, FieldItem fieldItem) {
-        Assert.IsTrue(_acts.Count == 0);
+        Assert.IsTrue(_actUpdater.IsEmpty());
 
         switch (actionType) {
         case ItemActionType.Close:
@@ -771,14 +716,14 @@ public class MainSystem : MonoBehaviour {
     }
 
     private void ExecutePlayerFootTrapAction(TrapActionType actionType, Trap trap) {
-        Assert.IsTrue(_acts.Count == 0);
+        Assert.IsTrue(_actUpdater.IsEmpty());
 
         switch (actionType) {
         case TrapActionType.Close:
             ChangeGameState(GameState.InputWait);
             break;
         case TrapActionType.Fire:
-            _acts.Add(new ActTrap(_player, trap));
+            _actUpdater.Add(new ActTrap(_player, trap));
             ChangeGameState(GameState.Act);
             break;
         default:
@@ -789,34 +734,34 @@ public class MainSystem : MonoBehaviour {
 
     private void ExecutePlayerUseItem(Item item) {
         Debug.Log("---- Use Item");
-        Assert.IsTrue(_acts.Count == 0);
+        Assert.IsTrue(_actUpdater.IsEmpty());
 
         if (item.Type == ItemType.Wand) {
-            _acts.Add(new ActPlayerUseWand(_player, item));
+            _actUpdater.Add(new ActPlayerUseWand(_player, item));
         }
         else {
-            _acts.Add(new ActPlayerUseItem(_player, item));
+            _actUpdater.Add(new ActPlayerUseItem(_player, item));
         }
 
         ChangeGameState(GameState.Act);
     }
 
     private void ExecutePlayerUseFootItem(FieldItem fieldItem) {
-        Assert.IsTrue(_acts.Count == 0);
+        Assert.IsTrue(_actUpdater.IsEmpty());
 
         Item item = fieldItem.Item;
         if (item.Type == ItemType.Wand) {
-            _acts.Add(new ActPlayerUseWand(_player, item));
+            _actUpdater.Add(new ActPlayerUseWand(_player, item));
         }
         else {
-            _acts.Add(new ActPlayerUseFootItem(_player, fieldItem));
+            _actUpdater.Add(new ActPlayerUseFootItem(_player, fieldItem));
         }
         ChangeGameState(GameState.Act);
     }
 
     private void ExecutePlayerPutItem(Item item) {
         Debug.Log("--- Put Item");
-        Assert.IsTrue(_acts.Count == 0);
+        Assert.IsTrue(_actUpdater.IsEmpty());
 
         bool ok = true;
         if (!_floor.CanPutItem(_player.Loc)) {
@@ -828,7 +773,7 @@ public class MainSystem : MonoBehaviour {
         }
 
         if (ok) {
-            _acts.Add(new ActPlayerPutItem(_player, item));
+            _actUpdater.Add(new ActPlayerPutItem(_player, item));
             ChangeGameState(GameState.Act);
         }
         else {
@@ -838,16 +783,16 @@ public class MainSystem : MonoBehaviour {
     }
 
     private void ExecutePlayerTakeFootItem(FieldItem fieldItem) {
-        Assert.IsTrue(_acts.Count == 0);
+        Assert.IsTrue(_actUpdater.IsEmpty());
 
         // TODO:アイテムが持ちきれない場合
-        _acts.Add(new ActPlayerTakeFootItem(_player, fieldItem));
+        _actUpdater.Add(new ActPlayerTakeFootItem(_player, fieldItem));
         ChangeGameState(GameState.Act);
     }
 
     private void ExecutePlayerThrowItem(Item item) {
         // TODO:石を投げる場合は別処理
-        Assert.IsTrue(_acts.Count == 0);
+        Assert.IsTrue(_actUpdater.IsEmpty());
 
         Loc loc = _player.Loc;
         bool update = true;
@@ -856,13 +801,13 @@ public class MainSystem : MonoBehaviour {
 
             var next = loc.Forward(_player.Dir);
             if (_floor.IsWall(next) || _floor.ExistsObstacle(next)) {
-                _acts.Add(new ActPlayerThrowItem(_player, item, next, loc, null));
+                _actUpdater.Add(new ActPlayerThrowItem(_player, item, next, loc, null));
             }
             else {
                 int p = _enemies.FindIndex(e => e.Loc == next);
                 if (p != -1) { // 敵にヒット
                     var target = _enemies[p];
-                    _acts.Add(new ActPlayerThrowItem(_player, item, next, next, target));
+                    _actUpdater.Add(new ActPlayerThrowItem(_player, item, next, next, target));
                 }
                 else {
                     update = true;
@@ -875,7 +820,7 @@ public class MainSystem : MonoBehaviour {
 
     private void ExecutePlayerThrowFootItem(FieldItem fieldItem) {
         // TODO:石を投げる場合は別処理
-        Assert.IsTrue(_acts.Count == 0);
+        Assert.IsTrue(_actUpdater.IsEmpty());
 
         Loc loc = _player.Loc;
         bool update = true;
@@ -884,13 +829,13 @@ public class MainSystem : MonoBehaviour {
 
             var next = loc.Forward(_player.Dir);
             if (_floor.IsWall(next) || _floor.ExistsObstacle(next)) {
-                _acts.Add(new ActPlayerThrowFootItem(_player, fieldItem, next, loc, null));
+                _actUpdater.Add(new ActPlayerThrowFootItem(_player, fieldItem, next, loc, null));
             }
             else {
                 int p = _enemies.FindIndex(e => e.Loc == next);
                 if (p != -1) { // 敵にヒット
                     var target = _enemies[p];
-                    _acts.Add(new ActPlayerThrowFootItem(_player, fieldItem, next, next, target));
+                    _actUpdater.Add(new ActPlayerThrowFootItem(_player, fieldItem, next, next, target));
                 }
                 else {
                     update = true;
@@ -929,14 +874,14 @@ public class MainSystem : MonoBehaviour {
     }
 
     private void ExecutePlayerFireTrap() {
-        Assert.IsTrue(_acts.Count == 0);
+        Assert.IsTrue(_actUpdater.IsEmpty());
 
         Trap trap = _floor.FindTrap(_player.Loc);
         if (trap == null) {
             ExecutePlayerWait();
         }
         else {
-            _acts.Add(new ActTrap(_player, trap));
+            _actUpdater.Add(new ActTrap(_player, trap));
             ChangeGameState(GameState.Act);
         }
     }
@@ -1025,7 +970,6 @@ public class MainSystem : MonoBehaviour {
         }
         return defaultLoc; // ワープできない場合
     }
-
 
     public Loc Warp(Loc source, bool excludeSourceRoom) {
         const int retryCount = 20;

@@ -208,7 +208,7 @@ public class Player : CharacterBase {
     }
 
     // TODO:UpdateLoc に揃えて UpdateDir にする
-    public override void ChangeDir(Dir dir) {
+    public override void UpdateDir(Dir dir) {
         // if (_dir == dir) return; // TODO:斜めの画像がある場合は dir で判定する
         _dir = dir;
 
