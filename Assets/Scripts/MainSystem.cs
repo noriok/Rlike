@@ -357,7 +357,6 @@ public class MainSystem : MonoBehaviour {
             Dir dir;
             if (_keyPad.IsMove(out dir)) {
                 _player.ChangeDir(dir);
-                Debug.Log("--> change dir");
                 ChangeGameState(GameState.ChangeDirWaitRelease);
                 return;
             }

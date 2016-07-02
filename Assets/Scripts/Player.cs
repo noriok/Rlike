@@ -24,14 +24,14 @@ public class Player : CharacterBase {
 
         var pos = gobj.transform.position;
         float d = Config.ChipSize / 2;
-        var n  = Utils.Instantiate("Prefabs/Dir/dir-N", new Vector3(pos.x, pos.y + d + d/3, pos.z));
-        var ne = Utils.Instantiate("Prefabs/Dir/dir-NE", new Vector3(pos.x + d, pos.y + d, pos.z));
-        var e  = Utils.Instantiate("Prefabs/Dir/dir-E", new Vector3(pos.x + d, pos.y, pos.z));
-        var se = Utils.Instantiate("Prefabs/Dir/dir-SE", new Vector3(pos.x + d, pos.y - d, pos.z));
-        var s  = Utils.Instantiate("Prefabs/Dir/dir-S", new Vector3(pos.x, pos.y - d - d/3, pos.z));
-        var sw = Utils.Instantiate("Prefabs/Dir/dir-SW", new Vector3(pos.x - d, pos.y - d, pos.z));
-        var w  = Utils.Instantiate("Prefabs/Dir/dir-W", new Vector3(pos.x - d, pos.y, pos.z));
-        var nw = Utils.Instantiate("Prefabs/Dir/dir-NW", new Vector3(pos.x - d, pos.y + d, pos.z));
+        var n  = Res.Create("Prefabs/Dir/dir-N", new Vector3(pos.x, pos.y + d + d/3, pos.z));
+        var ne = Res.Create("Prefabs/Dir/dir-NE", new Vector3(pos.x + d, pos.y + d, pos.z));
+        var e  = Res.Create("Prefabs/Dir/dir-E", new Vector3(pos.x + d, pos.y, pos.z));
+        var se = Res.Create("Prefabs/Dir/dir-SE", new Vector3(pos.x + d, pos.y - d, pos.z));
+        var s  = Res.Create("Prefabs/Dir/dir-S", new Vector3(pos.x, pos.y - d - d/3, pos.z));
+        var sw = Res.Create("Prefabs/Dir/dir-SW", new Vector3(pos.x - d, pos.y - d, pos.z));
+        var w  = Res.Create("Prefabs/Dir/dir-W", new Vector3(pos.x - d, pos.y, pos.z));
+        var nw = Res.Create("Prefabs/Dir/dir-NW", new Vector3(pos.x - d, pos.y + d, pos.z));
 
         _dirs.Add(Dir.N, n);
         _dirs.Add(Dir.NE, ne);

@@ -11,6 +11,7 @@ public class Floor {
 
     public int Rows { get { return _map.Rows; } }
     public int Cols { get { return _map.Cols; } }
+    public Size Size { get { return new Size(Rows, Cols); } }
     public Loc StairsLoc { get; private set; }
 
 	public Floor(Map map, Minimap minimap, List<FieldObject> fieldObjects, Loc stairsLoc) {

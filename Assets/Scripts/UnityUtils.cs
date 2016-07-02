@@ -7,7 +7,10 @@ public static class UnityUtils {
     }
 
     public static GameObject Create(this GameObject prefab, Vector3 pos) {
-        var o = (GameObject)GameObject.Instantiate(prefab, pos, Quaternion.identity);
+        // 回転させているプレハブがあるので引数には prefab のみ渡す
+        // var o = (GameObject)GameObject.Instantiate(prefab, pos, Quaternion.identity);
+        var o = (GameObject)GameObject.Instantiate(prefab);
+        o.transform.position = pos;
         return o;
     }
 

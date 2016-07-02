@@ -4,11 +4,9 @@ using UnityEngine;
 using UnityEngine.Assertions;
 
 public static class Utils {
-    private static readonly System.Random _rand = new System.Random();
-
     public static void Shuffle<T>(List<T> xs) {
         for (int i = 0; i < xs.Count; i++) {
-            int p = _rand.Next(xs.Count);
+            int p = Rand.Next(xs.Count);
             var t = xs[i];
             xs[i] = xs[p];
             xs[p] = t;
@@ -16,8 +14,8 @@ public static class Utils {
     }
 
     public static Loc RandomRoomLoc(Room room) {
-        int r = room.Row + _rand.Next(room.Height);
-        int c = room.Col + _rand.Next(room.Width);
+        int r = room.Row + Rand.Next(room.Height);
+        int c = room.Col + Rand.Next(room.Width);
         return new Loc(r, c);
     }
 
@@ -69,18 +67,6 @@ public static class Utils {
     }
 
     // Unity utils
-
-    public static GameObject Instantiate(string path) {
-        return Instantiate(path, Vector3.zero);
-    }
-
-    public static GameObject Instantiate(string path, Vector3 pos) {
-        var obj = Resources.Load(path);
-        // 回転させているプレハブもあるので、引数には obj のみ渡す
-        var gobj = (GameObject)GameObject.Instantiate(obj);
-        gobj.transform.position = pos;
-        return gobj;
-    }
 
     public static T[,] CreateArray2D<T>(int rows, int cols, T val = default(T)) {
         var ary = new T[rows, cols];

@@ -27,7 +27,7 @@ public static class EnemyStrategy {
 
     // 前進する場合の移動先の候補を返す。進めない場合は後退する。
     private static Loc[] Advance(Loc fm, Dir dir) {
-        var locs = new[] {
+        return new[] {
             fm.Forward(dir),
             fm.Forward(dir.Clockwise()),
             fm.Forward(dir.Anticlockwise()),
@@ -35,7 +35,6 @@ public static class EnemyStrategy {
             fm.Forward(dir.Anticlockwise().Anticlockwise()),
             fm.Backward(dir),
         };
-        return locs;
     }
 
     private static bool CanDirectAttack(Loc fm, Loc to, Floor floor) {
@@ -47,11 +46,8 @@ public static class EnemyStrategy {
     }
 
     public static List<Act> Detect(List<Enemy> enemies, Player player, Loc playerNextLoc, Floor floor) {
-        // プレイヤーが見えない場合の行動
-        if (player.IsInvisible()) {
-            return Detect2(enemies, player, playerNextLoc, floor);
-
-        }
+        // TODO:プレイヤーが見えない場合の行動
+        Assert.IsFalse(player.IsInvisible()); // 未実装
 
         // 敵をプレイヤーに近い距離順にソートする
         // TODO:プレイヤーから逃げる行動をとる場合は、プレイヤーから遠い順に行動を決める
@@ -68,14 +64,8 @@ public static class EnemyStrategy {
         var q = new List<Act>();
 
         var locs = new bool[floor.Rows, floor.Cols]; // キャラクターの位置
-        Func<Loc, bool> existsEnemy = (loc) => {
-            int rows = locs.GetLength(0);
-            int cols = locs.GetLength(1);
-            if (0 <= loc.Row && loc.Row < rows && 0 <= loc.Col && loc.Col < cols) {
-                return locs[loc.Row, loc.Col];
-            }
-            return false;
-        };
+        var size = floor.Size;
+        Func<Loc, bool> existsEnemy = loc => size.IsInside(loc) && locs[loc.Row, loc.Col];
 
         var used = new bool[enemies.Count];
         for (int i = 0; i < enemies.Count; i++) {
@@ -113,11 +103,9 @@ public static class EnemyStrategy {
                             ok = false;
                             break;
                         }
-
                         loc = loc.Forward(front);
                     }
 
-                    Debug.Log("ok = " + ok);
                     if (ok) { // 遠距離攻撃を行う
                         q.Add(new ActEnemyLongDistanceAttack(enemies[i], player, playerNextLoc));
                         used[i] = true;
@@ -136,11 +124,11 @@ public static class EnemyStrategy {
                 var enemy = enemies[i];
                 Assert.IsTrue(locs[enemy.Loc.Row, enemy.Loc.Col]);
 
+                // プレイヤーへの攻撃が可能なら移動せずに攻撃する
                 if (CanDirectAttack(enemy.Loc, playerNextLoc, floor)) continue;
 
                 // 移動先を決める
                 if (floor.InSight(enemy.Loc, playerNextLoc)) { // プレイヤーが視界内
-
                     // 敵が部屋にいて、プレイヤーが部屋の入り口にいるならターゲットとして追尾
                     if (floor.IsRoom(enemy.Loc) && floor.IsEntrance(playerNextLoc)) {
                         enemy.LockOn(playerNextLoc);
@@ -179,6 +167,7 @@ public static class EnemyStrategy {
                         }
                     }
                     else if (floor.IsPassage(enemy.Loc)) { // 通路にいるなら前進する
+                        // TODO:通路にいる場合の移動ロジック
                         enemy.CancelTarget();
 
                         foreach (var loc in Advance(enemy.Loc, enemy.Dir)) {
@@ -195,9 +184,7 @@ public static class EnemyStrategy {
                     }
                     else if (floor.IsRoom(enemy.Loc)) { // 部屋にいるなら入り口に向かう
                         Room room = floor.FindRoom(enemy.Loc);
-                        Debug.Log("room = " + room);
-                        Debug.Log("room.Entrances.Length = " + room.Entrances.Length);
-                        if (room.Entrances.Length == 0) { // 入り口がないなら何もしない
+                        if (room.Entrances.Length == 0) { // 入り口のない部屋なら行動しない
                             updated = true;
                             used[i] = true;
                             break;
@@ -247,6 +234,7 @@ public static class EnemyStrategy {
         return q;
     }
 
+    // TODO:削除。プレイヤーが透明状態の場合の行動ロジック
     public static List<Act> Detect2(List<Enemy> enemies, Player player, Loc playerNextLoc, Floor floor) {
 
         // 敵をプレイヤーに近い距離順にソートする
