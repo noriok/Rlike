@@ -162,6 +162,7 @@ public struct Loc : IEquatable<Loc> {
         return Math.Abs(Row - loc.Row) + Math.Abs(Col - loc.Col);
     }
 
+    // Unity 依存は拡張メソッドにする
     // Unity 上の position を返す
     public Vector3 ToPosition() {
         float x =  Col * Config.ChipSize;
